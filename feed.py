@@ -5,10 +5,18 @@ class Feed:
     '''Stores a list of articles.'''
     
     def __init__(self, file=None, url=None):
-        self.articles = []
+        self.articles = {}
+
         if file:
-            f = feedparser.parse(file)
-            for item in f['entries']:
-                # The double ** takes every item in the dictionary
-                # and makes it a different argument calling the Article class.
-                self.articles.append(Article(**item))
+            self.add_file(file)
+
+    def add_file(self, file):
+        f = feedparser.parse(file)
+        for item in f['entries']:
+            # The double ** takes every item in the dictionary
+            # and makes it a different argument calling the Article class.
+            a = Article(**item)
+            
+            # Add the article if it doesn't already exist
+            self.articles[a.id] = a
+        
