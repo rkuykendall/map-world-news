@@ -13,10 +13,12 @@ class Feed:
     def add_file(self, file):
         f = feedparser.parse(file)
         for item in f['entries']:
-            # The double ** takes every item in the dictionary
-            # and makes it a different argument calling the Article class.
-            a = Article(**item)
+            a = Article()
+            a.id = int(item['id'].replace('feedzilla.com:',''))
+            a.author = item['author'].encode('utf-8')
+            a.title = item['title'].encode('utf-8')
+            summary = item['summary']
+            a.summary = summary[:summary.find("\n\n")].encode('utf-8')
             
             # Add the article if it doesn't already exist
             self.articles[a.id] = a
-        
