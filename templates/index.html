@@ -80,7 +80,7 @@
         .datum(topojson.feature(world, world.objects.land))
         .attr("class", "land")
         .attr("d", path);
-
+    
     svg.insert("path", ".graticule")
         .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
         .attr("class", "boundary")
