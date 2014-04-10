@@ -14,4 +14,4 @@ class Article:
         self.sentiment = self.dstk.text2sentiment(target)['score']
         
     def to_json(self):
-        return "{ article! }"
+        return "Article!\n"
