@@ -16,5 +16,8 @@ def data():
 @app.route('/articles.json')
 def articles():
     feed = Feed(file='data/2014-04-05_16-54.atom')
+    json_string = ""
+    
     for article in feed.articles:
-        print article.to_json()
+        json_string += article.to_json()
+    return json_string
