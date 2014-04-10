@@ -12,3 +12,6 @@ class Article:
         
         self.places = self.dstk.text2places(target)
         self.sentiment = self.dstk.text2sentiment(target)['score']
+        
+    def to_json(self):
+        return "{ article! }"

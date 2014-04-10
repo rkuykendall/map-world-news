@@ -12,3 +12,9 @@ def homepage():
 @app.route('/world-50m.json')
 def data():
     return render_template('world-50m.json')
+    
+@app.route('/articles.json')
+def articles():
+    feed = Feed(file='data/2014-04-05_16-54.atom')
+    for article in feed.articles:
+        print article.to_json()
