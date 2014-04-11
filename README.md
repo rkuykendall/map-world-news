@@ -15,7 +15,8 @@ I followed [this guide](https://devcenter.heroku.com/articles/getting-started-wi
 
 1. git clone git@github.com:rkuykendall/dmst-temp-repo.git
 2. cd dmst-temp-repo
-3. pip install Flask gunicorn
+3. easy_install pip
+3. pip install flask gunicorn dstk nose
 4. foreman start
 
 Alternatively, you can work on the HTML/CSS/JS to get D3 working. I uploaded a start as *index.html* and *world-50m.json*. Unfortunately, it fails to load the JSON file if you just view it in the browser, so you need set up a local server.

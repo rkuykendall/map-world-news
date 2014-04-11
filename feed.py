@@ -8,7 +8,7 @@ class Feed:
         self.articles = {}
         
         if feed:
-            add_feed(feed)
+            self.add_feed(feed)
 
     def add_feed(self, feed):
         f = feedparser.parse(feed)

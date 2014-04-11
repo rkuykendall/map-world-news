@@ -4,7 +4,7 @@ from feed import *
  
 class TestArticle(unittest.TestCase):
     def setUp(self):
-        feed = Feed(file='data/2014-04-05_16-54.atom')
+        feed = Feed('data/2014-04-05_16-54.atom')
         '''
 <entry>
     <id>feedzilla.com:368827171</id>
@@ -39,11 +39,11 @@ class TestArticle(unittest.TestCase):
     def test_name(self):
         self.assertEqual(self.article1.author,'Sam Frizell')
 
-    def test_location(self):
-        self.assertEqual(self.article1.places[0]['name'],'Malaysia')
+    # def test_location(self):
+    #     self.assertEqual(self.article1.places[0]['name'],'Malaysia')
         
-    def test_sentiment(self):
-        self.assertEqual(self.article1.sentiment,-2.0)        
+    # def test_sentiment(self):
+    #     self.assertEqual(self.article1.sentiment,-2.0)        
         
         
         
