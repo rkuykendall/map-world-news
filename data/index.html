@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <script src="//code.jquery.com/jquery-2.0.0.js"></script>
+    <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
     <style>
     #map {
       background-color: #fff;
@@ -37,8 +37,8 @@
   </head>
   <body>
     <div id="map"></div>
-    <script src="//d3js.org/d3.v3.min.js"></script>
-    <script src="//d3js.org/topojson.v1.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script>
     var m_width = $("#map").width(),
         width = 938,
@@ -66,8 +66,7 @@
         .on("click", country_clicked);
 
     var g = svg.append("g");
-
-    d3.json("/json/countries.topo.json", function(error, us) {
+    d3.json("json/countries.topo.json", function(error, us) {
       g.append("g")
         .attr("id", "countries")
         .selectAll("path")
@@ -76,14 +75,14 @@
         .append("path")
         .attr("id", function(d) { return d.id; })
         .attr("d", path)
-        .on("click", country_clicked);
+        .on("click", country_clicked); 
     });
 
     function zoom(xyz) {
       g.transition()
         .duration(750)
         .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
-        .selectAll(["#countries", "#states", "#cities"])
+        .selectAll(["#countries", "#states"])
         .style("stroke-width", 1.0 / xyz[2] + "px")
         .selectAll(".city")
         .attr("d", path.pointRadius(20.0 / xyz[2]));
@@ -100,7 +99,7 @@
     }
 
     function country_clicked(d) {
-      g.selectAll(["#states", "#cities"]).remove();
+      g.selectAll(["#states"]).remove();
       state = null;
 
       if (country) {
@@ -112,7 +111,7 @@
         country = d;
 
         if (d.id  == 'USA') {
-          d3.json("/json/states_" + d.id.toLowerCase() + ".topo.json", function(error, us) {
+          d3.json("json/states_" + d.id.toLowerCase() + ".topo.json", function(error, us) {
             g.append("g")
               .attr("id", "states")
               .selectAll("path")
@@ -134,6 +133,26 @@
         var xyz = [width / 2, height / 1.5, 1];
         country = null;
         zoom(xyz);
+      }
+    }
+
+    function state_clicked(d) {
+
+
+      if (d && state !== d) {
+        var xyz = get_xyz(d);
+        state = d;
+
+        country_code = state.id.substring(0, 3).toLowerCase();
+        state_name = state.properties.name;
+
+
+        d3.json("json/cities_" + country_code + ".topo.json", function(error, us) {
+          zoom(xyz);
+        });      
+      } else {
+        state = null;
+        country_clicked(country);
       }
     }
 
