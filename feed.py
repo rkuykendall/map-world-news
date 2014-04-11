@@ -20,11 +20,14 @@ class Feed:
             a.id = item['id']
             a.id = re.sub(r'.*feedzilla\.com:(.*)', r'\1', a.id)
             a.id = int(a.id)
+
+
         
-            # Set author and title, remove unicode
+            # Set source, author and title, remove unicode
             a.author = item['author'].encode('utf-8')
             a.title = item['title'].encode('utf-8')
-        
+            a.source=item['source']['links'][0]['href'].encode('utf-8')
+                    
             # Set summary, get rid of everything after double newline
             summary = item['summary']
             a.summary = summary[:summary.find("\n\n")].encode('utf-8')
