@@ -1,4 +1,5 @@
 import feedparser
+import re
 from article import Article
 
 class Feed:
@@ -16,7 +17,9 @@ class Feed:
             a = Article()
         
             # Set ID as integer, without feedzilla at beginning
-            a.id = int(item['id'].replace('feedzilla.com:',''))
+            a.id = item['id']
+            a.id = re.sub(r'.*feedzilla\.com:(.*)', r'\1', a.id)
+            a.id = int(a.id)
         
             # Set author and title, remove unicode
             a.author = item['author'].encode('utf-8')
