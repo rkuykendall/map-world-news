@@ -146,10 +146,7 @@
         country_code = state.id.substring(0, 3).toLowerCase();
         state_name = state.properties.name;
 
-
-        d3.json("json/cities_" + country_code + ".topo.json", function(error, us) {
-          zoom(xyz);
-        });      
+		zoom(xyz);
       } else {
         state = null;
         country_clicked(country);
