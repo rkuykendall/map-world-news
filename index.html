@@ -66,7 +66,7 @@
         .on("click", country_clicked);
 
     var g = svg.append("g");
-    d3.json("json/countries.topo.json", function(error, us) {
+    d3.json("data/json/countries.topo.json", function(error, us) {
       g.append("g")
         .attr("id", "countries")
         .selectAll("path")
@@ -111,7 +111,7 @@
         country = d;
 
         if (d.id  == 'USA') {
-          d3.json("json/states_" + d.id.toLowerCase() + ".topo.json", function(error, us) {
+          d3.json("data/json/states_" + d.id.toLowerCase() + ".topo.json", function(error, us) {
             g.append("g")
               .attr("id", "states")
               .selectAll("path")
