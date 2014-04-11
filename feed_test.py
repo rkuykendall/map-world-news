@@ -18,3 +18,15 @@ class TestFeed(unittest.TestCase):
         feed = Feed('data/2014-04-05_16-54.atom')
         feed.add_feed('data/2014-04-05_16-54.atom')
         self.assertEqual(len(feed.articles),89)
+
+    def test_cray(self):
+        feed = Feed('data/2014-04-05_16-54.atom')
+        feed.add_feed('http://api.feedzilla.com/v1/categories/26/articles.atom?count=10')
+        self.assertEqual(len(feed.articles),99)
+
+    def test_cray2(self):
+        feed = Feed('data/2014-04-05_16-54.atom')
+        feed.add_feed('http://api.feedzilla.com/v1/categories/26/articles.atom?count=10')
+        feed.add_feed('http://api.feedzilla.com/v1/categories/26/articles.atom?count=20')
+        self.assertEqual(len(feed.articles),109)
+
