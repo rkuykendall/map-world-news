@@ -6,8 +6,13 @@ class TestFeed(unittest.TestCase):
 
     # def tearDown(self):
 
+    
     def test_from_feed(self):
-        feed = Feed('http://api.feedzilla.com/v1/categories/26/articles.atom?count=10')
+    	q="flight"
+
+    	url="http://api.feedzilla.com/v1/categories/27/articles/search.atom?q="+q+"&count=10"
+    	# url = "http://api.feedzilla.com/v1/categories/16/articles.atom?count=10"
+        feed = Feed(url)
         self.assertEqual(len(feed.articles),10)        
 
     def test_from_file(self):
@@ -20,13 +25,15 @@ class TestFeed(unittest.TestCase):
         self.assertEqual(len(feed.articles),89)
 
     def test_cray(self):
+    	url = "http://api.feedzilla.com/v1/categories/16/articles.atom?count=10"
         feed = Feed('data/2014-04-05_16-54.atom')
-        feed.add_feed('http://api.feedzilla.com/v1/categories/26/articles.atom?count=10')
+        feed.add_feed(url)
         self.assertEqual(len(feed.articles),99)
 
     def test_cray2(self):
+    	url = "http://api.feedzilla.com/v1/categories/16/articles.atom?count=20"
         feed = Feed('data/2014-04-05_16-54.atom')
-        feed.add_feed('http://api.feedzilla.com/v1/categories/26/articles.atom?count=10')
-        feed.add_feed('http://api.feedzilla.com/v1/categories/26/articles.atom?count=20')
+        feed.add_feed(url)
+        feed.add_feed(url)
         self.assertEqual(len(feed.articles),109)
 
