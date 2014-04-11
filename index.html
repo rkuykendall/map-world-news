@@ -1,7 +1,20 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Interactive Map</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/custom.css" rel="stylesheet">
+
     <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
     <style>
     #map {
@@ -36,7 +49,64 @@
     </style>
   </head>
   <body>
-    <div id="map"></div>
+  <div class="site-wrapper">
+ 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">Project name</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Nav header</li>
+                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#">One more separated link</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+      <div class="site-wrapper-inner">
+		
+		<div class="container" style="padding-top: 60px;">
+          	<div class="inner cover">
+            <h1 class="cover-heading">View Your News by Country.</h1>
+            <p class="lead">Just click on a country and go.</p>
+          </div>
+		
+          	<div class="row">
+  				<div class="col-md-8">
+          			<div id="map" style="width: 700px; margin: 40px;"></div>
+          		</div>
+          		<div class="col-md-4"><h3>News Stories Here</h3></div>
+			</div>
+	</div>
+	<div class="container">
+            	<div class="footer">
+              	<p>Project by Robert Kuykendall, Shensi Ding, Sahil Ansari and Bo Xu.</p>
+            	</div>
+		</div>
+
+   	</div>
+  </div>
+    
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script>
@@ -75,7 +145,7 @@
         .append("path")
         .attr("id", function(d) { return d.id; })
         .attr("d", path)
-        .on("click", country_clicked); 
+        .on("click", country_clicked);
     });
 
     function zoom(xyz) {
@@ -110,7 +180,7 @@
         var xyz = get_xyz(d);
         country = d;
 
-        if (d.id  == 'USA') {
+        if (d.id == 'USA') {
           d3.json("data/json/states_" + d.id.toLowerCase() + ".topo.json", function(error, us) {
             g.append("g")
               .attr("id", "states")
@@ -125,7 +195,7 @@
 
             zoom(xyz);
             g.selectAll("#" + d.id).style('display', 'none');
-          });      
+          });
         } else {
           zoom(xyz);
         }
@@ -146,7 +216,7 @@
         country_code = state.id.substring(0, 3).toLowerCase();
         state_name = state.properties.name;
 
-		zoom(xyz);
+zoom(xyz);
       } else {
         state = null;
         country_clicked(country);
@@ -159,5 +229,12 @@
       svg.attr("height", w * height / width);
     });
     </script>
+    
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
   </body>
 </html>
