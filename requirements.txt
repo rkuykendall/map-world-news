@@ -6,11 +6,5 @@ MarkupSafe==0.19
 Werkzeug==0.9.4
 dstk==0.50
 itsdangerous==0.24
-numpy==1.8.1
-ply==3.4
-stevedore==0.15
-virtualenv==1.11.4
-virtualenv-clone==0.2.4
-virtualenvwrapper==4.2
 wsgiref==0.1.2
 feedparser==5.1.3
