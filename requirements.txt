@@ -1,10 +1,15 @@
+--allow-external dstk
+--allow-unverified dstk
 Flask==0.10.1
 Jinja2==2.7.2
 MarkupSafe==0.19
 Werkzeug==0.9.4
 dstk==0.50
-feedparser==5.1.3
-gunicorn==18.0
 itsdangerous==0.24
-nose==1.3.1
+numpy==1.8.1
+ply==3.4
+stevedore==0.15
+virtualenv==1.11.4
+virtualenv-clone==0.2.4
+virtualenvwrapper==4.2
 wsgiref==0.1.2
