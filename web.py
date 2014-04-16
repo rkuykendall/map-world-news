@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, render_template_string, url_for
 from feed import Feed
 
 app = Flask(__name__)
@@ -28,12 +28,14 @@ def json(file=None):
 @app.route('/world-50m.json')
 def data():
     return render_template('world-50m.json')
-    
+
 @app.route('/articles.json')
 def articles():
     feed = Feed('data/2014-04-05_16-54.atom')
-    json_string = ""
-    
-    for article in feed.articles:
-        json_string += feed.articles[article].to_json()
-    return json_string
+    return feed.to_json()
+
+# @app.route('/<country>_articles.json',country=None)
+# def articles(country):
+#     feed = Feed('data/2014-04-05_16-54.atom')
+#     feed.filter_country(country)
+#     return feed.to_json()

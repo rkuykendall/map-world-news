@@ -1,4 +1,5 @@
 # import dstk
+import json
 
 class Article:
     '''Stores received and computed article data.'''
@@ -14,4 +15,4 @@ class Article:
         # self.sentiment = self.dstk.text2sentiment(target)['score']
         
     def to_json(self):
-        return "Article!\n"
+        return json.dumps(a.id, a.title, a.summary)

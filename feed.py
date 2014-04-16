@@ -1,6 +1,7 @@
 import feedparser
 import re
 from article import Article
+import json
 
 class Feed:
     '''Stores a list of articles.'''
@@ -28,9 +29,18 @@ class Feed:
             a.title = item['title'].encode('utf-8')
             a.source=item['source']['links'][0]['href'].encode('utf-8')
                     
-            # Set summary, get rid of everything after double newline
+            # Set summary, get rid of all the junk at the end
             summary = item['summary']
-            a.summary = summary[:summary.find("\n\n")].encode('utf-8')
+            summary = summary[:summary.find("\n\n")]
+            summary = summary[:summary.find("<")]
+            a.summary = summary.encode('utf-8')
         
             # Add the article if it doesn't already exist
             self.articles[a.id] = a
+
+    def to_json(self):
+        response = []
+        for a_id in self.articles:
+            a = self.articles[a_id]
+            response.append([a.id, a.title, a.summary])
+        return json.dumps(response)
