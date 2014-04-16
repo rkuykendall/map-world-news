@@ -17,15 +17,14 @@ class Feed:
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
-        for a_id in self.articles:
-            session.add(self.articles[a_id])
+        session.add_all(self.articles.values())
         session.commit()
 
     def load(self, engine):
         Session = sessionmaker(bind=engine)
         session = Session()
-        for row in session.query(Article).all():
-            self.articles.append(row.Article)
+        for article in session.query(Article).all():
+            self.articles[article.id] = article
 
     def add_feed(self, feed):
         f = feedparser.parse(feed)
@@ -40,13 +39,13 @@ class Feed:
             # Set source, author and title
             a.author = item['author']
             a.title = item['title']
-            a.source=item['source']['links'][0]['href'].encode('utf-8')
+            a.source=item['source']['links'][0]['href']
             
             # Set summary, get rid of all the junk at the end
             summary = item['summary']
             summary = summary[:summary.find("\n\n")]
             summary = summary[:summary.find("<")]
-            a.summary = summary.encode('utf-8')
+            a.summary = summary
             
             # Add the article if it doesn't already exist
             self.articles[a.id] = a
