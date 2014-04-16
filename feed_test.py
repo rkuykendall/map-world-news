@@ -1,17 +1,26 @@
 import unittest
 from feed import *
+from sqlalchemy import *
  
 class TestFeed(unittest.TestCase):
     # def setUp(self):
 
     # def tearDown(self):
 
+    def test_db(self):
+        feed = Feed('data/2014-04-05_16-54.atom')
+        engine = create_engine('sqlite:///:memory:', echo=False)
+        feed.save(engine)
+        feed2 = Feed()
+        feed2.load(engine)
+        self.assertEqual(len(feed.articles),89)
+        self.assertEqual(len(feed2.articles),89)
     
     def test_from_feed(self):
-    	q="flight"
-
-    	url="http://api.feedzilla.com/v1/categories/27/articles/search.atom?q="+q+"&count=10"
-    	# url = "http://api.feedzilla.com/v1/categories/16/articles.atom?count=10"
+        # # Commented out because search doesn't always have 10 things to return
+    	# q="flight"
+    	# url="http://api.feedzilla.com/v1/categories/27/articles/search.atom?q="+q+"&count=10"
+    	url = "http://api.feedzilla.com/v1/categories/16/articles.atom?count=10"
         feed = Feed(url)
         self.assertEqual(len(feed.articles),10)        
 
