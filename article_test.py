@@ -1,4 +1,7 @@
 import unittest
+
+# Set enviornment before importing any database classes
+os.environ["CONFIG_PATH"] = "database.TestingConfig"
 import article
 from feed import *
  
