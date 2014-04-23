@@ -1,13 +1,19 @@
 import unittest
-from feed import *
 from sqlalchemy import *
 import os
-from database import Base, engine, session
+
+# Set enviornment before importing any database classes
+os.environ["CONFIG_PATH"] = "database.TestingConfig"
+from feed import *
+from database import Base, engine, session, app
  
 class TestFeed(unittest.TestCase):
     def setUp(self):
-        os.environ["CONFIG_PATH"] = "database.TestingConfig"
 
+        print "# # # # # # # # # # # # # # # # # # # #"
+        print "   "+str(app.config['NAME'])
+        print "# # # # # # # # # # # # # # # # # # # #"
+        
         # Set up the tables in the database
         Base.metadata.create_all(engine)        
 
