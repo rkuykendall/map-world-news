@@ -1,15 +1,18 @@
 import unittest
 from feed import *
 from sqlalchemy import *
+import os
+from database import Base, engine, session
  
 class TestFeed(unittest.TestCase):
-    # def setUp(self):
+    def setUp(self):
+        os.environ["CONFIG_PATH"] = "database.TestingConfig"
 
-    # def tearDown(self):
+        # Set up the tables in the database
+        Base.metadata.create_all(engine)        
 
     def test_db(self):
-        feed = Feed('data/2014-04-05_16-54.atom')
-        engine = create_engine('sqlite:///:memory:', echo=False)
+        feed = Feed('data/2014-04-05_16-54.atom')        
         feed.save(engine)
         feed2 = Feed()
         feed2.load(engine)
