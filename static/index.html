@@ -96,7 +96,10 @@
         <div class="col-md-8">
          <div id="map" style="width: 700px; margin: 40px;"></div>
        </div>
-       <div class="col-md-4"><h3>News Stories Here</h3></div>
+       <div class="col-md-4">
+         <h3>News Stories Here</h3>
+         <div id="stories"></div>
+       </div>
       
     <form role="form" class="form-inline">
    <div class="form-group">
@@ -136,34 +139,30 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script>
-$(document).ready(function()
-{
-  $( "#search" ).click(function( event ) {
-  $("#query").submit();
-  event.preventDefault();
-});
 
-  $( "#query" ).submit(function( event ) {
-  console.log( $( "#query" ).val());
-  event.preventDefault();
-});
+  $(document).ready(function()
+  {
+    $( "#search" ).click(function( event ) {
+    $("#query").submit();
+      event.preventDefault();
+    });
+
+    $( "#query" ).submit(function( event ) {
+      console.log( $( "#query" ).val());
+      event.preventDefault();
+    });
 
 
     $( "#searchPlace" ).click(function( event ) {
-  $("#place").submit();
-  event.preventDefault();
-});
+      $("#place").submit();
+      event.preventDefault();
+    });
 
-  $( "#place" ).submit(function( event ) {
-  console.log( $( "#place" ).val());
-  event.preventDefault();
-});
-
-
-});
-
-
-
+    $( "#place" ).submit(function( event ) {
+      console.log( $( "#place" ).val());
+      event.preventDefault();
+    });
+  });
 
   var m_width = $("#map").width(),
   width = 938,
@@ -248,21 +247,29 @@ $(document).ready(function()
           .attr("d", path)
           .on("click", state_clicked);
 
-          zoom(xyz);
+          // zoom(xyz);
           g.selectAll("#" + d.id).style('display', 'none');
         });
       } else {
-        zoom(xyz);
+        // zoom(xyz);
       }
     } else {
       var xyz = [width / 2, height / 1.5, 1];
       country = null;
-      zoom(xyz);
+      // zoom(xyz);
     }
+    
+    $.getJSON("/"+d.properties.name+"_articles.json", function(data) {
+      var items = [];
+      $.each( data, function( key, val ) {
+        items.push( "<li id='" + key + "'>" + val + "</li>" );
+      });
+ 
+      $("#stories").html("<ul>"+items.join("\n")+"</ul>")
+    });
   }
 
   function state_clicked(d) {
-
 
     if (d && state !== d) {
       var xyz = get_xyz(d);
