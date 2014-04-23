@@ -34,8 +34,8 @@ def articles():
     feed = Feed('data/2014-04-05_16-54.atom')
     return feed.to_json()
 
-# @app.route('/<country>_articles.json',country=None)
-# def articles(country):
-#     feed = Feed('data/2014-04-05_16-54.atom')
-#     feed.filter_country(country)
-#     return feed.to_json()
+@app.route('/<country>_articles.json')
+def country_articles(country=None):
+    feed = Feed('data/2014-04-05_16-54.atom')
+    feed.filter_country(country)
+    return feed.to_json()

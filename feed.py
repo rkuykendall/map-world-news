@@ -49,6 +49,9 @@ class Feed:
             
             # Add the article if it doesn't already exist
             self.articles[a.id] = a
+            
+    def filter_country(self, country):
+        pass
 
     def to_json(self):
         response = []
