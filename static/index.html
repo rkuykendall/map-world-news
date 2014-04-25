@@ -170,33 +170,26 @@
   country,
   state;
 
-  //creates D3 mercator map object
   var projection = d3.geo.mercator()
   .scale(150)
   .translate([width / 2, height / 1.5]);
 
-  //mechanism for displaying GEOJSON data; supports geometric manipulation
-  //for points, polygon, lines
   var path = d3.geo.path()
   .projection(projection);
 
-  // adds svg element (https://github.com/mbostock/d3/wiki/SVG-Shapes)
   var svg = d3.select("#map").append("svg")
   .attr("preserveAspectRatio", "xMidYMid")
   .attr("viewBox", "0 0 " + width + " " + height)
   .attr("width", m_width)
   .attr("height", m_width * height / width);
 
-  // draws a rectangle 
   svg.append("rect")
   .attr("class", "background")
   .attr("width", width)
   .attr("height", height)
   .on("click", country_clicked);
 
-  
   var g = svg.append("g");
-  // requests json file for countries
   d3.json("/json/countries.topo.json", function(error, us) {
     g.append("g")
     .attr("id", "countries")
@@ -209,9 +202,7 @@
     .on("click", country_clicked);
   });
 
-  // zoom feature created using transitions
   function zoom(xyz) {
-	// D3 transitions (https://github.com/mbostock/d3/wiki/Transitions)
     g.transition()
     .duration(750)
     .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
@@ -221,9 +212,7 @@
     .attr("d", path.pointRadius(20.0 / xyz[2]));
   }
 
-  // getter for xyz
   function get_xyz(d) {
-	// creates bounding box object from geo-paths
     var bounds = path.bounds(d);
     var w_scale = (bounds[1][0] - bounds[0][0]) / width;
     var h_scale = (bounds[1][1] - bounds[0][1]) / height;
@@ -233,23 +222,18 @@
     return [x, y, z];
   }
 
-  // this does???
   function country_clicked(d) {
-	//remove element for States
     g.selectAll(["#states"]).remove();
     state = null;
-	
-	// selects CSS element and displays null?
+
     if (country) {
       g.selectAll("#" + country.id).style('display', null);
     }
 
-	
     if (d && country !== d) {
       var xyz = get_xyz(d);
       country = d;
 
-	  // not exactly sure
       if (d.id == 'USA') {
         d3.json("data/json/states_" + d.id.toLowerCase() + ".topo.json", function(error, us) {
           g.append("g")
@@ -258,7 +242,7 @@
           .data(topojson.feature(us, us.objects.states).features)
           .enter()
           .append("path")
-          .attr("id", function(d) { return d.id; }) 
+          .attr("id", function(d) { return d.id; })
           .attr("class", "active")
           .attr("d", path)
           .on("click", state_clicked);
@@ -275,8 +259,6 @@
       // zoom(xyz);
     }
     
-	//Bo - add stuff here for color mapping, mouseover, lines
-	
     $.getJSON("/"+d.properties.name+"_articles.json", function(data) {
       var items = [];
       $.each( data, function( key, val ) {
@@ -287,7 +269,6 @@
     });
   }
 
-  // mouseclick behavior for US states
   function state_clicked(d) {
 
     if (d && state !== d) {
@@ -304,7 +285,6 @@
     }
   }
 
-  
   $(window).resize(function() {
     var w = $("#map").width();
     svg.attr("width", w);
