@@ -76,7 +76,7 @@
   $(document).ready(function()
   {
     $( "#search" ).click(function( event ) {
-    $("#query").submit();
+    // $("#query").submit();
       event.preventDefault();
     });
 
@@ -87,14 +87,28 @@
 
 
     $( "#searchPlace" ).click(function( event ) {
-      $("#place").submit();
+      // $("#place").submit();
+      url = "/"+$( "#place" ).val()+"_articles.json";
+      console.log(url);
+
+      $.getJSON(url, function(data) {
+        var items = [];
+        $.each( data, function( key, val ) {
+          items.push( "<li id='" + key + "'>" + val + "</li>" );
+        });
+   
+        $("#stories").html("<ul>"+items.join("\n")+"</ul>")
+      });
       event.preventDefault();
+      return false;      
     });
 
     $( "#place" ).submit(function( event ) {
       console.log( $( "#place" ).val());
       event.preventDefault();
     });
+
+    event.preventDefault();
   });
 
   var m_width = $("#map").width(),
