@@ -1,5 +1,5 @@
----allow-external dstk
----allow-unverified dstk
+--allow-external dstk
+--allow-unverified dstk
 Flask==0.10.1
 Flask-SQLAlchemy==1.0
 Jinja2==2.7.2
