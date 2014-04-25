@@ -159,3 +159,8 @@ body {
     width: 700px;
   }
 }
+
+story {
+	background-color: @gray-lighter;
+	border: 1px #000000 solid;
+}

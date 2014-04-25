@@ -1,44 +1,44 @@
 [
 
 	{
-  		"article-id": "give us the article id, either your database or Feedzilla id", 
-  		"country-id": "give ID, will probably be US",
-  		"country-name": "US, etc",
-  		"state-name": "state name, etc",
-  		"sentiment-rating": "apparently the scale is -3,-2,-1,0,1,2,3 we'd have to convert to color scale, ie shades of red/blue",
-  		"article-title": "Feedzilla article title, ie Obama goes to Japan",
-  		"article-summary": "Summary output from Feedzilla - ",
-  		"related-countries-id" : "used for arrow pointers, null if there are none, country-id otherwise"
+  		"aid": "give us the article id, either your database or Feedzilla id", 
+  		"cid": "give ID, will probably be US",
+  		"country": "US, etc",
+  		"state": "state name, etc",
+  		"sentiment": "apparently the scale is -3,-2,-1,0,1,2,3 we'd have to convert to color scale, ie shades of red/blue",
+  		"title": "Feedzilla article title, ie Obama goes to Japan",
+  		"summary": "Summary output from Feedzilla - ",
+  		"relatedcid" : "used for arrow pointers, null if there are none, country-id otherwise"
   	},
   	{
- 		"article-id": "s368842248", 
-  		"country-id": "US123",
-  		"country-name": "US",
-  		"state-name": "New York",
-  		"sentiment-rating": "-2",
-  		"article-title": "Escape from New York",
-  		"article-summary": "Snake Plissken is saving Brazil's first lady from New York",
-  		"related-countries" : "BR123" 
+  		"aid": "give us the article id, either your database or Feedzilla id", 
+  		"cid": "give ID, will probably be US",
+  		"country": "US, etc",
+  		"state": "state name, etc",
+  		"sentiment": "apparently the scale is -3,-2,-1,0,1,2,3 we'd have to convert to color scale, ie shades of red/blue",
+  		"title": "Feedzilla article title, ie Obama goes to Japan",
+  		"summary": "Summary output from Feedzilla - ",
+  		"relatedcid" : "used for arrow pointers, null if there are none, country-id otherwise"
     },
     {
- 		"article-id": "s368842248", 
-  		"country-id": "US123",
-  		"country-name": "US",
-  		"state-name": "New York",
-  		"sentiment-rating": "-2",
-  		"article-title": "Escape from New York",
-  		"article-summary": "Snake Plissken is saving Brazil's first lady from New York",
-  		"related-countries" : "BR123" 
+  		"aid": "give us the article id, either your database or Feedzilla id", 
+  		"cid": "give ID, will probably be US",
+  		"country": "US, etc",
+  		"state": "state name, etc",
+  		"sentiment": "apparently the scale is -3,-2,-1,0,1,2,3 we'd have to convert to color scale, ie shades of red/blue",
+  		"title": "Feedzilla article title, ie Obama goes to Japan",
+  		"summary": "Summary output from Feedzilla - ",
+  		"relatedcid" : "used for arrow pointers, null if there are none, country-id otherwise"
     },
     {
- 		"article-id": "s368842248", 
-  		"country-id": "US123",
-  		"country-name": "US",
-  		"state-name": "New York",
-  		"sentiment-rating": "-2",
-  		"article-title": "Escape from New York",
-  		"article-summary": "Snake Plissken is saving Brazil's first lady from New York",
-  		"related-countries" : "BR123" 
+  		"aid": "give us the article id, either your database or Feedzilla id", 
+  		"cid": "give ID, will probably be US",
+  		"country": "US, etc",
+  		"state": "state name, etc",
+  		"sentiment": "apparently the scale is -3,-2,-1,0,1,2,3 we'd have to convert to color scale, ie shades of red/blue",
+  		"title": "Feedzilla article title, ie Obama goes to Japan",
+  		"summary": "Summary output from Feedzilla - ",
+  		"relatedcid" : "used for arrow pointers, null if there are none, country-id otherwise"
     }
   	
 ]

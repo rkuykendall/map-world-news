@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="countriesNewsApp">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,7 +8,6 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <title>Interactive Map</title>
-
   <!-- Bootstrap core CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -19,6 +18,9 @@
   <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 
+	<script src="js/angular.min.js"></script>
+	<script src="js/controllers.js"></script>
+	<script src="js/angular-route.js"></script>
 </head>
 <body>
   <div class="site-wrapper">
@@ -36,7 +38,18 @@
          <div id="map" style="width: 700px; margin: 40px 40px 5px 40px;"></div>
          <small>Map by <a href="http://www.tnoda.com/">tnoda</a></small>
        </div>
-       <div class="col-md-4">
+       <div class="col-md-4" ng-controller="NewsListCtrl">
+       
+       
+        <ul class="list-unstyled">
+          <li ng-repeat="story in stories | orderBy:orderProp">
+          <div class="story">
+            <h4>{{story.title}}</h4>
+            <small class="text-justify">{{story.summary}}</small>
+            </div>
+          </li>
+        </ul>
+       
          <h3>News Stories Here</h3>
          <div id="stories"></div>
        </div>
@@ -56,9 +69,8 @@
    </div>
    <button type="submit" id="searchPlace" class="btn btn-default">Go!</button>
 </form>
-
-
     </div>
+    
   </div>
   <div class="container">
    <div class="footer">
@@ -209,8 +221,13 @@
     // $.getJSON("/"+d.properties.name+"_articles.json", function(data) {
     $.getJSON("json/us_articles.json", function(data) {
       var items = [];
-      $.each( data, function( key, val ) {
-        items.push( "<li id='" + key + "'>" + val + "</li>" );
+      alert("getting data!");
+    	$.each( data, function( key, val ) {
+    	
+    	$.each( story, function( key, val ) {
+        	items.push( "<li id='" + items.length + key + "'>" + val + "</li>" );
+        });
+        
       });
  
       $("#stories").html("<ul>"+items.join("\n")+"</ul>")
