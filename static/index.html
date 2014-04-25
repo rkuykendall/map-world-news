@@ -190,7 +190,7 @@
   .on("click", country_clicked);
 
   var g = svg.append("g");
-  d3.json("/json/countries.topo.json", function(error, us) {
+  d3.json("json/countries.topo.json", function(error, us) {
     g.append("g")
     .attr("id", "countries")
     .selectAll("path")
@@ -260,7 +260,7 @@
     }
     
     // $.getJSON("/"+d.properties.name+"_articles.json", function(data) {
-    $.getJSON("/json/us_articles.json", function(data) {
+    $.getJSON("json/us_articles.json", function(data) {
       var items = [];
       $.each( data, function( key, val ) {
         items.push( "<li id='" + key + "'>" + val + "</li>" );
