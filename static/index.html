@@ -259,7 +259,8 @@
       // zoom(xyz);
     }
     
-    $.getJSON("/"+d.properties.name+"_articles.json", function(data) {
+    // $.getJSON("/"+d.properties.name+"_articles.json", function(data) {
+    $.getJSON("/json/us_articles.json", function(data) {
       var items = [];
       $.each( data, function( key, val ) {
         items.push( "<li id='" + key + "'>" + val + "</li>" );
