@@ -16,8 +16,8 @@ Development Guide
 1. git clone git@github.com:rkuykendall/dmst-temp-repo.git
 2. cd dmst-temp-repo
 3. easy_install pip
-4. pip install -r requirements.txt
-5. foreman start 
+3. pip install -r requirements.txt
+4. foreman start 
 
 ### Unit Testing
 Run *nosetests* in the *dmst-temp-repo* folder. It will run all the tests in *_tests.py* files and you can write more tests or write code to fix the tests that fail.
