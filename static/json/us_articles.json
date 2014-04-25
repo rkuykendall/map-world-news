@@ -1,22 +1,28 @@
 
-[
-    [
-        368842248, 
-        "21,000 get free pre-school places (co.uk)", 
-        "Thousands of parents are told the outcome of their application for a free pre-\nschool place",
-        5,
-        "Uk"
-    ], [
-        368837136, 
-        "Chinese ship detects black box \u201cping\u201d (Financial Times)", 
-        "Dozens of flights by a multinational task force have so far failed to turn up\nany trace of flight MH370, which went missing four weeks ago with 239 people\naboar",
-        -5,
-        "Uk"
-    ], [
-        368829969, 
-        "Pieces falling into place for Tetris players to mark its 30th anniversary on Philly skyscraper (Star Tribune)", 
-        "",
-        1,
-        "Mex"
-    ]
-]
+{"news-article": {
+  "article-id": "give us the article id, either your database or Feedzilla id", 
+  "country-id": "give ID, will probably be US",
+  "country-name": "US, etc",
+  "state-name": "state name, etc",
+  "sentiment-rating": "apparently the scale is -3,-2,-1,0,1,2,3 we'd have to convert to color scale, ie shades of red/blue",
+  "article-title": "Feedzilla article title, ie Obama goes to Japan",
+  "article-summary": "Summary output from Feedzilla - ",
+  "related-countries-id" : "used for arrow pointers, null if there are none, country-id otherwise"
+  }
+}}
+
+
+example-
+
+{"news-article": {
+  "article-id": "s368842248", 
+  "country-id": "US123",
+  "country-name": "US",
+  "state-name": "New York",
+  "sentiment-rating": "-2",
+  "article-title": "Escape from New York",
+  "article-summary": "Snake Plissken is saving Brazil's first lady from New York",
+  "related-countries" : "BR123" 
+  }
+}}
+
