@@ -1,8 +1,8 @@
 import feedparser
 import re
-from article import *
+from article import Article
+from database import session
 import json
-from sqlalchemy.orm import sessionmaker
 
 class Feed:
     '''Stores a list of articles.'''
@@ -13,16 +13,11 @@ class Feed:
         if feed:
             self.add_feed(feed)
             
-    def save(self, engine):
-        Base.metadata.create_all(engine)
-        Session = sessionmaker(bind=engine)
-        session = Session()
+    def save(self):        
         session.add_all(self.articles.values())
         session.commit()
 
-    def load(self, engine):
-        Session = sessionmaker(bind=engine)
-        session = Session()
+    def load(self):
         for article in session.query(Article).all():
             self.articles[article.id] = article
 
@@ -36,20 +31,21 @@ class Feed:
             a.id = re.sub(r'.*feedzilla\.com:(.*)', r'\1', a.id)
             a.id = int(a.id)
             
-            # Set source, author and title
-            a.author = item['author']
-            a.title = item['title']
-            a.source=item['source']['links'][0]['href']
+            if a.id not in self.articles.keys():
+                # Set source, author and title
+                a.author = item['author']
+                a.title = item['title']
+                a.source=item['source']['links'][0]['href']
             
-            # Set summary, get rid of all the junk at the end
-            summary = item['summary']
-            summary = summary[:summary.find("\n\n")]
-            summary = summary[:summary.find("<")]
-            a.summary = summary
+                # Set summary, get rid of all the junk at the end
+                summary = item['summary']
+                summary = summary[:summary.find("\n\n")]
+                summary = summary[:summary.find("<")]
+                a.summary = summary
             
-            # Add the article if it doesn't already exist
-            self.articles[a.id] = a
-            
+                # Add the article if it doesn't already exist
+                self.articles[a.id] = a
+
     def filter_country(self, country):
         # articles2 = {}
         # for a_id in self.articles:
