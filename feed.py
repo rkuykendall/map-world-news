@@ -46,6 +46,10 @@ class Feed:
                 # Add the article if it doesn't already exist
                 self.articles[a.id] = a
 
+    def extract(self):
+        for a_id in self.articles:
+            self.articles[a_id].extract()
+
     def filter_country(self, country):
         # articles2 = {}
         # for a_id in self.articles:
@@ -62,5 +66,5 @@ class Feed:
         response = []
         for a_id in self.articles:
             a = self.articles[a_id]
-            response.append([a.id, a.title, a.summary])
+            response.append([a.id, a.title, a.summary, a.sentiment, a.places])
         return json.dumps(response)

@@ -37,10 +37,13 @@ def articles():
 def country_articles(country=None):
     from feed import Feed
     
-    # feed = Feed('data/2014-04-05_16-54.atom')
-    feed = Feed()
-    feed.load()
-    feed.filter_country(country)
+    url="http://api.feedzilla.com/v1/categories/19/articles/search.atom?q="+country+"&count=10"
+
+    feed = Feed(url)
+    # feed = Feed()
+    # feed.load()
+    # feed.filter_country(country)
+    feed.extract()
     return feed.to_json()
 
 
