@@ -14,40 +14,11 @@
 
   <!-- Custom styles for this template -->
   <link href="css/custom.css" rel="stylesheet">
+  <link href="css/map.css" rel="stylesheet">
 
   <script src="http://code.jquery.com/jquery-2.0.0.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-  <style>
-    #map {
-      background-color: #fff;
-      border: 1px solid #ccc;
-    }
-    .background {
-      fill: none;
-      pointer-events: all;
-    }
-    #countries, #states {
-      fill: #cde;
-      stroke: #fff;
-      stroke-linejoin: round;
-      stroke-linecap: round;
-    }
-    #countries .active, #states .active {
-      fill: #89a;
-    }
-    #cities {
-      stroke-width: 0;
-    }
-    .city {
-      fill: #345;
-      stroke: #fff;
-    }
-    pre.prettyprint {
-      border: 1px solid #ccc;
-      margin-bottom: 0;
-      padding: 9.5px;
-    }
-  </style>
+
 </head>
 <body>
   <div class="site-wrapper">
@@ -92,9 +63,10 @@
         <p class="lead">Just click on a country and go.</p>
       </div>
 
-      <div class="row">
+      <div class="row" style="margin-bottom: 40px;">
         <div class="col-md-8">
-         <div id="map" style="width: 700px; margin: 40px;"></div>
+         <div id="map" style="width: 700px; margin: 40px 40px 5px 40px;"></div>
+         <small>Map by <a href="http://www.tnoda.com/">tnoda</a></small>
        </div>
        <div class="col-md-4">
          <h3>News Stories Here</h3>
@@ -116,13 +88,6 @@
    </div>
    <button type="submit" id="searchPlace" class="btn btn-default">Go!</button>
 </form>
-
-
-
-
-
-</div>
-
 
 
     </div>
