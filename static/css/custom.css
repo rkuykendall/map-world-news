@@ -123,6 +123,7 @@ body {
 .footer {
   color: #999; /* IE8 proofing */
   color: rgba(255,255,255,.5);
+  margin-top: 60px;
 }
 
 
@@ -160,7 +161,28 @@ body {
   }
 }
 
-story {
-	background-color: @gray-lighter;
-	border: 1px #000000 solid;
+.articles-box{
+	border: 1px solid #2B2B2B;
+	background-color: #3B3B3B;
+	width: 100%;
+	text-align: justify;
+	text-shadow: 0px;
+}
+
+.articles {
+	border-top: 1px solid #2B2B2B;
+	background-color: #4A4A4A;
+	height: 400px;
+	overflow: auto;
+}
+
+.story {
+	padding: 20px;
+	border-top: 1px #3B3B3B solid;
+	border-bottom: 1px #3B3B3B solid;
+	margin-top: -1px;
+}
+
+.story: hover{
+	background-color: #525252;
 }
