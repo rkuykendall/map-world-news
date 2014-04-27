@@ -261,8 +261,14 @@
          }
 
          function requestStories(query){
-          $("#title").html("<ul>"+query+"</ul>")
-          $(".story").html("<ul>"+'<img src="static/loading.gif"'+"<ul>");
+          $("#title").html("<h3 class=\"text-center\" style=\"margin-top: 10px;\">"+query+"</h3>")
+          $(".story").html("<div class=\"progress progress-striped active\">"
+          	+ "<div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"45\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 45%\">"
+          	+ "<span class=\"sr-only\">45% Complete</span></div></div>"
+          );
+          
+          
+
 
           url = "/"+query+"_articles.json";
              console.log(query);
@@ -276,7 +282,6 @@
                $(".story").html("<ul>"+items.join("\n")+"</ul>")
                
              });
-
 
          }
          
