@@ -46,4 +46,9 @@ class Article(Base):
         self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
         
     def to_json(self):
-        return json.dumps(a.id, a.title, a.summary)
+        a = self
+        a.countries = ""
+        for place in a.places:
+            a.countries += place['code'] + ","
+        
+        return {'aid':a.id, 'title':a.title, 'summary':a.summary, 'sentiment':a.sentiment, 'country':a.countries}

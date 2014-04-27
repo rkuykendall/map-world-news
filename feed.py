@@ -66,5 +66,8 @@ class Feed:
         response = []
         for a_id in self.articles:
             a = self.articles[a_id]
-            response.append([a.id, a.title, a.summary, a.sentiment, a.places])
+            response.append(a.to_json())
         return json.dumps(response)
+
+
+
