@@ -36,8 +36,9 @@ def articles():
 @app.route('/<country>_articles.json')
 def country_articles(country=None):
     from feed import Feed
-    
-    url="http://api.feedzilla.com/v1/categories/19/articles/search.atom?q="+country+"&count=1"
+    country=country.replace (" ", "_")
+    print country
+    url="http://api.feedzilla.com/v1/categories/19/articles/search.atom?q="+country+"&count=2"
 
     feed = Feed(url)
     # feed = Feed()
