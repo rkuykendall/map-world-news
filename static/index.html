@@ -26,6 +26,26 @@
                   <h1 class="cover-heading">View Your News by Country.</h1>
                   <p class="lead">Just click on a country and go.</p>
                </div>
+
+
+                 <form role="form" class="form-inline">
+   <div class="form-group">
+      <input type="text" class="form-control form-control-sm" id="query" 
+         placeholder="Search">
+   </div>
+   <button type="submit" id="search" class="btn btn-default">Go!</button>
+</form>
+
+<form role="form" class="form-inline">
+   <div class="form-group">
+      <input type="text" class="form-control form-control-sm" id="place" 
+         placeholder="Search Place">
+   </div>
+   <button type="submit" id="searchPlace" class="btn btn-default">Go!</button>
+</form>
+
+
+
                <div class="row" style="margin-bottom: 40px;">
                   <div class="col-md-8">
                      <div id="map" style="width: 700px; margin: 40px 40px 5px 40px;"></div>
@@ -35,7 +55,9 @@
                      
                      
                      <div class="articles-box">
+                     <div id="title">
                      <h3 class="text-center" style="margin-top: 10px;">News Stories Here</h3>
+                     </div>
                      <div class="articles">
                         <ul class="list-unstyled" style="margin-bottom: 0px;">
                            <li ng-repeat="story in stories | orderBy:orderProp">
@@ -67,29 +89,35 @@
          $(document).ready(function()
          {
            $( "#search" ).click(function( event ) {
+           requestStories($( "#query" ).val());
+
            // $("#query").submit();
              event.preventDefault();
            });
          
            $( "#query" ).submit(function( event ) {
              console.log( $( "#query" ).val());
+            requestStories($( "#query" ).val());
+
              event.preventDefault();
            });
          
          
            $( "#searchPlace" ).click(function( event ) {
              // $("#place").submit();
-             url = "/"+$( "#place" ).val()+"_articles.json";
-             console.log(url);
+             // url = "/"+$( "#place" ).val()+"_articles.json";
+             // console.log(url);
          
-             $.getJSON(url, function(data) {
-               var items = [];
-               $.each( data, function( key, val ) {
-                 items.push( "<li id='" + key + "'>" + val + "</li>" );
-               });
+             // $.getJSON(url, function(data) {
+             //   var items = [];
+             //   $.each( data, function( key, val ) {
+             //     items.push( "<li id='" + key + "'>" + val + "</li>" );
+             //   });
           
-               $("#stories").html("<ul>"+items.join("\n")+"</ul>")
-             });
+             //   $(".story").html("<ul>"+items.join("\n")+"</ul>")
+             //   $("#title").html("<ul>"+$( "#place" ).val()+"</ul>")
+             // });
+            requestStories($( "#place" ).val());
              event.preventDefault();
              return false;      
            });
@@ -161,56 +189,59 @@
          }
          
          function country_clicked(d) {
-           g.selectAll(["#states"]).remove();
-           state = null;
+           // g.selectAll(["#states"]).remove();
+           // state = null;
          
-           if (country) {
-             g.selectAll("#" + country.id).style('display', null);
-           }
+           // if (country) {
+           //   g.selectAll("#" + country.id).style('display', null);
+           // }
          
-           if (d && country !== d) {
-             var xyz = get_xyz(d);
-             country = d;
+           // if (d && country !== d) {
+           //   var xyz = get_xyz(d);
+           //   country = d;
          
-             if (d.id == 'USA') {
-               d3.json("data/json/states_" + d.id.toLowerCase() + ".topo.json", function(error, us) {
-                 g.append("g")
-                 .attr("id", "states")
-                 .selectAll("path")
-                 .data(topojson.feature(us, us.objects.states).features)
-                 .enter()
-                 .append("path")
-                 .attr("id", function(d) { return d.id; })
-                 .attr("class", "active")
-                 .attr("d", path)
-                 .on("click", state_clicked);
+           //   if (d.id == 'USA') {
+           //     d3.json("data/json/states_" + d.id.toLowerCase() + ".topo.json", function(error, us) {
+           //       g.append("g")
+           //       .attr("id", "states")
+           //       .selectAll("path")
+           //       .data(topojson.feature(us, us.objects.states).features)
+           //       .enter()
+           //       .append("path")
+           //       .attr("id", function(d) { return d.id; })
+           //       .attr("class", "active")
+           //       .attr("d", path)
+           //       .on("click", state_clicked);
          
-                 // zoom(xyz);
-                 g.selectAll("#" + d.id).style('display', 'none');
-               });
-             } else {
-               // zoom(xyz);
-             }
-           } else {
-             var xyz = [width / 2, height / 1.5, 1];
-             country = null;
-             // zoom(xyz);
-           }
+           //       // zoom(xyz);
+           //       g.selectAll("#" + d.id).style('display', 'none');
+           //     });
+           //   } else {
+           //     // zoom(xyz);
+           //   }
+           // } else {
+           //   var xyz = [width / 2, height / 1.5, 1];
+           //   country = null;
+           //   // zoom(xyz);
+           // }
            
-           // $.getJSON("/"+d.properties.name+"_articles.json", function(data) {
-           $.getJSON("json/us_articles.json", function(data) {
-             var items = [];
-             alert("getting data!");
-           	$.each( data, function( key, val ) {
+           // // $.getJSON("/"+d.properties.name+"_articles.json", function(data) {
+           // $.getJSON("json/us_articles.json", function(data) {
+           //   var items = [];
+           //   // alert("getting data!");
+           // 	$.each( data, function( key, val ) {
            	
-           	$.each( story, function( key, val ) {
-               	items.push( "<li id='" + items.length + key + "'>" + val + "</li>" );
-               });
+           // 	$.each( story, function( key, val ) {
+           //     	items.push( "<li id='" + items.length + key + "'>" + val + "</li>" );
+           //     });
                
-             });
+           //   });
          
-             $("#stories").html("<ul>"+items.join("\n")+"</ul>")
-           });
+           //   $("#stories").html("<ul>"+items.join("\n")+"</ul>")
+           // });
+
+
+        requestStories(d.properties.name);
          }
          
          function state_clicked(d) {
@@ -227,6 +258,26 @@
              state = null;
              country_clicked(country);
            }
+         }
+
+         function requestStories(query){
+          $("#title").html("<ul>"+query+"</ul>")
+          $(".story").html("<ul>"+'<img src="static/loading.gif"'+"<ul>");
+
+          url = "/"+query+"_articles.json";
+             console.log(query);
+         
+             $.getJSON(url, function(data) {
+               var items = [];
+               $.each( data, function( key, val ) {
+                 items.push( "<li id='" + key + "'>" + val + "</li>" );
+               });
+          
+               $(".story").html("<ul>"+items.join("\n")+"</ul>")
+               
+             });
+
+
          }
          
          $(window).resize(function() {
