@@ -31,7 +31,7 @@
                  <form role="form" class="form-inline">
    <div class="form-group">
       <input type="text" class="form-control form-control-sm" id="query" 
-         placeholder="Search">
+         placeholder="Search Topic">
    </div>
    <button type="submit" id="search" class="btn btn-default">Go!</button>
 </form>
@@ -154,6 +154,7 @@
          .attr("width", width)
          .attr("height", height)
          .on("click", country_clicked);
+
          
          var g = svg.append("g");
          d3.json("json/countries.topo.json", function(error, us) {
@@ -187,7 +188,10 @@
            var y = (bounds[1][1] + bounds[0][1]) / 2 + (height / z / 6);
            return [x, y, z];
          }
-         
+
+     
+
+
          function country_clicked(d) {
            // g.selectAll(["#states"]).remove();
            // state = null;
@@ -239,9 +243,39 @@
          
            //   $("#stories").html("<ul>"+items.join("\n")+"</ul>")
            // });
+  
 
 
         requestStories(d.properties.name);
+
+
+            var places = [
+  {
+    name: "Wollongong, Australia",
+    location: {
+      latitude: -34.42507,
+      longitude: 150.89315
+    }
+  },
+  {
+    name: "Newcastle, Australia",
+    location: {
+      latitude: -32.92669,
+      longitude: 151.77892
+    }
+  }
+]
+        svg.selectAll(".pin")
+  .data(places)
+  .enter().append("circle", ".pin")
+  .attr("r", 5)
+  .attr("transform", function(d) {
+    return "translate(" + projection([
+      d.location.longitude,
+      d.location.latitude
+    ]) + ")"
+  });
+     
          }
          
          function state_clicked(d) {
@@ -267,6 +301,8 @@
           	+ "<div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 50%\">"
           	+ "<span class=\"sr-only\">50% Complete</span></div></div>"
           );
+
+
 
 
 
