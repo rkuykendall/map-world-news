@@ -190,7 +190,7 @@
           .attr("d", path)
           .on("click", country_clicked)
 		  .on("mouseover", function(e){d3.select(this).style("fill", "#5522aa")})
-          .on("mouseout", function(e){d3.select(this).style("fill", "#44aaee")})
+          .on("mouseout", function(e){d3.select(this).style("fill", null)})
          });
          
          function zoom(xyz) {
