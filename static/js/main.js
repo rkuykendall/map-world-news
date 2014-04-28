@@ -195,6 +195,8 @@ function country_clicked(d) {
 }
 
 function requestStories(query) {
+  g.selectAll("#countries *").classed("negative", false);
+  g.selectAll("#countries *").classed("positive", false);
   $("#title").html("<h3 class=\"text-center\" style=\"margin-top: 10px;\">" + query + "</h3>");
 
   $(".articles").html("<br><br><div class=\"progress progress-striped active\" style=\"margin: 30px;\">" + "<div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 50%\">" + "<span class=\"sr-only\">50% Complete</span></div></div>");
@@ -202,20 +204,30 @@ function requestStories(query) {
   url = "/" + query + "_articles.json";
   // console.log(query);
   // var places;
+
   $.getJSON(url, function (data) {
     var items = [];
 
     $.each(data, function (key, val) {
       items.push("<div class=\"story\">" + "<p>" + val.title + "</p>" + "<small class=\"text-muted\">" + val.summary + "</small></div>");
-      console.log(val.link);
-
-      places = [{
-        name: val.country,
-        location: {
-          latitude: val.long,
-          longitude: val.lat
+      // console.log(val.link);
+      // console.log(val.sentiment);
+      
+      val.countries.forEach(function(entry) {
+        if (val.sentiment < 0) {
+          g.selectAll("#" + entry).classed("negative", true);
+        } else {
+          g.selectAll("#" + entry).classed("positive", true);
         }
-      }]
+      });
+
+      // places = [{
+      //   name: val.country,
+      //   location: {
+      //     latitude: val.long,
+      //     longitude: val.lat
+      //   }
+      // }]
     });
 
     // $.each( data, function( key, val ) {

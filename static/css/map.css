@@ -25,9 +25,20 @@ body .site-wrapper .site-wrapper-inner {
   stroke-linecap: round;
 }
 
-#countries .selected {
+#countries .selected,
+#countries .selected.positive,
+#countries .selected.negative {
   fill: #5599f3;
 }
+
+#countries .positive {
+  fill: #4cdb60;
+}
+
+#countries .negative {
+  fill: #f35555;
+}
+
 
 #title h3 {
   margin-top: 10px;
