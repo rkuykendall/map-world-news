@@ -382,9 +382,9 @@
           var r=0;
           var g=0;
           var b=0;
-          if sentiment>0
+          if(sentiment>0)
             b=100*sentiment;
-          if sentiment<0
+          if(sentiment<0)
             r=100*sentiment;
           return "rgb("+r+","+g+","+b+")";
         }
