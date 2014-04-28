@@ -48,7 +48,14 @@ class Article(Base):
     def to_json(self):
         a = self
         a.countries = ""
+        a.long= ""
+        a.lat= ""
         for place in a.places:
-            a.countries += place['code'] + ","
+            print place['longitude']
+            a.countries += place['name'] + ","
+            a.long +=place['longitude'] + ","
+            a.lat +=place['latitude'] + ","
+
+
         
-        return {'aid':a.id, 'title':a.title, 'summary':a.summary, 'sentiment':a.sentiment, 'country':a.countries}
+        return {'aid':a.id, 'title':a.title, 'summary':a.summary, 'sentiment':a.sentiment, 'country':a.countries, 'long':a.long, 'lat':a.lat}
