@@ -1,31 +1,38 @@
-    #map {
-      background-color: #fff;
-      border: 1px solid #ccc;
-      margin: 10px;
-    }
-    
-    .background {
-      fill: none;
-      pointer-events: all;
-    }
-    #countries, #states {
-      fill: #cde;
-      stroke: #fff;
-      stroke-linejoin: round;
-      stroke-linecap: round;
-    }
-    #countries .active, #states .active {
-      fill: #89a;
-    }
-    #cities {
-      stroke-width: 0;
-    }
-    .city {
-      fill: #345;
-      stroke: #fff;
-    }
-    pre.prettyprint {
-      border: 1px solid #ccc;
-      margin-bottom: 0;
-      padding: 9.5px;
-    }
+
+body .site-wrapper .site-wrapper-inner {
+  padding: 20px 0px;
+}
+
+.cover {
+  margin-bottom: 40px;
+}
+
+#map {
+  background-color: #444;
+  border: 5px solid #555;
+  margin: 40px 40px 5px 0px;
+}
+
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+#countries {
+  fill: #fff;
+  stroke: #444;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+#countries .selected {
+  fill: #5599f3;
+}
+
+#title h3 {
+  margin-top: 10px;
+}
+
+.articles .text-center {
+  margin: 30px inherit;
+}
