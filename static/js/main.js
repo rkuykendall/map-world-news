@@ -86,19 +86,22 @@ svg.append("rect")
 var g = svg.append("g");
 d3.json("static/json/countries.topo.json", function (error, us) {
   g.append("g")
-    .attr("id", "countries")
-    .selectAll("path")
-    .data(topojson.feature(us, us.objects.countries).features)
-    .enter()
-    .append("path")
-    .attr("id", function (d) {
-      return d.id;
-    })
-    .attr("d", path)
-    .on("click", country_clicked)
-	.on("mouseover", function(e){d3.select(this).style("fill", "#5599f3")})
-    .on("mouseout", function(e){d3.select(this).style("fill", null)})
-;
+  .attr("id", "countries")
+  .selectAll("path")
+  .data(topojson.feature(us, us.objects.countries).features)
+  .enter()
+  .append("path")
+  .attr("id", function (d) {
+    return d.id;
+  })
+  .attr("name", function (d) {
+    return d.properties.name;
+  })
+  .attr("d", path)
+  .on("click", country_clicked)
+  .on("mouseover", function(e){d3.select(this).style("fill", "#5599f3"); $("#countryInfo").html(this.name);})
+  .on("mouseout", function(e){d3.select(this).style("fill", null)})
+  ;
 });
 
 function zoom(xyz) {
