@@ -10,6 +10,12 @@ $(document).ready(function () {
   });
 
   $("#query").submit(function (event) {
+  
+    // Previous selection
+  if (country) {
+    g.selectAll("#" + country.id).classed("selected", false);
+  }
+  
     console.log($("#query").val());
     requestStories($("#query").val());
 
@@ -32,6 +38,11 @@ $(document).ready(function () {
     //   $("#title").html("<ul>"+$( "#place" ).val()+"</ul>")
     // });
 
+  // Previous selection
+  if (country) {
+    g.selectAll("#" + country.id).classed("selected", false);
+  }
+  
     requestStories($("#place").val());
     event.preventDefault();
     return false;
