@@ -47,15 +47,17 @@ two2three = {
 'UY': 'URY', 'UZ': 'UZB', 'VU': 'VUT', 'VE': 'VEN', 'VN': 'VNM', 'VG': 'VGB', 
 'VI': 'VIR', 'WF': 'WLF', 'EH': 'ESH', 'YE': 'YEM', 'ZM': 'ZMB', 'ZW': 'ZWE'}
 
+class TextPickleType(PickleType):
+    impl = Text
 
 class Article(Base):
     '''Stores received and computed article data.'''
     __tablename__ = 'articles'
 
     id = Column(Integer, primary_key=True)
-    title = Column(String)
-    summary = Column(String)
-    # places = Column(Integer)
+    # title = Column(String)
+    # summary = Column(String)
+    places = Column(TextPickleType(pickler=json))
     sentiment = Column(Integer)
     # extracted = Column(Boolean)
 
@@ -69,25 +71,28 @@ class Article(Base):
         self.sentiment = 0
 
     def extract(self):
-        response=urllib2.urlopen(self.source)
-        html=response.read()
-        target=self.dstk.html2story(html)
-        target=target['story']
+        query = session.query(Article).get(self.id)
+        
+        if (query != None):
+            self.places = query.places
+            self.sentiment = query.sentiment
+        else:
+            response=urllib2.urlopen(self.source)
+            html=response.read()
+            target=self.dstk.html2story(html)
+            target=target['story']
 
-        apiSummary=self.title + ' ' + self.summary 
-        target = apiSummary+ ' ' + target
+            apiSummary=self.title + ' ' + self.summary 
+            target = apiSummary+ ' ' + target
 
-        target = target.encode('ascii', 'ignore')
-        apiSummary = apiSummary.encode('ascii', 'ignore')
+            target = target.encode('ascii', 'ignore')
+            apiSummary = apiSummary.encode('ascii', 'ignore')
 
-
-        # print target
-        # target = "Test"
-        # target = json.dumps(d)
-        self.places = self.dstk.text2places(target)
-
-
-        self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
+            self.places = self.dstk.text2places(target)
+            self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
+            
+            session.add(self)
+            session.commit()
         
     def to_json(self):
         a = self
