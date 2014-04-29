@@ -11,10 +11,10 @@ $(document).ready(function () {
 
   $("#query").submit(function (event) {
   
-    // Previous selection
-  if (country) {
-    g.selectAll("#" + country.id).classed("selected", false);
-  }
+      // Previous selection
+    if (country) {
+      g.selectAll("#" + country.id).classed("selected", false);
+    }
   
     console.log($("#query").val());
     requestStories($("#query").val());
@@ -39,10 +39,10 @@ $(document).ready(function () {
     //   $("#title").html("<ul>"+$( "#place" ).val()+"</ul>")
     // });
 
-  // Previous selection
-  if (country) {
-    g.selectAll("#" + country.id).classed("selected", false);
-  }
+    // Previous selection
+    if (country) {
+      g.selectAll("#" + country.id).classed("selected", false);
+    }
   
     requestStories($("#place").val());
     event.preventDefault();
@@ -227,11 +227,18 @@ function requestStories(query) {
     var items = [];
     var i=1;
     $.each(data, function (key, val) {
+
+      // if(val.countries.length == 0) {
+      //   val.countries = ["None found"];
+      // }
+
       items.push(
         // "<div class=\"story\" id=\"story"+i+"\">" + "<p>" 
         "<div class=\"story\" id=\""+key+"\">" + "<p>" 
-        + val.title + " [Sentiment: "+val.sentiment+ "]</p> [Countries: "+val.countries+ "]</p>" 
-        + "<small class=\"text-muted\">" + val.summary + "</small><br><br>"
+        + val.title + "</p>"
+        + "<small class=\"text-muted\">" + val.summary
+        + " [Sentiment: "+val.sentiment+ "] [Countries: "+val.countries.join(", ")+ "]"
+        + "</small><br><br>"
         + "<a href=\"" + val.link + "\" target=\"_blank\" class=\"text-right\">View Source</a>"
         + "</div>");
       // console.log(val.link);
@@ -242,7 +249,6 @@ function requestStories(query) {
 
         current = parseInt(entry.attr("sentiment"));
         entry.attr("sentiment", current + val.sentiment);
-        console.log(entry+" - "+entry.attr("sentiment"));
 
         if (entry.attr("sentiment") < 0) {
           entry.classed("negative", true);

@@ -41,3 +41,9 @@ def init_db():
     Base.metadata.create_all(engine)
     return "Success!"
 
+
+@app.route('/admin/count_cache')
+def count_cache():
+    from article import Article
+    from database import session
+    return str(session.query(Article.id).count())
