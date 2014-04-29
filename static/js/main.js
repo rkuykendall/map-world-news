@@ -122,6 +122,8 @@ function get_xyz(d) {
 }
 
 function country_clicked(d) {
+
+
   // g.selectAll(["#states"]).remove();
   // state = null;
 
