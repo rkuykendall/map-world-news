@@ -22,6 +22,7 @@ $(document).ready(function () {
     event.preventDefault();
   });
 
+ 
 
   $("#searchPlace").click(function (event) {
     // $("#place").submit();
@@ -205,12 +206,14 @@ function country_clicked(d) {
 
 }
 
+
 function requestStories(query) {
   g.selectAll("#countries *").classed("negative", false);
   g.selectAll("#countries *").classed("positive", false);
   $("#title").html("<h3 class=\"text-center\" style=\"margin-top: 10px;\">" + query + "</h3>");
 
-  $(".articles").html("<br><br><div class=\"progress progress-striped active\" style=\"margin: 30px;\">" + "<div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 50%\">" + "<span class=\"sr-only\">50% Complete</span></div></div>");
+  // $(".articles").html("<br><br><div class=\"progress progress-striped active\" style=\"margin: 30px;\">" + "<div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 50%\">" + "<span class=\"sr-only\">50% Complete</span></div></div>");
+  $(".articles").html("<br><br><br><center><img src=\"static/loader.gif\"><center>");
 
   url = "/" + query + "_articles.json";
   // console.log(query);
@@ -218,17 +221,18 @@ function requestStories(query) {
 
   $.getJSON(url, function (data) {
     var items = [];
-
+    var i=1;
     $.each(data, function (key, val) {
       items.push(
-        "<div class=\"story\">" + "<p>" 
+        // "<div class=\"story\" id=\"story"+i+"\">" + "<p>" 
+        "<div class=\"story\" id=\""+key+"\">" + "<p>" 
         + val.title + "</p>" 
         + "<small class=\"text-muted\">" + val.summary + "</small><br><br>"
         + "<a href=\"" + val.link + "\" target=\"_blank\" class=\"text-right\">View Article</a>"
         + "</div>");
       // console.log(val.link);
       // console.log(val.sentiment);
-      
+      i++;
       val.countries.forEach(function(entry) {
         if (val.sentiment < 0) {
           g.selectAll("#" + entry).classed("negative", true);
@@ -251,6 +255,12 @@ function requestStories(query) {
     // });
 
     $(".articles").html("<ul class=\"list-unstyled\" style=\"margin-bottom: 0px;\">" + items.join("\n") + "</ul>")
+
+    $(".story").mouseover(function (event){
+    console.dir(this.id); 
+    event.preventDefault();
+    return false;
+});
   });
 }
 
@@ -260,6 +270,7 @@ $(window).resize(function () {
   svg.attr("height", w * height / width);
 });
 
+ 
 
 function toColor(sentiment) {
   var r = 0;
