@@ -213,6 +213,7 @@ function country_clicked(d) {
 function requestStories(query) {
   g.selectAll("#countries *").classed("negative", false);
   g.selectAll("#countries *").classed("positive", false);
+  g.selectAll("#countries *").attr("sentiment", 0);
   $("#title").html("<h3 class=\"text-center\" style=\"margin-top: 10px;\">" + query + "</h3>");
 
   // $(".articles").html("<br><br><div class=\"progress progress-striped active\" style=\"margin: 30px;\">" + "<div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 50%\">" + "<span class=\"sr-only\">50% Complete</span></div></div>");
@@ -229,19 +230,30 @@ function requestStories(query) {
       items.push(
         // "<div class=\"story\" id=\"story"+i+"\">" + "<p>" 
         "<div class=\"story\" id=\""+key+"\">" + "<p>" 
-        + val.title + "</p>" 
+        + val.title + " [Sentiment: "+val.sentiment+ "]</p> [Countries: "+val.countries+ "]</p>" 
         + "<small class=\"text-muted\">" + val.summary + "</small><br><br>"
-        + "<a href=\"" + val.link + "\" target=\"_blank\" class=\"text-right\">View Article</a>"
+        + "<a href=\"" + val.link + "\" target=\"_blank\" class=\"text-right\">View Source</a>"
         + "</div>");
       // console.log(val.link);
       // console.log(val.sentiment);
       i++;
       val.countries.forEach(function(entry) {
-        if (val.sentiment < 0) {
-          g.selectAll("#" + entry).classed("negative", true);
-        } else {
-          g.selectAll("#" + entry).classed("positive", true);
+        entry = g.selectAll("#" + entry)
+
+        current = parseInt(entry.attr("sentiment"));
+        entry.attr("sentiment", current + val.sentiment);
+        console.log(entry+" - "+entry.attr("sentiment"));
+
+        if (entry.attr("sentiment") < 0) {
+          entry.classed("negative", true);
+        } else if (entry.attr("sentiment") > 0) {
+          entry.classed("positive", true);
         }
+        //   // if (val.sentiment < 0) {
+        //     g.selectAll("#" + entry).classed("negative", true);
+        //   } else {
+        //     g.selectAll("#" + entry).classed("positive", true);
+        //   }
       });
 
       // places = [{

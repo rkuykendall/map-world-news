@@ -23,9 +23,10 @@ def country_articles(country=None):
     from feed import Feed
     country=country.replace (" ", "_")
     print country
-    url="http://api.feedzilla.com/v1/categories/19/articles/search.atom?q="+country+"&count=2"
-
-    feed = Feed(url)
+    url1="http://api.feedzilla.com/v1/categories/19/articles/search.atom?q="+country+"&count=10"
+    url2="http://api.feedzilla.com/v1/categories/26/articles/search.atom?q="+country+"&count=5"
+    feed = Feed(url1)
+    feed.add_feed(url2)
     # feed = Feed()
     # feed.load()
     # feed.filter_country(country)
