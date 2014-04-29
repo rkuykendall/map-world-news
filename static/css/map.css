@@ -10,7 +10,7 @@ body .site-wrapper .site-wrapper-inner {
 #map {
   background-color: #444;
   border: 5px solid #555;
-  margin: 40px 40px 5px 0px;
+  margin-bottom: 20px;
 }
 
 .background {
