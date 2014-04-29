@@ -1,7 +1,6 @@
 import feedparser
 import re
 from article import Article
-from database import session
 import json
 
 class Feed:
@@ -12,14 +11,6 @@ class Feed:
         
         if feed:
             self.add_feed(feed)
-            
-    def save(self):        
-        session.add_all(self.articles.values())
-        session.commit()
-
-    def load(self):
-        for article in session.query(Article).all():
-            self.articles[article.id] = article
 
     def add_feed(self, feed):
         f = feedparser.parse(feed)

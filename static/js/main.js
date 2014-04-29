@@ -95,7 +95,10 @@ d3.json("static/json/countries.topo.json", function (error, us) {
       return d.id;
     })
     .attr("d", path)
-    .on("click", country_clicked);
+    .on("click", country_clicked)
+	.on("mouseover", function(e){d3.select(this).style("fill", "#5599f3")})
+    .on("mouseout", function(e){d3.select(this).style("fill", null)})
+;
 });
 
 function zoom(xyz) {
