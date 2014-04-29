@@ -209,7 +209,12 @@ function requestStories(query) {
     var items = [];
 
     $.each(data, function (key, val) {
-      items.push("<div class=\"story\">" + "<p>" + val.title + "</p>" + "<small class=\"text-muted\">" + val.summary + "</small></div>");
+      items.push(
+        "<div class=\"story\">" + "<p>" 
+        + val.title + "</p>" 
+        + "<small class=\"text-muted\">" + val.summary + "</small><br><br>"
+        + "<a href=\"" + val.link + "\" target=\"_blank\" class=\"text-right\">View Article</a>"
+        + "</div>");
       // console.log(val.link);
       // console.log(val.sentiment);
       
