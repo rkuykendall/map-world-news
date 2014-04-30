@@ -8,10 +8,23 @@ DMST Project
 *   Robert Kuykendall (rkuykendall)
 *   Bo Xu (captainbox22)
 
+Demo Instructions for Professor
+
+### Setup Instructions
+
+1. git clone git@github.com:rkuykendall/dmst-temp-repo.git
+2. cd dmst-temp-repo
+3. easy_install pip
+4. pip install -r requirements.txt
+5. python server.py
+6. visit *http://127.0.0.1:5000/*.
+
+
+
 Development Guide
 -----------------
 
-### Setup
+### Setup Instructions
 
 1. git clone git@github.com:rkuykendall/dmst-temp-repo.git
 2. cd dmst-temp-repo
