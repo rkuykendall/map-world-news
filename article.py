@@ -103,6 +103,13 @@ class Article(Base):
                 target=target.replace ("America", "United States")
                 target=target.replace ("Obama", "United States")
 
+                target=target.replace ("U.K.", "England")
+                target=target.replace ("Britain", "England")
+                target=target.replace ("England", "England")
+                target=target.replace ("London", "England")
+
+                target=target.replace ("Kim Jong-Un", "Democratic Republic of Korea")
+
                 self.places = self.dstk.text2places(target)
                 self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
             
