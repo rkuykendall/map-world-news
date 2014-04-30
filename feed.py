@@ -43,7 +43,7 @@ class Feed:
         print "Done"
 
     def extract(self):
-        allowance = 2
+        allowance = 4
         iterate = self.articles.keys()
         
         for a_id in iterate:

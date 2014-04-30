@@ -286,7 +286,7 @@ function requestStories(query) {
           
               // Bad, -1 to -2
               } else if (entry.attr("sentiment") < 0) {
-                entry.classed("positive", true);
+                entry.classed("negative", true);
           
               // Very good, 3 or higher
               } else if (entry.attr("sentiment") > 2) {
