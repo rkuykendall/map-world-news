@@ -156,11 +156,7 @@ function country_clicked(d) {
 
 
 function requestStories(query) {
-    g.selectAll("#countries *").classed("negative", false);
-    g.selectAll("#countries *").classed("very-negative", false);
-    g.selectAll("#countries *").classed("positive", false);
-    g.selectAll("#countries *").classed("very-positive", false);
-    g.selectAll("#countries *").classed("neutral", false);
+    g.selectAll("#countries *").classed("negative very-negative positive very-positive neutral", false);
     g.selectAll("#countries *").attr("sentiment", 0);
     $("#title").html("<h3 class=\"text-center\" style=\"margin-top: 10px;\">" + query + "</h3>");
 
@@ -199,13 +195,15 @@ function requestStories(query) {
               current = parseInt(entry.attr("sentiment"));
               entry.attr("sentiment", current + val.sentiment);
 
+              entry.classed("negative very-negative positive very-positive neutral", false);
+
               // Very bad -3 or higher
               if (entry.attr("sentiment") < -2) {
                 entry.classed("very-negative", true);
           
               // Bad, -1 to -2
               } else if (entry.attr("sentiment") < 0) {
-                entry.classed("positive", true);
+                entry.classed("negative", true);
           
               // Very good, 3 or higher
               } else if (entry.attr("sentiment") > 2) {
