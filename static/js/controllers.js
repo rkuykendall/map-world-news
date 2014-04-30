@@ -17,9 +17,9 @@ countriesNewsApp.controller('NewsListCtrl', function($scope, $http) {
 */
 
 
-  $http.get('json/us_articles.json').success(function(data) {
-    $scope.stories = data;
-  });
+  // $http.get('json/us_articles.json').success(function(data) {
+  //   $scope.stories = data;
+  // });
 
   // $scope.orderProp = 'age';
 });
