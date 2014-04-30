@@ -25,19 +25,7 @@ $(document).ready(function () {
 
 
    $("#searchPlace").click(function (event) {
-      // $("#place").submit();
-      // url = "/"+$( "#place" ).val()+"_articles.json";
-      // console.log(url);
-
-      // $.getJSON(url, function(data) {
-      //   var items = [];
-      //   $.each( data, function( key, val ) {
-      //     items.push( "<li id='" + key + "'>" + val + "</li>" );
-      //   });
-
-      //   $(".story").html("<ul>"+items.join("\n")+"</ul>")
-      //   $("#title").html("<ul>"+$( "#place" ).val()+"</ul>")
-      // });
+ 
 
       // Previous selection
       if (country) {
@@ -50,7 +38,9 @@ $(document).ready(function () {
    });
 
    $("#place").submit(function (event) {
-      console.log($("#place").val());
+      if (country) {
+      g.selectAll("#" + country.id).classed("selected", false);
+   }
       event.preventDefault();
    });
 
@@ -162,77 +152,9 @@ function country_clicked(d) {
       g.selectAll("#" + country.id).classed("selected", true);
       requestStories(country.properties.name);
 
-
-      //   var xyz = get_xyz(d);
-
-      //   if (d.id == 'USA') {
-      //     d3.json("data/json/states_" + d.id.toLowerCase() + ".topo.json", function(error, us) {
-      //       g.append("g")
-      //       .attr("id", "states")
-      //       .selectAll("path")
-      //       .data(topojson.feature(us, us.objects.states).features)
-      //       .enter()
-      //       .append("path")
-      //       .attr("id", function(d) { return d.id; })
-      //       .attr("class", "active")
-      //       .attr("d", path)
-      //       .on("click", state_clicked);
-
-      //       // zoom(xyz);
-      //       g.selectAll("#" + d.id).style('display', 'none');
-      //     });
-      //   } else {
-      //     // zoom(xyz);
-      //   }
-      // } else {
-      //   var xyz = [width / 2, height / 1.5, 1];
-      //   country = null;
-      //   // zoom(xyz);
    }
 
-   // // $.getJSON("/"+d.properties.name+"_articles.json", function(data) {
-   // $.getJSON("json/us_articles.json", function(data) {
-   //   var items = [];
-   //   // alert("getting data!");
-   // 	$.each( data, function( key, val ) {
-
-   // 	$.each( story, function( key, val ) {
-   //     	items.push( "<li id='" + items.length + key + "'>" + val + "</li>" );
-   //     });
-
-   //   });
-
-   //   $("#stories").html("<ul>"+items.join("\n")+"</ul>")
-   // });
-
-
-   // var places = [
-   // {
-   //   name: "Wollongong, Australia",
-   //   location: {
-   //     latitude: -34.42507,
-   //     longitude: 150.89315
-   //   }
-   // },
-   // {
-   //   name: "Newcastle, Australia",
-   //   location: {
-   //     latitude: -32.92669,
-   //     longitude: 151.77892
-   //   }
-   // }
-   // ]
-
-   // svg.selectAll(".pin")
-   // .data(places)
-   // .enter().append("circle", ".pin")
-   // .attr("r", 5)
-   // .attr("transform", function(d) {
-   //   return "translate(" + projection([
-   //     d.location.longitude,
-   //     d.location.latitude
-   //     ]) + ")"
-   // });
+   
 
 }
 
@@ -260,7 +182,7 @@ function requestStories(query) {
          // if(val.countries.length == 0) {
          //   val.countries = ["None found"];
          // }
-
+         console.dir(val.countries);
          items.push(
             // "<div class=\"story\" id=\"story"+i+"\">" + "<p>" 
             "<div class=\"story\" id=\"" + key + "\">"
@@ -286,7 +208,7 @@ function requestStories(query) {
           
               // Bad, -1 to -2
               } else if (entry.attr("sentiment") < 0) {
-                entry.classed("negative", true);
+                entry.classed("positive", true);
           
               // Very good, 3 or higher
               } else if (entry.attr("sentiment") > 2) {
@@ -329,15 +251,3 @@ $(window).resize(function () {
 
 
 
-function toColor(sentiment) {
-   var r = 0;
-   var g = 0;
-   var b = 0;
-   if (sentiment > 0) {
-      b = 100 * sentiment;
-   }
-   if (sentiment < 0) {
-      r = 100 * sentiment;
-   }
-   return "rgb(" + r + "," + g + "," + b + ")";
-}
