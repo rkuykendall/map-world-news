@@ -46,7 +46,7 @@ two2three = {
 'TT': 'TTO', 'TN': 'TUN', 'TR': 'TUR', 'TM': 'TKM', 'TC': 'TCA', 'TV': 'TUV', 
 'UG': 'UGA', 'UA': 'UKR', 'AE': 'ARE', 'GB': 'GBR', 'US': 'USA', 'UM': 'UMI', 
 'UY': 'URY', 'UZ': 'UZB', 'VU': 'VUT', 'VE': 'VEN', 'VN': 'VNM', 'VG': 'VGB', 
-'VI': 'VIR', 'WF': 'WLF', 'EH': 'ESH', 'YE': 'YEM', 'ZM': 'ZMB', 'ZW': 'ZWE'}
+'VI': 'VIR', 'WF': 'WLF', 'EH': 'SAH', 'YE': 'YEM', 'ZM': 'ZMB', 'ZW': 'ZWE'}
 
 class TextPickleType(PickleType):
     impl = Text

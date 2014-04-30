@@ -271,26 +271,31 @@ function requestStories(query) {
          // console.log(val.sentiment);
          i++;
          val.countries.forEach(function (entry) {
+            original = entry;
             entry = g.selectAll("#" + entry)
+            
+            if(entry.empty()) {
+              console.log("Error. Country not found: "+original);
+            } else {
+              current = parseInt(entry.attr("sentiment"));
+              entry.attr("sentiment", current + val.sentiment);
 
-            current = parseInt(entry.attr("sentiment"));
-            entry.attr("sentiment", current + val.sentiment);
-
-            // Very bad -3 or higher
-            if (entry.attr("sentiment") < -2) {
-              entry.classed("very-negative", true);
+              // Very bad -3 or higher
+              if (entry.attr("sentiment") < -2) {
+                entry.classed("very-negative", true);
           
-            // Bad, -1 to -2
-            } else if (entry.attr("sentiment") < 0) {
-              entry.classed("positive", true);
+              // Bad, -1 to -2
+              } else if (entry.attr("sentiment") < 0) {
+                entry.classed("positive", true);
           
-            // Very good, 3 or higher
-            } else if (entry.attr("sentiment") > 2) {
-              entry.classed("very-positive", true);
+              // Very good, 3 or higher
+              } else if (entry.attr("sentiment") > 2) {
+                entry.classed("very-positive", true);
           
-            // Good, 0-2
-            } else if (entry.attr("sentiment") > -1) {
-              entry.classed("positive", true);
+              // Good, 0-2
+              } else if (entry.attr("sentiment") > -1) {
+                entry.classed("positive", true);
+              }
             }
          });
 
