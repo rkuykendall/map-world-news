@@ -24,11 +24,9 @@ a:hover {
   position: absolute;
   top: -50px;
   left: -50px;
-  padding: 5px 15px;
   margin: 5px 15px;
   background-color: rgba(0,0,0,0.5);
   border-radius: 5px;
-  border: 1px solid black;
 }
 
 
