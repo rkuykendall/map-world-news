@@ -21,10 +21,14 @@ def articles():
 @app.route('/<country>_articles.json')
 def country_articles(country=None):
     from feed import Feed
+    country=country.encode('ascii', 'ignore')
     country=country.replace("Dem.", "Democratic")
     country=country.replace("Rep.", "Republic")
     country=country.replace("W.", "West")
     country=country.replace("Lao PDR", "Laos")
+    country=country.replace("Bosnia and Herz.", "Bosnia and Herzegovina")
+    country=country.replace("Eq. Guinea", "Equatorial Guinea")
+    country=country.replace("Cte d'Ivoire", "Ivory Coast")
     country=country.replace(" ", "_")
     print country
     

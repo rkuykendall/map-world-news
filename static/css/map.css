@@ -19,18 +19,23 @@ body .site-wrapper .site-wrapper-inner {
 }
 
 #countries {
-  fill: #fff;
+  fill: #666;
   stroke: #444;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
 
 #countries .selected,
+#countries .selected.mentioned,
 #countries .selected.positive,
 #countries .selected.negative,
 #countries .selected.very-positive,
 #countries .selected.very-negative {
   fill: #5599f3;
+}
+
+#countries .mentioned {
+  fill: #ffffff;
 }
 
 #countries .positive {
