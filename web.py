@@ -31,6 +31,8 @@ def country_articles(country=None):
     country=country.replace("Cte d'Ivoire", "Ivory Coast")
     country=country.replace("Fr. S. Antarctic Lands", "French Southern and Antarctic Lands")
     country=country.replace("Is.", "Islands")
+    country=country.replace("S. Sudan", "South Sudan")
+    
     country=country.replace(" ", "_")
     print country
     
