@@ -2,3 +2,4 @@ venv
 *.pyc
 .DS_Store
 dev.py
+development.db
