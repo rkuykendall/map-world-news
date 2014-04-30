@@ -2,7 +2,7 @@ import unittest
 import os
 
 # Set enviornment before importing any database classes
-os.environ["CONFIG_PATH"] = "database.TestingConfig"
+# os.environ["CONFIG_PATH"] = "database.TestingConfig"
 from feed import Feed
  
 class TestArticle(unittest.TestCase):
@@ -37,16 +37,16 @@ class TestArticle(unittest.TestCase):
         '''
         
         self.article1 = feed.articles[368827171]
-        self.article1.extract()
+        self.article1.extract(1)
 
-    # def test_name(self):
-    #     self.assertEqual(self.article1.author,'Sam Frizell')
+    def test_name(self):
+        self.assertEqual(self.article1.author,'Sam Frizell')
 
-    # def test_location(self):
-    #     self.assertEqual(self.article1.places[0]['name'],'Malaysia')
-        
-    # def test_sentiment(self):
-    #     self.assertEqual(self.article1.sentiment,-2.0)        
+    def test_location(self):
+        self.assertEqual(self.article1.places[0]['name'],'Malaysia')
+      
+    def test_sentiment(self):
+        self.assertEqual(self.article1.sentiment,-2.0)        
         
         
         

@@ -5,7 +5,6 @@ $(document).ready(function () {
    $("#search").click(function (event) {
       $("#searchDropdown").dropdown("toggle");
       
-      
       // Previous selection
       if (country) {
          g.selectAll("#" + country.id).classed("selected", false);
@@ -18,7 +17,6 @@ $(document).ready(function () {
       event.preventDefault();
       return false;
    });
-
 
    $("#searchPlace").click(function (event) {
  
@@ -46,7 +44,6 @@ $(document).ready(function () {
          top: e.pageY
       });
    });
-
 });
 
 var m_width = $("#map").width(),
@@ -73,7 +70,6 @@ svg.append("rect")
    .attr("width", width)
    .attr("height", height)
    .on("click", country_clicked);
-
 
 var g = svg.append("g");
 d3.json("static/json/countries.topo.json", function (error, us) {
@@ -112,32 +108,7 @@ d3.json("static/json/countries.topo.json", function (error, us) {
       });
 });
 
-function zoom(xyz) {
-   g.transition()
-      .duration(750)
-      .attr("transform", "translate(" + projection.translate() + ")scale(" + xyz[2] + ")translate(-" + xyz[0] + ",-" + xyz[1] + ")")
-      .selectAll(["#countries", "#states"])
-      .style("stroke-width", 1.0 / xyz[2] + "px")
-      .selectAll(".city")
-      .attr("d", path.pointRadius(20.0 / xyz[2]));
-}
-
-function get_xyz(d) {
-   var bounds = path.bounds(d);
-   var w_scale = (bounds[1][0] - bounds[0][0]) / width;
-   var h_scale = (bounds[1][1] - bounds[0][1]) / height;
-   var z = .96 / Math.max(w_scale, h_scale);
-   var x = (bounds[1][0] + bounds[0][0]) / 2;
-   var y = (bounds[1][1] + bounds[0][1]) / 2 + (height / z / 6);
-   return [x, y, z];
-}
-
 function country_clicked(d) {
-
-
-   // g.selectAll(["#states"]).remove();
-   // state = null;
-
    // Previous selection
    if (country) {
       g.selectAll("#" + country.id).classed("selected", false);
@@ -147,25 +118,17 @@ function country_clicked(d) {
       country = d;
       g.selectAll("#" + country.id).classed("selected", true);
       requestStories(country.properties.name);
-
    }
-
-   
-
 }
-
 
 function requestStories(query) {
     g.selectAll("#countries *").classed("negative very-negative positive very-positive neutral", false);
     g.selectAll("#countries *").attr("sentiment", 0);
     $("#title").html("<h3 class=\"text-center\" style=\"margin-top: 10px;\">" + query + "</h3>");
 
-    // $(".articles").html("<br><br><div class=\"progress progress-striped active\" style=\"margin: 30px;\">" + "<div class=\"progress-bar\"  role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 50%\">" + "<span class=\"sr-only\">50% Complete</span></div></div>");
     $(".articles").html("<br><br><br><center><img src=\"static/loader.gif\"><center>");
 
     url = "/" + query + "_articles.json";
-    // console.log(query);
-    // var places;
 
    $.getJSON(url, function (data) {
       var items = [];
@@ -219,19 +182,7 @@ function requestStories(query) {
               }
             }
          });
-
-         // places = [{
-         //   name: val.country,
-         //   location: {
-         //     latitude: val.long,
-         //     longitude: val.lat
-         //   }
-         // }]
       });
-
-    // $.each( data, function( key, val ) {
-    //   items.push( "<li id='" + key + "'>" + val + "</li>" );
-    // });
 
     $(".articles").html("<ul class=\"list-unstyled\" style=\"margin-bottom: 0px;\">" + items.join("\n") + "</ul>")
 

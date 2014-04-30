@@ -1,12 +1,3 @@
-
-body .site-wrapper .site-wrapper-inner {
-  padding: 20px 0px;
-}
-
-.cover {
-  margin-bottom: 0px;
-}
-
 #map {
   background-color: #444;
   border: 5px solid #2B2B2B;
@@ -49,13 +40,4 @@ body .site-wrapper .site-wrapper-inner {
 }
 #countries .very-negative {
   fill: #f35555;
-}
-
-
-#title h3 {
-  margin-top: 10px;
-}
-
-.articles .text-center {
-  margin: 30px inherit;
 }

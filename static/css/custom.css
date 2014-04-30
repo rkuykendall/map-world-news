@@ -52,9 +52,11 @@ body {
   height: 100%; /* For at least Firefox */
   min-height: 100%;
 }
+
 .site-wrapper-inner {
   display: table-cell;
   vertical-align: top;
+  padding: 20px 0px;
 }
 
 .cover-container {
@@ -119,6 +121,7 @@ body {
 
 .cover {
   padding: 0 20px;
+  margin-bottom: 0px;
 }
 .cover .btn-lg {
   padding: 10px 20px;
@@ -185,6 +188,10 @@ body {
 	overflow: auto;
 }
 
+.articles .text-center {
+  margin: 30px inherit;
+}
+
 .story {
 	padding: 20px;
 	border-top: 1px #3B3B3B solid;
@@ -195,3 +202,8 @@ body {
 .story: hover{
 	background-color: #525252;
 }
+
+#title h3 {
+  margin-top: 10px;
+}
+
