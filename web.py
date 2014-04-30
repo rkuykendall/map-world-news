@@ -8,7 +8,6 @@ app.debug = True
 def homepage():
     return app.send_static_file('index.html')
 
-# Actual code
 @app.route('/articles.json')
 def articles():
     from feed import Feed

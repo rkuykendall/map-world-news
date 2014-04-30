@@ -54,18 +54,6 @@ class Feed:
             elif (result == "Remove"):
                 del self.articles[a_id]
 
-    def filter_country(self, country):
-        # articles2 = {}
-        # for a_id in self.articles:
-        #     try:
-        #         for place in self.articles[a_id].places:
-        #             if place['name'] == country:
-        #                 articles2[article.id] = article
-        #     except AttributeError:
-        #         pass
-        # self.articles = articles2
-        pass
-
     def to_json(self):
         response = []
         for a_id in self.articles:

@@ -15,29 +15,28 @@
   stroke-linejoin: round;
   stroke-linecap: round;
 }
-
-#countries .selected,
-#countries .selected.mentioned,
-#countries .selected.positive,
-#countries .selected.negative,
-#countries .selected.very-positive,
-#countries .selected.very-negative {
-  fill: #5599f3;
-}
-
-#countries .neutral {
-  fill: #ffffff;
-}
-
-#countries .positive {
-  fill: #a5edaf;
-}
-#countries .very-positive {
-  fill: #4cdb60;
-}
-#countries .negative {
-  fill: #f9aaaa;
-}
-#countries .very-negative {
-  fill: #f35555;
+.selected, 
+#countries .selected {
+    fill: #5599f3;
+    color: #5599f3;
+  }
+  .neutral {
+    fill: #ffffff;
+    color: #ffffff;
+  }
+  .positive {
+    fill: #a5edaf;
+    color: #a5edaf;
+  }
+  .very-positive {
+    fill: #4cdb60;
+    color: #4cdb60;
+  }
+  .negative {
+    fill: #f9aaaa;
+    color: #f9aaaa;
+  }
+  .very-negative {
+    fill: #f35555;
+    color: #f35555;
 }

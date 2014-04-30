@@ -138,6 +138,12 @@ body {
   color: rgba(255,255,255,.5);
   margin-top: 60px;
 }
+#explanation {
+  max-width: 640px; 
+  display: block; 
+  margin: 10px auto; 
+  color: #bbb;
+} 
 
 
 /*

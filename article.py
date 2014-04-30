@@ -56,15 +56,8 @@ class Article(Base):
     __tablename__ = 'articles'
 
     id = Column(Integer, primary_key=True)
-    # title = Column(String)
-    # summary = Column(String)
     places = Column(TextPickleType(pickler=json))
     sentiment = Column(Integer)
-    # extracted = Column(Boolean)
-
-    # def __repr__(self):
-    #    return "<User(id='%s', title='%s', summary='%s', sentiment='%d')>" % (
-    #                         self.id, self.title, self.summary, self.sentiment)
 
     dstk = dstk.DSTK()
    
@@ -137,10 +130,8 @@ class Article(Base):
         # Remove duplicates
         a.countries = list(set(a.countries))
                 
-            # print place['longitude']
-            # a.long +=place['longitude'] + ","
-            # a.lat +=place['latitude'] + ","
-
-
+        # print place['longitude']
+        # a.long +=place['longitude'] + ","
+        # a.lat +=place['latitude'] + ","
         
         return {'aid':a.id, 'title':a.title, 'summary':a.summary, 'sentiment':a.sentiment, 'link':a.source, 'countries':a.countries, 'long':a.long, 'lat':a.lat, 'source':a.trueSource}
