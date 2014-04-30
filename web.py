@@ -23,6 +23,8 @@ def country_articles(country=None):
     from feed import Feed
     country=country.replace("Dem.", "Democratic")
     country=country.replace("Rep.", "Republic")
+    country=country.replace("W.", "West")
+    country=country.replace("Lao PDR", "Laos")
     country=country.replace(" ", "_")
     print country
     
