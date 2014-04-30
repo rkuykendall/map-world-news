@@ -13,6 +13,8 @@ class Feed:
             self.add_feed(feed)
 
     def add_feed(self, feed):
+        print "Adding feed =>",
+        
         f = feedparser.parse(feed)
         for item in f['entries']:
             a = Article()
@@ -37,9 +39,19 @@ class Feed:
                 # Add the article if it doesn't already exist
                 self.articles[a.id] = a
 
+        print "Done"
+
     def extract(self):
-        for a_id in self.articles:
-            self.articles[a_id].extract()
+        allowance = 4
+        iterate = self.articles.keys()
+        
+        for a_id in iterate:
+            result = self.articles[a_id].extract(allowance)
+            
+            if (result == "Extracted"):
+                allowance = allowance - 1
+            elif (result == "Remove"):
+                del self.articles[a_id]
 
     def filter_country(self, country):
         # articles2 = {}

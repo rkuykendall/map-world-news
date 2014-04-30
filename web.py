@@ -21,15 +21,21 @@ def articles():
 @app.route('/<country>_articles.json')
 def country_articles(country=None):
     from feed import Feed
-    country=country.replace (" ", "_")
+    country=country.replace("Dem.", "Democratic")
+    country=country.replace("Rep.", "Republic")
+    country=country.replace(" ", "_")
     print country
-    url1="http://api.feedzilla.com/v1/categories/19/articles/search.atom?q="+country+"&count=10"
-    url2="http://api.feedzilla.com/v1/categories/26/articles/search.atom?q="+country+"&count=5"
+    
+    url1="http://api.feedzilla.com/v1/categories/19/articles/search.atom?q="+country+"&count=50"
     feed = Feed(url1)
-    feed.add_feed(url2)
+
+    # url2="http://api.feedzilla.com/v1/categories/26/articles/search.atom?q="+country+"&count=10"
+    # feed.add_feed(url2)
+
     # feed = Feed()
     # feed.load()
     # feed.filter_country(country)
+
     feed.extract()
     return feed.to_json()
 

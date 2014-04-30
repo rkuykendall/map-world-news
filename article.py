@@ -4,6 +4,7 @@ import urllib2
 from sqlalchemy import *
 from database import Base, engine, session
 
+# Removed: 'SM': 'SMR',
 two2three = {
 'AF': 'AFG', 'AX': 'ALA', 'AL': 'ALB', 'DZ': 'DZA', 'AS': 'ASM', 'AD': 'AND', 
 'AO': 'AGO', 'AI': 'AIA', 'AQ': 'ATA', 'AG': 'ATG', 'AR': 'ARG', 'AM': 'ARM', 
@@ -36,7 +37,7 @@ two2three = {
 'PS': 'PSE', 'PA': 'PAN', 'PG': 'PNG', 'PY': 'PRY', 'PE': 'PER', 'PH': 'PHL', 
 'PN': 'PCN', 'PL': 'POL', 'PT': 'PRT', 'PR': 'PRI', 'QA': 'QAT', 'RE': 'REU', 
 'RO': 'ROU', 'RU': 'RUS', 'RW': 'RWA', 'BL': 'BLM', 'SH': 'SHN', 'KN': 'KNA', 
-'LC': 'LCA', 'MF': 'MAF', 'PM': 'SPM', 'VC': 'VCT', 'WS': 'WSM', 'SM': 'SMR', 
+'LC': 'LCA', 'MF': 'MAF', 'PM': 'SPM', 'VC': 'VCT', 'WS': 'WSM',  
 'ST': 'STP', 'SA': 'SAU', 'SN': 'SEN', 'RS': 'SRB', 'SC': 'SYC', 'SL': 'SLE', 
 'SG': 'SGP', 'SK': 'SVK', 'SI': 'SVN', 'SB': 'SLB', 'SO': 'SOM', 'ZA': 'ZAF', 
 'GS': 'SGS', 'ES': 'ESP', 'LK': 'LKA', 'SD': 'SDN', 'SR': 'SUR', 'SJ': 'SJM', 
@@ -70,29 +71,42 @@ class Article(Base):
     def __init__(self):
         self.sentiment = 0
 
-    def extract(self):
+    def extract(self, allowance):
+        '''Check to see if the article is in the database.
+           If it is, get the old data. If it's not, then 
+           extract the data and decrement the allowance.'''
+        
         query = session.query(Article).get(self.id)
         
         if (query != None):
             self.places = query.places
             self.sentiment = query.sentiment
+            return "Cached"
         else:
-            response=urllib2.urlopen(self.source)
-            html=response.read()
-            target=self.dstk.html2story(html)
-            target=target['story']
+            if (allowance > 0):
+                print "Running extraction =>",
+                # response=urllib2.urlopen(self.source)
+                # html=response.read()
+                # target=self.dstk.html2story(html)
+                # target=target['story']
 
-            apiSummary=self.title + ' ' + self.summary 
-            target = apiSummary+ ' ' + target
+                apiSummary=self.title + ' ' + self.summary 
+                # target = apiSummary+ ' ' + target
+                target = apiSummary
 
-            target = target.encode('ascii', 'ignore')
-            apiSummary = apiSummary.encode('ascii', 'ignore')
+                target = target.encode('ascii', 'ignore')
+                apiSummary = apiSummary.encode('ascii', 'ignore')
 
-            self.places = self.dstk.text2places(target)
-            self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
+                self.places = self.dstk.text2places(target)
+                self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
             
-            session.add(self)
-            session.commit()
+                session.add(self)
+                session.commit()
+                
+                print "Done."
+                return "Extracted"
+            else:
+                return "Remove"
         
     def to_json(self):
         a = self

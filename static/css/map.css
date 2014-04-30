@@ -27,15 +27,22 @@ body .site-wrapper .site-wrapper-inner {
 
 #countries .selected,
 #countries .selected.positive,
-#countries .selected.negative {
+#countries .selected.negative,
+#countries .selected.very-positive,
+#countries .selected.very-negative {
   fill: #5599f3;
 }
 
 #countries .positive {
+  fill: #a5edaf;
+}
+#countries .very-positive {
   fill: #4cdb60;
 }
-
 #countries .negative {
+  fill: #f9aaaa;
+}
+#countries .very-negative {
   fill: #f35555;
 }
 
