@@ -17,7 +17,7 @@ Development Guide
 2. cd dmst-temp-repo
 3. easy_install pip
 4. pip install -r requirements.txt
-5. foreman start 
+5. python server.py
 
 ### Unit Testing
 Run *nosetests* in the *dmst-temp-repo* folder. It will run all the tests in *_tests.py* files and you can write more tests or write code to fix the tests that fail.
@@ -28,28 +28,11 @@ All front-end files are in */static/*. Just dragging the *index.html* file into 
 
 ### How it will work
 
-Our site will be loaded, and when the user clicks on a country, a request will be sent to *us_articles.json*. D3 will then display the articles in the sidebar, draw lines between countries, and color them based on positive / negativene quality of the article.
+Our site will be loaded, and when the user clicks on a country, a request will be sent to *us_articles.json*. D3 will then display the articles in the sidebar, and color the countries based on positive / negative quality of the article.
 
-### To-Do List
+##Heroku app
 
-**D3**
-
-1. Create an example *us_articles.json* file, and get D3 to show the articles when you click the US.
-2. Add country links to that JSON file, and get D3 to draw lines
-3. Add a positive/negative sentiment number to those articles, and make D3 color countries more red or green.
-
-
-**Python**
-
-1. Filter function in feed, to remove all articles that don't include one country.
-2. 
-
-**Database Required**
-
-1. Save articles in database ( Robert is working on this )
-3. Add function to do DSTK actions on very small number of un-analyzed articles and save them.
-4. Add function to add a feed URL to the database.
-
+Alternatively, go to http://iris-app.herokuapp.com/, where the app is already up and running.
 
 Description of Files
 --------------------
