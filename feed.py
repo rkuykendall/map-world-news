@@ -30,7 +30,6 @@ class Feed:
                 a.title = item['title']
                 a.source=item['source']['links'][0]['href']
                 a.trueSource="http://news.feedzilla.com/en_us/stories/world-news/"+str(a.id)
-                print a.trueSource
                 # Set summary, get rid of all the junk at the end
                 summary = item['summary']
                 summary = summary[:summary.find("\n\n")]

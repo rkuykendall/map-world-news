@@ -97,6 +97,12 @@ class Article(Base):
                 target = target.encode('ascii', 'ignore')
                 apiSummary = apiSummary.encode('ascii', 'ignore')
 
+                #replace U.S. with United States!!!
+                target=target.replace ("U.S.", "United States")
+                target=target.replace ("U.S.A", "United States")
+                target=target.replace ("America", "United States")
+                target=target.replace ("Obama", "United States")
+
                 self.places = self.dstk.text2places(target)
                 self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
             
