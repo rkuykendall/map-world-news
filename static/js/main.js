@@ -54,7 +54,13 @@ $(document).ready(function () {
     event.preventDefault();
   });
 
-  event.preventDefault();
+  $(document).on('mousemove', function(e){
+      $('#countryInfo').css({
+         left:  e.pageX,
+         top:   e.pageY
+      });
+  });
+
 });
 
 var m_width = $("#map").width(),
@@ -99,7 +105,16 @@ d3.json("static/json/countries.topo.json", function (error, us) {
   })
   .attr("d", path)
   .on("click", country_clicked)
-  .on("mouseover", function(e){d3.select(this).style("fill", "#5599f3"); $("#countryInfo").html(this.name);})
+  .on("mouseover", function(d) {
+    d3.select(this).style("fill", "#77adf5");
+    sentiment = d3.select(this).attr("sentiment")
+    if (sentiment == null) {
+      sentiment = 0;
+    }
+    $("#countryInfo").html(d.properties.name + " [" + sentiment + "]");
+    
+    $("#countryInfo").html(this.name);
+  })
   .on("mouseout", function(e){d3.select(this).style("fill", null)})
   ;
 });
