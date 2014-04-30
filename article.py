@@ -130,4 +130,4 @@ class Article(Base):
 
 
         
-        return {'aid':a.id, 'title':a.title, 'summary':a.summary, 'sentiment':a.sentiment, 'link':a.source, 'countries':a.countries, 'long':a.long, 'lat':a.lat}
+        return {'aid':a.id, 'title':a.title, 'summary':a.summary, 'sentiment':a.sentiment, 'link':a.source, 'countries':a.countries, 'long':a.long, 'lat':a.lat, 'source':a.trueSource}

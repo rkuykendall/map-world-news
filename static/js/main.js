@@ -266,7 +266,7 @@ function requestStories(query) {
             "<div class=\"story\" id=\"" + key + "\">"
             + "<h5>" + val.title + "</h5>" + "<small class=\"text-muted\">" + val.summary + "</small><br><br>"
             + "<small>Sentiment: <i class=\"text-muted\">" + val.sentiment + "</i><br>Countries: <i class=\"text-muted\">" + val.countries.join(", ") + "</i></small><br><br>"
-            + "<h5 class=\"text-right\"><a class=\"text-right\" href=\"" + val.link + "\" target=\"_blank\" class=\"text-right\"><span class=\"glyphicon glyphicon-link\"></span> View Source</a></h5>" + "</div>");
+            + "<h5 class=\"text-right\"><a class=\"text-right\" href=\"" + val.source + "\" target=\"_blank\" class=\"text-right\"><span class=\"glyphicon glyphicon-link\"></span> View Source</a></h5>" + "</div>");
          // console.log(val.link);
          // console.log(val.sentiment);
          i++;
