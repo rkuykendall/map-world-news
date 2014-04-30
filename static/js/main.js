@@ -1,37 +1,33 @@
 var places;
 
 $(document).ready(function () {
+
    $("#search").click(function (event) {
       $("#searchDropdown").dropdown("toggle");
+      
+      
+      // Previous selection
+      if (country) {
+         g.selectAll("#" + country.id).classed("selected", false);
+      }
+      
+      console.log($("#query").val());
       requestStories($("#query").val());
 
       // $("#query").submit();
       event.preventDefault();
+      return false;
    });
-
-   $("#query").submit(function (event) {
-
-      // Previous selection
-      if (country) {
-         g.selectAll("#" + country.id).classed("selected", false);
-      }
-
-      console.log($("#query").val());
-      requestStories($("#query").val());
-
-      event.preventDefault();
-   });
-
 
 
    $("#searchPlace").click(function (event) {
  
-
       // Previous selection
       if (country) {
          g.selectAll("#" + country.id).classed("selected", false);
       }
-
+    
+      console.log($("#place").val());
       requestStories($("#place").val());
       event.preventDefault();
       return false;
@@ -164,6 +160,7 @@ function requestStories(query) {
     g.selectAll("#countries *").classed("very-negative", false);
     g.selectAll("#countries *").classed("positive", false);
     g.selectAll("#countries *").classed("very-positive", false);
+    g.selectAll("#countries *").classed("neutral", false);
     g.selectAll("#countries *").attr("sentiment", 0);
     $("#title").html("<h3 class=\"text-center\" style=\"margin-top: 10px;\">" + query + "</h3>");
 
@@ -214,9 +211,13 @@ function requestStories(query) {
               } else if (entry.attr("sentiment") > 2) {
                 entry.classed("very-positive", true);
           
-              // Good, 0-2
-              } else if (entry.attr("sentiment") > -1) {
+              // Good, 1-2
+              } else if (entry.attr("sentiment") > 0) {
                 entry.classed("positive", true);
+                
+              // Neutral, 0  
+              } else if (entry.attr("sentiment") == 0) {
+                entry.classed("neutral", true);
               }
             }
          });
