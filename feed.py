@@ -2,6 +2,7 @@ import feedparser
 import re
 from article import Article
 import json
+from database import session
 
 class Feed:
     '''Stores a list of articles.'''
@@ -42,6 +43,12 @@ class Feed:
 
         print "Done"
 
+    def prune(self):
+        num = session.query(Article.id).count()
+        if(num > 9950):
+            for article in session.query(Article).order_by(Article.last_referenced.asc()).limit(500):
+                session.delete(article)
+
     def extract(self):
         allowance = 4
         iterate = self.articles.keys()
@@ -53,6 +60,9 @@ class Feed:
                 allowance = allowance - 1
             elif (result == "Remove"):
                 del self.articles[a_id]
+                
+        self.prune()
+        session.commit()
 
     def to_json(self):
         response = []

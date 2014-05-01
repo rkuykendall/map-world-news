@@ -3,6 +3,7 @@ import json
 import urllib2
 from sqlalchemy import *
 from database import Base, engine, session
+import datetime
 
 # Removed: 'SM': 'SMR',
 two2three = {
@@ -58,6 +59,7 @@ class Article(Base):
     id = Column(Integer, primary_key=True)
     places = Column(TextPickleType(pickler=json))
     sentiment = Column(Integer)
+    last_referenced = Column(DateTime, default=datetime.datetime.now)
 
     dstk = dstk.DSTK()
    
@@ -74,6 +76,7 @@ class Article(Base):
         if (query != None):
             self.places = query.places
             self.sentiment = query.sentiment
+            query.last_referenced = datetime.datetime.now()
             return "Cached"
         else:
             if (allowance > 0):
@@ -107,7 +110,6 @@ class Article(Base):
                 self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
             
                 session.add(self)
-                session.commit()
                 
                 print "Done."
                 return "Extracted"
