@@ -3,8 +3,8 @@ import re
 
 import feedparser
 
-from iris.article import Article
-from iris.iris import session
+from article import Article
+from iris import session
 
 class Feed:
     '''Stores a list of articles.'''
