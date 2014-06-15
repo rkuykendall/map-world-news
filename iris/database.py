@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-from web import app
+from iris.web import app
 import os
 
 class HerokuConfig(object):
@@ -21,7 +21,7 @@ class TestingConfig(object):
     DEBUG = True
 
 # Set enviornment variables from the database file
-config_path = os.environ.get("CONFIG_PATH", "database.DevelopmentConfig")
+config_path = os.environ.get("CONFIG_PATH", "iris.database.DevelopmentConfig")
 app.config.from_object(config_path)
 
 engine = create_engine(app.config["DATABASE_URI"])

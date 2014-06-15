@@ -27,7 +27,7 @@ Storytelling class at Columbia University.
 5. ``pip install -e . --allow-external dstk --allow-unverified dstk``
 
 ### Starting the Server
-``python -m adful.app`` or ``foreman start`` (after having done ``gem install
+``python -m iris.web`` or ``foreman start`` (after having done ``gem install
 foreman``)
 
 ### Testing

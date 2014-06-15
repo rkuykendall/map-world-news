@@ -1,8 +1,13 @@
 import os
+
 from flask import Flask, render_template, render_template_string, url_for
+
+from feed import Feed
+
 
 app = Flask(__name__)
 app.debug = True
+
 
 @app.route('/')
 def homepage():
@@ -10,12 +15,10 @@ def homepage():
 
 @app.route('/articles.json')
 def articles():
-    from feed import Feed
-    
-    # feed = Feed('data/2014-04-05_16-54.atom')
     feed = Feed()
     feed.load()
     return feed.to_json()
+
 
 @app.route('/<country>_articles.json')
 def country_articles(country=None):
@@ -31,10 +34,10 @@ def country_articles(country=None):
     country=country.replace("Fr. S. Antarctic Lands", "French Southern and Antarctic Lands")
     country=country.replace("Is.", "Islands")
     country=country.replace("S. Sudan", "South Sudan")
-    
+
     country=country.replace(" ", "_")
     print country
-    
+
     url1="http://api.feedzilla.com/v1/categories/19/articles/search.atom?q="+country+"&count=50"
     feed = Feed(url1)
 
@@ -47,14 +50,6 @@ def country_articles(country=None):
 
     feed.extract()
     return feed.to_json()
-
-
-@app.route('/admin/init_db')
-def init_db():
-    from article import Article
-    from database import Base, engine
-    Base.metadata.create_all(engine)
-    return "Success!"
 
 
 @app.route('/admin/count_cache')
