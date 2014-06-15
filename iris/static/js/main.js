@@ -4,13 +4,13 @@ $(document).ready(function () {
 
    $("#search").click(function (event) {
       $("#searchDropdown").dropdown("toggle");
-      
+
       // Previous selection
       if (country) {
          g.selectAll("#" + country.id).classed("selected", false);
       }
-      
-      console.log($("#query").val());
+
+      // console.log($("#query").val());
       requestStories($("#query").val());
 
       // $("#query").submit();
@@ -19,13 +19,13 @@ $(document).ready(function () {
    });
 
    $("#searchPlace").click(function (event) {
- 
+
       // Previous selection
       if (country) {
          g.selectAll("#" + country.id).classed("selected", false);
       }
-    
-      console.log($("#place").val());
+
+      // console.log($("#place").val());
       requestStories($("#place").val());
       event.preventDefault();
       return false;
@@ -89,7 +89,7 @@ d3.json("static/json/countries.topo.json", function (error, us) {
       .on("click", country_clicked)
       .on("mouseover", function (d) {
          d3.select(this).style("fill", "#77adf5");
-         
+
          sentiment = d3.select(this).attr("sentiment")
          if (sentiment == null) {
             sentiment = 0;
@@ -101,7 +101,7 @@ d3.json("static/json/countries.topo.json", function (error, us) {
       })
       .on("mouseout", function (e) {
          d3.select(this).style("fill", null);
-        
+
 		document.getElementById("countryInfo").style.border="0px";
 		document.getElementById("countryInfo").style.padding="0px";
          $("#countryInfo").html("");
@@ -138,9 +138,9 @@ function requestStories(query) {
          // if(val.countries.length == 0) {
          //   val.countries = ["None found"];
          // }
-         console.dir(val.countries);
+         // console.dir(val.countries);
          items.push(
-            // "<div class=\"story\" id=\"story"+i+"\">" + "<p>" 
+            // "<div class=\"story\" id=\"story"+i+"\">" + "<p>"
             "<div class=\"story\" id=\"" + key + "\">"
             + "<h5>" + val.title + "</h5>" + "<small class=\"text-muted\">" + val.summary + "</small><br><br>"
             + "<small>Sentiment: <i class=\"text-muted\">" + val.sentiment + "</i><br>Countries: <i class=\"text-muted\">" + val.countries.join(", ") + "</i></small><br><br>"
@@ -151,7 +151,7 @@ function requestStories(query) {
          val.countries.forEach(function (entry) {
             original = entry;
             entry = g.selectAll("#" + entry)
-            
+
             if(entry.empty()) {
               console.log("Error. Country not found: "+original);
             } else {
@@ -163,20 +163,20 @@ function requestStories(query) {
               // Very bad -3 or higher
               if (entry.attr("sentiment") < -2) {
                 entry.classed("very-negative", true);
-          
+
               // Bad, -1 to -2
               } else if (entry.attr("sentiment") < 0) {
                 entry.classed("negative", true);
-          
+
               // Very good, 3 or higher
               } else if (entry.attr("sentiment") > 2) {
                 entry.classed("very-positive", true);
-          
+
               // Good, 1-2
               } else if (entry.attr("sentiment") > 0) {
                 entry.classed("positive", true);
-                
-              // Neutral, 0  
+
+              // Neutral, 0
               } else if (entry.attr("sentiment") == 0) {
                 entry.classed("neutral", true);
               }
@@ -198,6 +198,3 @@ $(window).resize(function () {
    svg.attr("width", w);
    svg.attr("height", w * height / width);
 });
-
-
-

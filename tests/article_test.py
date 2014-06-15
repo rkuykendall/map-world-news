@@ -2,8 +2,9 @@ import unittest
 import os
 
 # Set enviornment before importing any database classes
-# os.environ["CONFIG_PATH"] = "database.TestingConfig"
+os.environ["CONFIG_PATH"] = "database.TestingConfig"
 from iris.feed import Feed
+from destroy_database_and_init import create_db, destroy_db
 
 class TestArticle(unittest.TestCase):
     def setUp(self):
@@ -36,8 +37,13 @@ class TestArticle(unittest.TestCase):
 </entry>
         '''
 
+        create_db()
+
         self.article1 = feed.articles[368827171]
         self.article1.extract(1)
+
+    def selfDown(self):
+        destroy_db
 
     def test_name(self):
         self.assertEqual(self.article1.author,'Sam Frizell')

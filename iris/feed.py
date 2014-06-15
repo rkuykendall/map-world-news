@@ -1,30 +1,32 @@
-import feedparser
-import re
-from article import Article
 import json
-from database import session
+import re
+
+import feedparser
+
+from article import Article
+from iris import session
 
 class Feed:
     '''Stores a list of articles.'''
-    
+
     def __init__(self, feed=None):
         self.articles = {}
-        
+
         if feed:
             self.add_feed(feed)
 
     def add_feed(self, feed):
         print "Adding feed =>",
-        
+
         f = feedparser.parse(feed)
         for item in f['entries']:
             a = Article()
-            
+
             # Set ID as integer, without feedzilla at beginning
             a.id = item['id']
             a.id = re.sub(r'.*feedzilla\.com:(.*)', r'\1', a.id)
             a.id = int(a.id)
-            
+
             if a.id not in self.articles.keys():
                 # Set source, author and title
                 a.author = item['author']
@@ -37,7 +39,7 @@ class Feed:
                 summary = summary[:summary.find("\n\n")]
                 summary = summary[:summary.find("<")]
                 a.summary = summary
-            
+
                 # Add the article if it doesn't already exist
                 self.articles[a.id] = a
 
@@ -52,15 +54,15 @@ class Feed:
     def extract(self):
         allowance = 4
         iterate = self.articles.keys()
-        
+
         for a_id in iterate:
             result = self.articles[a_id].extract(allowance)
-            
+
             if (result == "Extracted"):
                 allowance = allowance - 1
             elif (result == "Remove"):
                 del self.articles[a_id]
-                
+
         self.prune()
         session.commit()
 
@@ -70,6 +72,3 @@ class Feed:
             a = self.articles[a_id]
             response.append(a.to_json())
         return json.dumps(response)
-
-
-

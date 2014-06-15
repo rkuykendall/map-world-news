@@ -3,7 +3,7 @@
 from setuptools import setup
 setup(
     name='iris',
-    version='0.1',
+    version='1.1',
     author='',
     author_email='',
     description='',
