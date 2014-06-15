@@ -4,7 +4,7 @@ from flask import (
     Flask, render_template, render_template_string, url_for, Blueprint)
 
 from iris.feed import Feed
-from article import Article
+from iris.article import Article
 from iris.iris import iris, session
 
 web = Blueprint('web', __name__, template_folder='')
