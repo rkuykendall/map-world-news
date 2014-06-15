@@ -4,7 +4,7 @@ import os
 # Set enviornment before importing any database classes
 os.environ["CONFIG_PATH"] = "database.TestingConfig"
 from iris.feed import Feed
-from destroy_database_and_init import create_db, destroy_db
+from reset_db import create_db, destroy_db
 
 class TestArticle(unittest.TestCase):
     def setUp(self):

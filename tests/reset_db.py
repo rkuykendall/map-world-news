@@ -2,8 +2,7 @@
 
 from iris.article import Article
 from iris.feed import Feed
-from iris.web import app
-from iris.database import Base, engine
+from iris.iris import Base, engine
 
 
 def destroy_db():
