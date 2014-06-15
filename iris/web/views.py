@@ -4,7 +4,8 @@ from flask import (
     Flask, render_template, render_template_string, url_for, Blueprint)
 
 from iris.feed import Feed
-from iris.iris import iris
+from article import Article
+from iris.iris import iris, session
 
 web = Blueprint('web', __name__, template_folder='')
 
@@ -21,7 +22,6 @@ def articles():
 
 @iris.route('/<country>_articles.json')
 def country_articles(country=None):
-    from feed import Feed
     country=country.encode('ascii', 'ignore')
     country=country.replace("Dem.", "Democratic")
     country=country.replace("Rep.", "Republic")
@@ -53,6 +53,4 @@ def country_articles(country=None):
 
 @iris.route('/admin/count_cache')
 def count_cache():
-    from article import Article
-    from database import session
     return str(session.query(Article.id).count())
