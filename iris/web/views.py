@@ -3,7 +3,7 @@ import os
 from flask import (
     Flask, render_template, render_template_string, url_for, Blueprint)
 
-from feed import Feed
+from iris.feed import Feed
 from iris.iris import iris
 
 web = Blueprint('web', __name__, template_folder='')
