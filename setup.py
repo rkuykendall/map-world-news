@@ -22,5 +22,6 @@ setup(
         'nose==1.3.1',
         'SQLAlchemy==0.9.4',
         'dstk==0.50',
-        'feedparser==5.1.3'
+        'feedparser==5.1.3',
+        'selenium==2.42.1'
     ])
