@@ -48,12 +48,12 @@ $(document).ready(function () {
 
 var m_width = $("#map").width(),
    width = 938,
-   height = 500,
+   height = 300,
    country,
    state;
 
 var projection = d3.geo.mercator()
-   .scale(150)
+   .scale(100)
    .translate([width / 2, height / 1.5]);
 
 var path = d3.geo.path()

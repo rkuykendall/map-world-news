@@ -1,7 +1,4 @@
 #map {
-  background-color: #444;
-  border: 5px solid #2B2B2B;
-  margin-bottom: 20px;
 }
 
 .background {
@@ -15,7 +12,7 @@
   stroke-linejoin: round;
   stroke-linecap: round;
 }
-.selected, 
+.selected,
 #countries .selected {
     fill: #5599f3;
     color: #5599f3;

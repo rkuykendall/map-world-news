@@ -1,5 +1,7 @@
 nav.navbar {
     background-color: white;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #222;
 }
 
 .navbar a:link, .navbar a:visited
@@ -81,7 +83,6 @@ body {
 .site-wrapper-inner {
   display: table-cell;
   vertical-align: top;
-  padding: 20px 0px;
 }
 
 .cover-container {
