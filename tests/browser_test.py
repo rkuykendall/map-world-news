@@ -19,9 +19,7 @@ class TestBrowser(unittest.TestCase):
         self.driver = webdriver.Firefox()
         self.driver.get("http://0.0.0.0:5000")
 
-    def selfDown(self):
-        self.driver.close()
-        self.driver.close()
+    def tearDown(self):
         self.driver.quit()
 
     def page_load_test(self):
@@ -40,6 +38,25 @@ class TestBrowser(unittest.TestCase):
             element = WebDriverWait(self.driver, 15).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "story"))
             )
+        except TimeoutException:
+            assert False
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+            assert False
+
+        assert True
+
+
+    def click_test(self):
+        element = self.driver.find_element_by_id("USA")
+        element.click()
+
+        try:
+            element = WebDriverWait(self.driver, 15).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "story"))
+            )
+            body = self.driver.find_element_by_css_selector('body')
+            assert "United States" in body.text
         except TimeoutException:
             assert False
         except:
