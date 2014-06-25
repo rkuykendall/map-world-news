@@ -1,12 +1,37 @@
+nav.navbar {
+    background-color: white;
+}
+
+.navbar a:link, .navbar a:visited
+.navbar-form .form-control,
+.navbar-form .btn-default,
+.navbar-default .navbar-brand {
+    color: #000;
+    text-shadow: none;
+    box-shadow: none;
+    color: black;
+    border-color: black;
+}
+
+.navbar a:hover, .navbar a:focus,
+.btn-default:hover, .btn-default:focus {
+    color: #428bca;
+    border-color: #428bca;
+    background-color: white;
+}
+
+
 /*
  * Globals
  */
 
 /* Links */
-a,
-a:focus,
-a:hover {
+a:link, a:visited {
   color: #fff;
+}
+
+a:focus, a:hover {
+    color: #428bca;
 }
 
 /* Custom default button */
@@ -139,11 +164,11 @@ body {
   margin-top: 60px;
 }
 #explanation {
-  max-width: 640px; 
-  display: block; 
-  margin: 10px auto; 
+  max-width: 640px;
+  display: block;
+  margin: 10px auto;
   color: #bbb;
-} 
+}
 
 
 /*
@@ -212,4 +237,3 @@ body {
 #title h3 {
   margin-top: 10px;
 }
-
