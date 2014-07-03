@@ -47,14 +47,14 @@ $(document).ready(function () {
 });
 
 var m_width = $("#map").width(),
-   width = 938,
-   height = 300,
+   width = 1000,
+   height = 360,
    country,
    state;
 
 var projection = d3.geo.mercator()
-   .scale(100)
-   .translate([width / 2, height / 1.5]);
+   .scale(130)
+   .translate([width / 2, height / 1.6]);
 
 var path = d3.geo.path()
    .projection(projection);
@@ -88,22 +88,19 @@ d3.json("static/json/countries.topo.json", function (error, us) {
       .attr("d", path)
       .on("click", country_clicked)
       .on("mouseover", function (d) {
-         d3.select(this).style("fill", "#77adf5");
+         d3.select(this).classed("selected", true);
 
-         sentiment = d3.select(this).attr("sentiment")
+         sentiment = d3.select(this).attr("sentiment");
          if (sentiment == null) {
             sentiment = 0;
          }
-         $("#countryInfo").html(d.properties.name + " [" + sentiment + "]");
-		document.getElementById("countryInfo").style.border="1px solid black";
-		document.getElementById("countryInfo").style.padding="5px 15px";
+         $("#countryInfo").html(d.properties.name);
+      		document.getElementById("countryInfo").style.display="block";
          //$("#countryInfo").html(this.name);
       })
       .on("mouseout", function (e) {
-         d3.select(this).style("fill", null);
-
-		document.getElementById("countryInfo").style.border="0px";
-		document.getElementById("countryInfo").style.padding="0px";
+          d3.select(this).classed("selected", false);
+      		document.getElementById("countryInfo").style.display="none";
          $("#countryInfo").html("");
       });
 });
@@ -141,10 +138,10 @@ function requestStories(query) {
          // console.dir(val.countries);
          items.push(
             // "<div class=\"story\" id=\"story"+i+"\">" + "<p>"
-            "<div class=\"story\" id=\"" + key + "\">"
-            + "<h5>" + val.title + "</h5>" + "<small class=\"text-muted\">" + val.summary + "</small><br><br>"
-            + "<small>Sentiment: <i class=\"text-muted\">" + val.sentiment + "</i><br>Countries: <i class=\"text-muted\">" + val.countries.join(", ") + "</i></small><br><br>"
-            + "<h5 class=\"text-right\"><a class=\"text-right\" href=\"" + val.source + "\" target=\"_blank\" class=\"text-right\"><span class=\"glyphicon glyphicon-link\"></span> View Source</a></h5>" + "</div>");
+            '<div class="story col-lg-3 col-md-4 col-sm-12" id="' + key + '">'
+            + '<h5>' + val.title + '</h5>' + '<small class="text-muted">' + val.summary + '</small><br><br>'
+            + '<small>Sentiment: <i class="text-muted">' + val.sentiment + '</i><br>Countries: <i class="text-muted">' + val.countries.join(", ") + '</i></small><br><br>'
+            + '<h5 class="text-right"><a class="text-right" href="' + val.source + '" target="_blank" class="text-right"><span class="glyphicon glyphicon-link"></span> View Source</a></h5>' + "</div>");
          // console.log(val.link);
          // console.log(val.sentiment);
          i++;

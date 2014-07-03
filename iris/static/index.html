@@ -1,138 +1,84 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="countriesNewsApp">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Location extraction and sentiment analysis of world news, mapped.">
-    <meta name="author" content="Robert Kuykendall, Shensi Ding, Sahil Ansari, and Bo Xu.">
-    <title>IRIS &mdash; World News Relationship &amp; Sentiment Explorer</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Location extraction and sentiment analysis of world news, mapped.">
+  <meta name="author" content="Robert Kuykendall, Shensi Ding, Sahil Ansari, and Bo Xu.">
+  <title>IRIS &mdash; World News Relationship &amp; Sentiment Explorer</title>
 
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/css/custom.css" rel="stylesheet">
-    <link href="static/css/map.css" rel="stylesheet">
-    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
-  </head>
-  <body>
-     <nav class="navbar navbar-default navbar-static-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">IRIS World News Visualization</a>
-        </div>
-
-        <form class="navbar-form navbar-right" role="search">
-          <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search">
-          </div>
-          <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/css/custom.css" rel="stylesheet">
+  <link href="static/css/map.css" rel="stylesheet">
+  <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">IRIS World News Visualization</a>
       </div>
-    </nav>
 
-    <div class="site-wrapper">
-      <div class="site-wrapper-inner">
-        <div class="container">
-          <div class="row">
-
-            <div class="col-md-12">
-              <div id="map"></div>
-            </div>
-
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" id="query" class="form-control" placeholder="">
         </div>
-        <div class="row">
-            <div class="col-md-12" ng-controller="NewsListCtrl">
-              <div class="articles-box">
-                <div id="title-div">
-                  <div class="navbar-collapse collapse">
+        <button type="submit" id="search" class="btn btn-default">Search</button>
+      </form>
+    </div>
+  </nav>
 
-                    <ul class="nav navbar-nav">
-                      <li>
-                        <div id="title">
-                          <h3 class="text-center">News Stories Here</h3>
-                        </div>
-                      </li>
-                    </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                      <li class="dropdown">
-                        <a href="#" id="searchDropdown" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-search"></span><b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                          <li>
-
-
-                            <div style="width: 250px; margin: 20px;">
-                            <small class="muted" style="color: #333; text-shadow: 0px 0px 0px;">Note: Search results show <u>global</u> sentiment.</small><br>
-                              <form role="form" class="form-inline" style="margin-top: 10px;">
-                                <div class="input-group">
-                                  <input type="text" class="form-control form-control-sm" id="query" placeholder="Search Topic">
-                                  <span class="input-group-btn">
-                                  <button class="btn btn-primary" type="submit" id="search">Go!</button>
-                                  </span>
-                                </div>
-                              </form>
-                              <br>
-                              <form role="form" class="form-inline">
-                                <div class="input-group">
-                                  <input type="text" class="form-control form-control-sm" id="place" placeholder="Search Place">
-                                  <span class="input-group-btn">
-                                  <button class="btn btn-primary" type="submit" id="searchPlace">Go!</button>
-                                  </span>
-                                </div>
-                              </form>
-                            </div>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-
-                  </div>
-                </div>
-
-                <div class="articles">
-                  <div class="text-center">
-                    <p class="lead">Click on a country.</p>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-            <div class="container">
-              <div class="footer">
-                <p id="explanation">Selecting a country retrieves associated news, extracts other mentioned countries, and analyzes the sentiment of the story to color the map red or green for <span class="very-positive">good</span> and <span class="very-negative">bad</span> relationships.</p>
-
-                <p>Project by
-                  <a href="http://rkuykendall.com/">Robert Kuykendall</a>,
-                  <a href="https://github.com/shensi9">Shensi Ding</a>,
-                  <a href="https://github.com/sahil-ansari">Sahil Ansari</a>, and
-                  <a href="https://github.com/captainbox22">Bo Xu</a>.
-                </p>
-                <p>Map by <a href="http://www.tnoda.com/blog/2013-12-07">tnoda</a> &mdash; Fork us on <a href="https://github.com/rkuykendall/dmst-temp-repo">Github</a>.</p>
-              </div>
-            </div>
-
-          </div>
+  <div id="map-background">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div id="map"></div>
         </div>
       </div>
     </div>
-    <div id="countryInfo"></div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://d3js.org/topojson.v1.min.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
+  </div>
 
-    <script src="static/js/main.js"></script>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="articles-box">
+          <h1 id="title">Welcome! Click on any country to begin reading.</h3>
+          <div class="articles"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row footer">
+      <div class="col-md-12">
+        <p id="explanation">Selecting a country retrieves associated news, extracts other mentioned countries, and analyzes the sentiment of the story to color the map red or green for <span class="very-positive">good</span> and <span class="very-negative">bad</span> relationships.</p>
+        <p>
+          Project by
+          <a href="http://rkuykendall.com/">Robert Kuykendall</a>,
+          <a href="https://github.com/shensi9">Shensi Ding</a>,
+          <a href="https://github.com/sahil-ansari">Sahil Ansari</a>, and
+          <a href="https://github.com/captainbox22">Bo Xu</a>.
+        </p>
+        <p>Map by <a href="http://www.tnoda.com/blog/2013-12-07">tnoda</a> &mdash; Fork us on <a href="https://github.com/rkuykendall/dmst-temp-repo">Github</a>.</p>
+      </div>
+    </div>
+  </div>
 
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  <div id="countryInfo"></div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script src="static/js/bootstrap.min.js"></script>
 
-      ga('create', 'UA-11153057-10', 'iris-app.herokuapp.com');
-      ga('send', 'pageview');
+  <script src="static/js/main.js"></script>
 
-    </script>
-  </body>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-11153057-10', 'iris-app.herokuapp.com');
+  ga('send', 'pageview');
+  </script>
+</body>
 </html>
