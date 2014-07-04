@@ -1,6 +1,7 @@
 var places;
 
 $(document).ready(function () {
+   $("#countryInfo").html("").css("display", "none");
 
    $("#search").click(function (event) {
       $("#searchDropdown").dropdown("toggle");
@@ -78,13 +79,11 @@ d3.json("static/json/countries.topo.json", function (error, us) {
          if (sentiment == null) {
             sentiment = 0;
          }
-         $("#countryInfo").html(d.properties.name);
-      		document.getElementById("countryInfo").style.display="block";
+         $("#countryInfo").html(d.properties.name).css("display", "block");
       })
       .on("mouseout", function (e) {
           d3.select(this).classed("selected", false);
-      		document.getElementById("countryInfo").style.display="none";
-         $("#countryInfo").html("");
+          $("#countryInfo").html("").css("display", "none");
       });
 });
 
@@ -105,6 +104,7 @@ NProgress.configure({ trickleRate: 0.05, trickleSpeed: 400 });
 
 function requestStories(query) {
     NProgress.start();
+
     g.selectAll("#countries *").classed("negative very-negative positive very-positive neutral", false);
     g.selectAll("#countries *").attr("sentiment", 0);
     $("#title").html("<h1>" + query + "</h1>");
@@ -120,8 +120,8 @@ function requestStories(query) {
       $.each(data, function (key, val) {
 
          story = '<div class="story" id="'+key+'">'
-            +'<h5><a href="'+val.source+'" target="_blank">'+val.title+'</a> '
-            +val.countries.join(", ")+': '+val.sentiment+'</h5>'
+            +'<h5><a href="'+val.source+'" target="_blank">'+val.title+'</a><br />'
+            +Math.floor(val.sentiment)+' sentiment for '+val.countries.join(", ")+'</h5>'
             +'<small>'+val.summary+'</small></div>';
 
          if (val.sentiment > 0) {

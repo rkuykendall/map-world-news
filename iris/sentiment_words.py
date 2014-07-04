@@ -288,3 +288,8 @@ SENTIMENT_WORDS = json.loads('''{"abandon":-2, "abandoned":-2, "abandons":-2, "a
  "worn":-1, "worried":-3, "worry":-3, "worrying":-3, "worse":-3, "worsen":-3, "worsened":-3, "worsening":-3, "worsens":-3, "worshiped":3,
  "worst":-3, "worth":2, "worthless":-2, "worthy":2, "wow":4, "wowow":4, "wowww":4, "wrathful":-3, "wreck":-2, "wrong":-2, "wronged":-2, "wtf":-4,
  "yeah":1, "yearning":1, "yeees":2, "yes":1, "youthful":2, "yucky":-2, "yummy":3, "zealot":-2, "zealots":-2, "zealous":2}''')
+
+
+# SENTIMENT_WORDS = dict(SENTIMENT_WORDS.items() + json.loads('''{
+# "victory":2, "gunman":-3, "epidemic":-3,
+# }''').items())

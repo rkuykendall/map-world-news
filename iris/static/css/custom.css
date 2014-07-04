@@ -42,3 +42,7 @@ nav.navbar {
 .story {
     padding-bottom: 20px
 }
+
+#footer ol li {
+    margin-bottom: 0.5em;
+}
