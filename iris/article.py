@@ -5,7 +5,8 @@ import datetime
 
 from sqlalchemy import *
 
-from iris import Base, engine, session
+from iris import Base, engine, session, log
+from sentiment import text2sentiment
 
 # Removed: 'SM': 'SMR',
 two2three = {
@@ -82,7 +83,7 @@ class Article(Base):
             return "Cached"
         else:
             if (allowance > 0):
-                print "Running extraction =>",
+                log.info("Running extraction =>")
                 # response=urllib2.urlopen(self.source)
                 # html=response.read()
                 # target=self.dstk.html2story(html)
@@ -96,24 +97,25 @@ class Article(Base):
                 apiSummary = apiSummary.encode('ascii', 'ignore')
 
                 #replace U.S. with United States!!!
-                target=target.replace ("U.S.", "United States")
-                target=target.replace ("U.S.A", "United States")
-                target=target.replace ("America", "United States")
-                target=target.replace ("Obama", "United States")
+                target = target.replace ("U.S.", "United States")
+                target = target.replace ("U.S.A", "United States")
+                target = target.replace ("America", "United States")
+                target = target.replace ("Obama", "United States")
 
-                target=target.replace ("U.K.", "England")
-                target=target.replace ("Britain", "England")
-                target=target.replace ("England", "England")
-                target=target.replace ("London", "England")
+                target = target.replace ("U.K.", "England")
+                target = target.replace ("Britain", "England")
+                target = target.replace ("England", "England")
+                target = target.replace ("London", "England")
 
                 target=target.replace ("Kim Jong-Un", "Democratic Republic of Korea")
 
                 self.places = self.dstk.text2places(target)
-                self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
+                # self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
+                self.sentiment = text2sentiment(apiSummary)
 
                 session.add(self)
 
-                print "Done."
+                log.info("Done.")
                 return "Extracted"
             else:
                 return "Remove"

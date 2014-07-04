@@ -1,4 +1,6 @@
+import sys
 import os
+import logging
 
 from flask import Flask
 from sqlalchemy import create_engine
@@ -15,3 +17,9 @@ engine = create_engine(iris.config["DATABASE_URI"])
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 session = Session()
+
+log = logging.getLogger('iris_logger')
+log.setLevel(logging.DEBUG)
+out_hdlr = logging.StreamHandler(sys.stdout)
+out_hdlr.setLevel(logging.INFO)
+log.addHandler(out_hdlr)

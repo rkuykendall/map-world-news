@@ -4,7 +4,7 @@ import re
 import feedparser
 
 from article import Article
-from iris import session
+from iris import session, log
 
 class Feed:
     '''Stores a list of articles.'''
@@ -16,7 +16,7 @@ class Feed:
             self.add_feed(feed)
 
     def add_feed(self, feed):
-        print "Adding feed =>",
+        log.info("Adding feed =>")
 
         f = feedparser.parse(feed)
         for item in f['entries']:
@@ -43,7 +43,7 @@ class Feed:
                 # Add the article if it doesn't already exist
                 self.articles[a.id] = a
 
-        print "Done"
+        log.info("Done")
 
     def prune(self):
         num = session.query(Article.id).count()
@@ -52,7 +52,7 @@ class Feed:
                 session.delete(article)
 
     def extract(self):
-        allowance = 4
+        allowance = 8
         iterate = self.articles.keys()
 
         for a_id in iterate:
