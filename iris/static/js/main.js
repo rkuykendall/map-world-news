@@ -5,28 +5,12 @@ $(document).ready(function () {
    $("#search").click(function (event) {
       $("#searchDropdown").dropdown("toggle");
 
-      // Previous selection
       if (country) {
          g.selectAll("#" + country.id).classed("selected", false);
       }
 
-      // console.log($("#query").val());
       requestStories($("#query").val());
 
-      // $("#query").submit();
-      event.preventDefault();
-      return false;
-   });
-
-   $("#searchPlace").click(function (event) {
-
-      // Previous selection
-      if (country) {
-         g.selectAll("#" + country.id).classed("selected", false);
-      }
-
-      // console.log($("#place").val());
-      requestStories($("#place").val());
       event.preventDefault();
       return false;
    });
@@ -53,8 +37,8 @@ var m_width = $("#map").width(),
    state;
 
 var projection = d3.geo.mercator()
-   .scale(130)
-   .translate([width / 2, height / 1.6]);
+   .scale(150)
+   .translate([width / 2, height / 1.5]);
 
 var path = d3.geo.path()
    .projection(projection);
@@ -96,7 +80,6 @@ d3.json("static/json/countries.topo.json", function (error, us) {
          }
          $("#countryInfo").html(d.properties.name);
       		document.getElementById("countryInfo").style.display="block";
-         //$("#countryInfo").html(this.name);
       })
       .on("mouseout", function (e) {
           d3.select(this).classed("selected", false);
@@ -118,32 +101,37 @@ function country_clicked(d) {
    }
 }
 
+NProgress.configure({ trickleRate: 0.05, trickleSpeed: 400 });
+
 function requestStories(query) {
+    NProgress.start();
     g.selectAll("#countries *").classed("negative very-negative positive very-positive neutral", false);
     g.selectAll("#countries *").attr("sentiment", 0);
-    $("#title").html("<h3 class=\"text-center\" style=\"margin-top: 10px;\">" + query + "</h3>");
-
-    $(".articles").html("<br><br><br><center><img src=\"static/loader.gif\"><center>");
+    $("#title").html("<h1>" + query + "</h1>");
 
     url = "/" + query + "_articles.json";
 
    $.getJSON(url, function (data) {
-      var items = [];
+      var items_positive = [];
+      var items_negative = [];
+      var items_neutral = [];
+
       var i = 1;
       $.each(data, function (key, val) {
 
-         // if(val.countries.length == 0) {
-         //   val.countries = ["None found"];
-         // }
-         // console.dir(val.countries);
-         items.push(
-            // "<div class=\"story\" id=\"story"+i+"\">" + "<p>"
-            '<div class="story col-lg-3 col-md-4 col-sm-12" id="' + key + '">'
-            + '<h5>' + val.title + '</h5>' + '<small class="text-muted">' + val.summary + '</small><br><br>'
-            + '<small>Sentiment: <i class="text-muted">' + val.sentiment + '</i><br>Countries: <i class="text-muted">' + val.countries.join(", ") + '</i></small><br><br>'
-            + '<h5 class="text-right"><a class="text-right" href="' + val.source + '" target="_blank" class="text-right"><span class="glyphicon glyphicon-link"></span> View Source</a></h5>' + "</div>");
-         // console.log(val.link);
-         // console.log(val.sentiment);
+         story = '<div class="story" id="'+key+'">'
+            +'<h5><a href="'+val.source+'" target="_blank">'+val.title+'</a> '
+            +val.countries.join(", ")+': '+val.sentiment+'</h5>'
+            +'<small>'+val.summary+'</small></div>';
+
+         if (val.sentiment > 0) {
+             items_positive.push(story);
+         } else if (val.sentiment < 0) {
+             items_negative.push(story);
+         } else {
+             items_neutral.push(story);
+         }
+
          i++;
          val.countries.forEach(function (entry) {
             original = entry;
@@ -181,12 +169,10 @@ function requestStories(query) {
          });
       });
 
-    $(".articles").html("<ul class=\"list-unstyled\" style=\"margin-bottom: 0px;\">" + items.join("\n") + "</ul>")
-
-    $(".story").mouseover(function (event) {
-      event.preventDefault();
-      return false;
-    });
+    $("#items_positive").html("<ul class=\"list-unstyled\" style=\"margin-bottom: 0px;\"><h3>Positive</h3>" + items_positive.join("\n") + "</ul>")
+    $("#items_neutral").html("<ul class=\"list-unstyled\" style=\"margin-bottom: 0px;\"><h3>Neutral</h3>" + items_neutral.join("\n") + "</ul>")
+    $("#items_negative").html("<ul class=\"list-unstyled\" style=\"margin-bottom: 0px;\"><h3>Negative</h3>" + items_negative.join("\n") + "</ul>")
+    NProgress.done();
   });
 }
 
