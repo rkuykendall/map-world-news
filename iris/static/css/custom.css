@@ -1,7 +1,7 @@
 nav.navbar {
     background-color: white;
     margin-bottom: 0px;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid #2e3540;
 }
 
 .navbar a:link, .navbar a:visited
@@ -9,11 +9,11 @@ nav.navbar {
 .navbar-form .btn-default,
 .form-control,
 .navbar-default .navbar-brand {
-    color: #000;
+    color: #2e3540;
     text-shadow: none;
     box-shadow: none;
-    color: black;
-    border-color: black;
+    color: #2e3540;
+    border-color: #2e3540;
 }
 
 .navbar a:hover, .navbar a:focus,
@@ -26,19 +26,19 @@ nav.navbar {
     box-shadow: none
 }
 
-
 #countryInfo {
-  color: #fff;
+  color: #000;
   display: block;
   position: absolute;
   top: -50px;
   left: -50px;
+  margin: 5px 15px;
   padding: 5px 10px;
-  background-color: rgba(0,0,0,0.6);
-  border-radius: 1px;
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid #2e3540;
 }
 
-
 .story {
-  height: 320px;
+    padding-bottom: 20px
 }

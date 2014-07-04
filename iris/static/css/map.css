@@ -1,5 +1,5 @@
 #map-background {
-  background-color: #A7DBD8;
+  background-color: #2e3540;
 }
 
 .background {
@@ -8,35 +8,36 @@
 }
 
 #countries {
-  fill: #fff;
-  stroke: #556270;
-  stroke-width:0.5;
+  cursor: pointer;
+  fill: #474e5b;
+  stroke: #2e3540;
+  stroke-width:1;
   stroke-linejoin: miter;
   stroke-linecap: butt;
 }
 
 .selected,
 #countries .selected {
-    fill: #556270;
-    color: #556270;
-  }
-  .neutral {
     fill: #ffffff;
     color: #ffffff;
   }
+  .neutral {
+    fill: #40dee3;
+    color: #40dee3;
+  }
   .positive {
-    fill: #a5edaf;
-    color: #a5edaf;
+    fill: #67ff8c;
+    color: #67ff8c;
   }
   .very-positive {
-    fill: #4cdb60;
-    color: #4cdb60;
+    fill: #67ff8c;
+    color: #67ff8c;
   }
   .negative {
-    fill: #f9aaaa;
-    color: #f9aaaa;
+    fill: #f61f55;
+    color: #f61f55;
   }
   .very-negative {
-    fill: #f35555;
-    color: #f35555;
+    fill: #f61f55;
+    color: #f61f55;
 }
