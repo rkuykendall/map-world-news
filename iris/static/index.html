@@ -22,6 +22,10 @@
         <a class="navbar-brand" href="#">IRIS World News Visualization</a>
       </div>
 
+      <ul class="nav navbar-nav">
+        <li><a href="#">Top Stories</a></li>
+      </ul>
+
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" id="query" class="form-control" placeholder="">
@@ -42,6 +46,18 @@
   </div>
 
   <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="articles-box">
+          <h1 id="title"></h3>
+          <div class="row">
+              <div class="col-sm-12 col-md-4" id="items_positive"></div>
+              <div class="col-sm-12 col-md-4" id="items_neutral"></div>
+              <div class="col-sm-12 col-md-4" id="items_negative"></div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="footer" class="row">
       <div class="col-md-6">
         <h3>How it works.</h3>
@@ -66,18 +82,6 @@
            and Pete Warden for the <a href="http://www.datasciencetoolkit.org/">Data Science Toolkit</a>.</p>
 
         <p>Fork the project on <a href="https://github.com/rkuykendall/dmst-temp-repo">Github</a>.</p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="articles-box">
-          <h1 id="title"></h3>
-          <div class="row">
-              <div class="col-sm-12 col-md-4" id="items_positive"></div>
-              <div class="col-sm-12 col-md-4" id="items_neutral"></div>
-              <div class="col-sm-12 col-md-4" id="items_negative"></div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

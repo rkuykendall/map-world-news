@@ -79,7 +79,14 @@ d3.json("static/json/countries.topo.json", function (error, us) {
          if (sentiment == null) {
             sentiment = 0;
          }
-         $("#countryInfo").html(d.properties.name).css("display", "block");
+
+         if (sentiment < 0) {
+            $("#countryInfo").html(d.properties.name+ ", " + sentiment + " sentiment").css("display", "block");
+         } else if (sentiment > 0) {
+            $("#countryInfo").html(d.properties.name+ ", +" + sentiment + " sentiment").css("display", "block");
+         } else {
+            $("#countryInfo").html(d.properties.name).css("display", "block");
+         }
       })
       .on("mouseout", function (e) {
           d3.select(this).classed("selected", false);
@@ -108,6 +115,8 @@ function requestStories(query) {
     g.selectAll("#countries *").classed("negative very-negative positive very-positive neutral", false);
     g.selectAll("#countries *").attr("sentiment", 0);
     $("#title").html("<h1>" + query + "</h1>");
+    $("#footer").css("border-top", "1px solid #ddd");
+
 
     url = "/" + query + "_articles.json";
 
