@@ -2,10 +2,6 @@
   background-color: #2e3540;
 }
 
-#map {
-    background: transparent url("/static/img/key.png") no-repeat left 312px;
-}
-
 .background {
   fill: none;
   pointer-events: all;
