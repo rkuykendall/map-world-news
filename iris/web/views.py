@@ -20,8 +20,17 @@ def articles():
     return feed.to_json()
 
 
+@iris.route('/category_<category>_articles.json')
+def category_articles(category):
+    url="http://api.feedzilla.com/v1/categories/"+category+"/articles.atom?count=50"
+    feed = Feed(url)
+
+    feed.extract()
+    return feed.to_json()
+
+
 @iris.route('/<country>_articles.json')
-def country_articles(country=None):
+def country_articles(country):
     country=country.encode('ascii', 'ignore')
     country=country.replace("Dem.", "Democratic")
     country=country.replace("Rep.", "Republic")

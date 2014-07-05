@@ -1,11 +1,55 @@
 var places;
 
+CATEGORIES = {
+    2: "Industry",
+    3: "Politics",
+    4: "Society",
+    5: "Celebrities",
+    6: "Entertainment",
+    7: "USA",
+    8: "Science",
+    9: "Video Games",
+    10: "Products",
+    11: "Health",
+    12: "Universities",
+    13: "Art",
+    14: "Hobbies",
+    15: "IT",
+    16: "Programming",
+    17: "Events",
+    18: "Religion And Spirituality",
+    19: "World News",
+    20: "Life Style",
+    21: "Blogs",
+    22: "Business",
+    23: "Travel",
+    25: "Fun Stuff",
+    26: "Top News",
+    27: "Sports",
+    28: "Internet",
+    29: "Music",
+    30: "Technology",
+    31: "Top Blogs",
+    33: "Jobs",
+    34: "Shopping",
+    36: "Oddly Enough",
+    588: "Columnists",
+    590: "Video",
+    591: "Law",
+    1168: "General",
+    1314: "Sports"
+}
+
 $(document).ready(function () {
     $("#countryInfo").html("").css("display", "none");
 
-    $("#search").click(function (event) {
-        $("#searchDropdown").dropdown("toggle");
+    $(".category").click(function (event) {
+        requestStories("category_"+$(this).attr('href'));
+        event.preventDefault();
+        return false;
+    });
 
+    $("#search").click(function (event) {
         if (country) {
             g.selectAll("#" + country.id).classed("selected", false);
         }
@@ -117,7 +161,13 @@ function requestStories(query) {
 
     g.selectAll("#countries *").classed("negative very-negative positive very-positive neutral", false);
     g.selectAll("#countries *").attr("sentiment", 0);
-    $("#title").html("<h1>" + query + "</h1>");
+
+    if (query.substring(0, 9) == 'category_') {
+        console.log(query.substring(9));
+        $("#title").html("<h1>" + CATEGORIES[parseInt(query.substring(9))] + "</h1>");
+    } else {
+        $("#title").html("<h1>" + query + "</h1>");
+    }
     $("#footer").css("border-top", "1px solid #ddd");
 
 
@@ -137,12 +187,23 @@ function requestStories(query) {
             title = '<h5><a href="' + val.source + '" target="_blank">'
                   + val.title + '</a></h5>';
 
+            tag = ''
             if (val.sentiment > 0) {
-                tag = '+'+Math.floor(val.sentiment) + ' sentiment for ' + val.countries.join(", ")
+                tag = '+'+Math.floor(val.sentiment) + ' sentiment';
+                if (val.countries.length > 0) {
+                    tag +=  ' for ' + val.countries.join(", ");
+                }
+                tag += '.';
             } else if (val.sentiment < 0) {
-                tag = Math.floor(val.sentiment) + ' sentiment for ' + val.countries.join(", ")
+                tag = Math.floor(val.sentiment) + ' sentiment';
+                if (val.countries.length > 0) {
+                    tag +=  ' for ' + val.countries.join(", ");
+                }
+                tag += '.';
             } else {
-                tag = val.countries.join(", ")
+                if (val.countries.length > 0) {
+                    tag = val.countries.join(", ") + ' mentioned.';
+                }
             }
             tag = '<strong>'+tag+'</strong>';
 
