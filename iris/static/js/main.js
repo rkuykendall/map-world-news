@@ -40,6 +40,10 @@ CATEGORIES = {
     1314: "Sports"
 }
 
+function disp_num(n) {
+    return parseFloat(parseFloat(n).toFixed(1));
+}
+
 $(document).ready(function () {
     $("#countryInfo").html("").css("display", "none");
 
@@ -60,13 +64,6 @@ $(document).ready(function () {
         return false;
     });
 
-    $("#place").submit(function (event) {
-        if (country) {
-            g.selectAll("#" + country.id).classed("selected", false);
-        }
-        event.preventDefault();
-    });
-
     $(document).on('mousemove', function (e) {
         $('#countryInfo').css({
             left: e.pageX,
@@ -78,8 +75,11 @@ $(document).ready(function () {
 var m_width = $("#map").width(),
     width = 1000,
     height = 360,
-    country,
-    state;
+    country;
+
+var rainbow = new Rainbow();
+rainbow.setSpectrum('f61f55', '40dee3', '67ff8c');
+rainbow.setNumberRange(-200, 200);
 
 var projection = d3.geo.mercator()
     .scale(150)
@@ -125,9 +125,9 @@ d3.json("static/json/countries.topo.json", function (error, us) {
             }
 
             if (sentiment < 0) {
-                $("#countryInfo").html(d.properties.name + ", " + sentiment + " sentiment").css("display", "block");
+                $("#countryInfo").html(d.properties.name + ", " + disp_num(sentiment) + " sentiment").css("display", "block");
             } else if (sentiment > 0) {
-                $("#countryInfo").html(d.properties.name + ", +" + sentiment + " sentiment").css("display", "block");
+                $("#countryInfo").html(d.properties.name + ", +" + disp_num(sentiment) + " sentiment").css("display", "block");
             } else {
                 $("#countryInfo").html(d.properties.name).css("display", "block");
             }
@@ -159,7 +159,7 @@ NProgress.configure({
 function requestStories(query) {
     NProgress.start();
 
-    g.selectAll("#countries *").classed("negative very-negative positive very-positive neutral", false);
+    g.selectAll("#countries *").style("fill", null);
     g.selectAll("#countries *").attr("sentiment", 0);
 
     if (query.substring(0, 9) == 'category_') {
@@ -188,8 +188,9 @@ function requestStories(query) {
                   + val.title + '</a></h5>';
 
             tag = ''
+
             if (val.sentiment > 0) {
-                tag = '+'+Math.floor(val.sentiment) + ' sentiment';
+                tag = '+'+disp_num(val.sentiment) + ' sentiment';
                 if (val.countries.length > 0) {
                     tag +=  ' for ' + val.countries.join(", ");
                 }
@@ -228,31 +229,11 @@ function requestStories(query) {
                 if (entry.empty()) {
                     console.log("Error. Country not found: " + original);
                 } else {
-                    current = parseInt(entry.attr("sentiment"));
-                    entry.attr("sentiment", current + val.sentiment);
+                    current_sentiment = parseFloat(entry.attr("sentiment"));
+                    new_sentiment = current_sentiment + val.sentiment;
+                    entry.attr("sentiment", new_sentiment);
 
-                    entry.classed("negative very-negative positive very-positive neutral", false);
-
-                    // Very bad -3 or higher
-                    if (entry.attr("sentiment") < -2) {
-                        entry.classed("very-negative", true);
-
-                        // Bad, -1 to -2
-                    } else if (entry.attr("sentiment") < 0) {
-                        entry.classed("negative", true);
-
-                        // Very good, 3 or higher
-                    } else if (entry.attr("sentiment") > 2) {
-                        entry.classed("very-positive", true);
-
-                        // Good, 1-2
-                    } else if (entry.attr("sentiment") > 0) {
-                        entry.classed("positive", true);
-
-                        // Neutral, 0
-                    } else if (entry.attr("sentiment") == 0) {
-                        entry.classed("neutral", true);
-                    }
+                    entry.style("fill", "#"+rainbow.colourAt(Math.round(new_sentiment*100)));
                 }
             });
         });

@@ -1,3 +1,15 @@
+body {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    font-weight: 800;
+}
+
+h2, h3 {
+    font-weight: 600;
+}
+
 nav.navbar {
     background-color: white;
     margin-bottom: 0px;
@@ -9,7 +21,6 @@ nav.navbar {
 .navbar-form .btn-default,
 .form-control,
 .navbar-default .navbar-brand {
-    color: #2e3540;
     text-shadow: none;
     box-shadow: none;
     color: #2e3540;
@@ -40,7 +51,24 @@ nav.navbar {
 }
 
 .story {
-    padding-bottom: 20px
+    border-top: 1px solid #ddd;
+    padding-bottom: 20px;
+}
+
+.story h5,
+.story h5 a {
+    padding-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.story strong {
+    font-weight: 600;
+}
+
+.story p {
+    margin-top: 1em;
 }
 
 #footer {

@@ -2,6 +2,10 @@
   background-color: #2e3540;
 }
 
+#map {
+    background: transparent url("/static/img/key.png") no-repeat left 312px;
+}
+
 .background {
   fill: none;
   pointer-events: all;
@@ -26,16 +30,16 @@
     color: #40dee3;
   }
   .positive {
-    fill: #67ff8c;
-    color: #67ff8c;
+    fill: #4ffcb4;
+    color: #4ffcb4;
   }
   .very-positive {
     fill: #67ff8c;
     color: #67ff8c;
   }
   .negative {
-    fill: #f61f55;
-    color: #f61f55;
+    fill: #8b8aac;
+    color: #8b8aac;
   }
   .very-negative {
     fill: #f61f55;
