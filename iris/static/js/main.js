@@ -234,7 +234,7 @@ function requestStories(query) {
                     entry.attr("sentiment", new_sentiment);
 
                     entry.style("fill", "#"+rainbow.colourAt(Math.round(new_sentiment*100)));
-                    $("#map").css("background", "transparent url('/static/img/key.png') no-repeat left 312px");
+                    $("#map").css("background-image", "url('/static/img/key.png')");
                 }
             });
         });
