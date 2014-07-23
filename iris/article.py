@@ -16,6 +16,7 @@ class TextPickleType(PickleType):
 
 class Article(Base):
     '''Stores received and computed article data.'''
+
     __tablename__ = 'articles'
 
     id = Column(Integer, primary_key=True)
@@ -29,9 +30,12 @@ class Article(Base):
         self.sentiment = 0
 
     def extract(self, allowance):
-        '''Check to see if the article is in the database.
-           If it is, get the old data. If it's not, then
-           extract the data and decrement the allowance.'''
+        """
+        Extracts location and sentiment from an article.
+
+        Check to see if the article is in the database. If it is, get the old
+        data. If it's not, then extract the data and decrement the allowance.
+        """
 
         query = session.query(Article).get(self.id)
 

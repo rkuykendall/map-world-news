@@ -1,3 +1,8 @@
+"""
+The COUNTRY_NAMES const is a hash of alpha-3 country codes containing lists
+of country names and aliases.
+"""
+
 COUNTRY_NAMES = {
     'ABW': ["aruba"],
     'AFG': ["afghanistan"],

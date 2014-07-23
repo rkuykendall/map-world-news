@@ -7,7 +7,9 @@ from article import Article
 from iris import session, log
 
 class Feed:
-    '''Stores a list of articles.'''
+    """
+    Feed stores a list of articles and cleans up Feedzilla junk.
+    """
 
     def __init__(self, feed=None):
         self.articles = {}
@@ -46,12 +48,25 @@ class Feed:
         log.info("Done")
 
     def prune(self):
+        """
+        Prune the cached extractions database to keep below 10,000 records,
+        the free limit on Heroku.
+        """
+
         num = session.query(Article.id).count()
         if(num > 9950):
-            for article in session.query(Article).order_by(Article.last_referenced.asc()).limit(500):
+            for article in session.query(Article
+                ).order_by(Article.last_referenced.asc()
+                ).limit(500):
+
                 session.delete(article)
 
     def extract(self):
+        """
+        Extract location and sentiment data from the articles contained within
+        this feed.
+        """
+
         allowance = 200
         iterate = self.articles.keys()
 
@@ -67,6 +82,8 @@ class Feed:
         session.commit()
 
     def to_json(self):
+        """ Format this feed as single JSON response. """
+
         response = []
         for a_id in self.articles:
             a = self.articles[a_id]

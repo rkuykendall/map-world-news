@@ -9,9 +9,13 @@ from iris.iris import iris, session
 
 web = Blueprint('web', __name__, template_folder='')
 
+
 @iris.route('/')
 def homepage():
+    """ Serve up static homepage. This is the only user-facing route. """
+
     return iris.send_static_file('index.html')
+
 
 @iris.route('/articles.json')
 def articles():
@@ -22,6 +26,10 @@ def articles():
 
 @iris.route('/category_<category>_articles.json')
 def category_articles(category):
+    """
+    Returns JSON of 100 most recent articles from the category requested.
+    """
+
     url="http://api.feedzilla.com/v1/categories/"+category+"/articles.atom?count=50"
     feed = Feed(url)
 
@@ -31,6 +39,11 @@ def category_articles(category):
 
 @iris.route('/<country>_articles.json')
 def country_articles(country):
+    """
+    Returns a JSON just of articles that come up when doing a search for the
+    name of the country clicked.
+    """
+
     country=country.encode('ascii', 'ignore')
     country=country.replace("Dem.", "Democratic")
     country=country.replace("Rep.", "Republic")
@@ -60,6 +73,11 @@ def country_articles(country):
     return feed.to_json()
 
 
-@iris.route('/admin/count_cache')
+@iris.route('/count_cache')
 def count_cache():
+    """
+    Extreamly simple view of number of currently cached articles, just so I
+    can see how the system is doing.
+    """
+
     return str(session.query(Article.id).count())
