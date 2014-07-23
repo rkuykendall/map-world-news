@@ -52,7 +52,7 @@ class Feed:
                 session.delete(article)
 
     def extract(self):
-        allowance = 8
+        allowance = 200
         iterate = self.articles.keys()
 
         for a_id in iterate:
