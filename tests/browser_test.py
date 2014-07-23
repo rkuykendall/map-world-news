@@ -26,10 +26,6 @@ class TestBrowser(unittest.TestCase):
         assert "World News" in self.driver.title
 
     def search_test(self):
-        element = self.driver.find_element_by_id("searchDropdown")
-        element.send_keys(Keys.RETURN)
-
-
         element = self.driver.find_element_by_id("query")
         element.send_keys("Oil")
         element.send_keys(Keys.RETURN)
