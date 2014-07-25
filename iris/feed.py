@@ -18,7 +18,7 @@ class Feed:
             self.add_feed(feed)
 
     def add_feed(self, feed):
-        log.info("Adding feed =>")
+        log.info("Retrieving feed.")
 
         f = feedparser.parse(feed)
         for item in f['entries']:
@@ -45,8 +45,6 @@ class Feed:
                 # Add the article if it doesn't already exist
                 self.articles[a.id] = a
 
-        log.info("Done")
-
     def prune(self):
         """
         Prune the cached extractions database to keep below 10,000 records,
@@ -67,6 +65,8 @@ class Feed:
         this feed.
         """
 
+        log.info("Extracing all articles in feed.")
+
         allowance = 200
         iterate = self.articles.keys()
 
@@ -83,6 +83,8 @@ class Feed:
 
     def to_json(self):
         """ Format this feed as single JSON response. """
+
+        log.info("Rendering feed to JSON.")
 
         response = []
         for a_id in self.articles:

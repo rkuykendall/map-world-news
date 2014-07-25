@@ -49,7 +49,8 @@ class TestArticle(unittest.TestCase):
         self.assertEqual(self.article1.author,'Sam Frizell')
 
     def test_location(self):
-        self.assertEqual(self.article1.places[0]['name'],'Malaysia')
+        print self.article1.countries
+        self.assertEqual('MYS' in self.article1.countries)
 
     def test_sentiment(self):
         self.assertEqual(self.article1.sentiment,-2.0)

@@ -5,7 +5,7 @@ from flask import (
 
 from iris.feed import Feed
 from iris.article import Article
-from iris.iris import iris, session
+from iris.iris import iris, session, log
 
 web = Blueprint('web', __name__, template_folder='')
 
@@ -32,8 +32,9 @@ def category_articles(category):
 
     url="http://api.feedzilla.com/v1/categories/"+category+"/articles.atom?count=50"
     feed = Feed(url)
-
     feed.extract()
+
+    log.info("Returning JSON results.")
     return feed.to_json()
 
 
@@ -57,7 +58,8 @@ def country_articles(country):
     country=country.replace("S. Sudan", "South Sudan")
 
     country=country.replace(" ", "_")
-    print country
+
+    log.info("User requested feed for '{}'".format(country))
 
     url1="http://api.feedzilla.com/v1/categories/19/articles/search.atom?q="+country+"&count=50"
     feed = Feed(url1)
@@ -70,6 +72,8 @@ def country_articles(country):
     # feed.filter_country(country)
 
     feed.extract()
+
+    log.info("Returning JSON results.")
     return feed.to_json()
 
 
