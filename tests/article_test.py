@@ -2,7 +2,7 @@ import unittest
 import os
 
 # Set enviornment before importing any database classes
-os.environ["CONFIG_PATH"] = "database.TestingConfig"
+os.environ["CONFIG_PATH"] = "iris.config.TestingConfig"
 from iris.feed import Feed
 from reset_db import create_db, destroy_db
 
@@ -49,8 +49,7 @@ class TestArticle(unittest.TestCase):
         self.assertEqual(self.article1.author,'Sam Frizell')
 
     def test_location(self):
-        print self.article1.countries
-        self.assertEqual('MYS' in self.article1.countries)
+        assert 'MYS' in self.article1.countries
 
     def test_sentiment(self):
         self.assertEqual(self.article1.sentiment,-2.0)
