@@ -43,7 +43,7 @@ class TestArticle(unittest.TestCase):
         self.article1.extract(1)
 
     def selfDown(self):
-        destroy_db
+        destroy_db()
 
     def test_name(self):
         self.assertEqual(self.article1.author,'Sam Frizell')

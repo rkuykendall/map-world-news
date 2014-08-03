@@ -39,7 +39,11 @@ def text2sentiment(text):
         except IndexError:
             third_word = ''
 
-        for candidate in [word, ' '.join([word, second_word]), ' '.join([word, second_word, third_word])]:
+        for candidate in [
+                word, ' '.join([word, second_word]),
+                ' '.join([word, second_word,
+                third_word])]:
+
             try:
                 total += SENTIMENT_WORDS[candidate]
                 matches += 1

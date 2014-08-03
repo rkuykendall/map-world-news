@@ -239,9 +239,9 @@ function requestStories(query) {
             });
         });
 
-        $("#items_positive").html("<ul class=\"list-unstyled\" style=\"margin-bottom: 0px;\"><h3>Positive</h3>" + items_positive.join("\n") + "</ul>")
-        $("#items_neutral").html("<ul class=\"list-unstyled\" style=\"margin-bottom: 0px;\"><h3>Neutral</h3>" + items_neutral.join("\n") + "</ul>")
-        $("#items_negative").html("<ul class=\"list-unstyled\" style=\"margin-bottom: 0px;\"><h3>Negative</h3>" + items_negative.join("\n") + "</ul>")
+        $("#items_positive").html("<ul><h3>Positive</h3>" + items_positive.join("\n") + "</ul>")
+        $("#items_neutral").html("<ul><h3>Neutral</h3>" + items_neutral.join("\n") + "</ul>")
+        $("#items_negative").html("<ul><h3>Negative</h3>" + items_negative.join("\n") + "</ul>")
         NProgress.done();
     });
 }

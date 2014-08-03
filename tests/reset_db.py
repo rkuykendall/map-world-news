@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from iris.article import Article, Base, engine
+from iris.iris import Base, engine
 
 
 def destroy_db():

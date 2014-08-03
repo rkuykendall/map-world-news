@@ -1,11 +1,9 @@
-import dstk
 import json
-import urllib2
 import datetime
 
-from sqlalchemy import *
+from sqlalchemy import PickleType, Text, Integer, Column, DateTime
 
-from iris import Base, engine, session, log
+from iris import Base, session
 from sentiment import text2sentiment
 from country import extract_countries
 
@@ -24,10 +22,12 @@ class Article(Base):
     sentiment = Column(Integer)
     last_referenced = Column(DateTime, default=datetime.datetime.now)
 
-    dstk = dstk.DSTK()
-
     def __init__(self):
         self.sentiment = 0
+        self.title = ""
+        self.summary = ""
+        self.source = ""
+        self.trueSource = ""
 
     def extract(self, allowance):
         """
@@ -47,16 +47,13 @@ class Article(Base):
             return "Cached"
         else:
             if (allowance > 0):
-                apiSummary=self.title + ' ' + self.summary
-                # target = apiSummary+ ' ' + target
+                apiSummary = self.title + ' ' + self.summary
                 target = apiSummary
 
                 target = target.encode('ascii', 'ignore')
                 apiSummary = apiSummary.encode('ascii', 'ignore')
 
-                # self.places = self.dstk.text2places(target)
                 self.countries = extract_countries(target)
-                # self.sentiment = int(self.dstk.text2sentiment(apiSummary)['score'])
                 self.sentiment = text2sentiment(apiSummary)
 
                 session.add(self)
@@ -67,21 +64,13 @@ class Article(Base):
 
     def to_json(self):
         a = self
-        a.long= ""
-        a.lat= ""
-        # for place in a.places:
-        #     if place['type'] == "COUNTRY":
-        #         try:
-        #             a.countries.append(two2three[place['code']])
-        #         except KeyError, e:
-        #             # The EU is not a country.
-        #             pass
-
-        # Remove duplicates
         a.countries = list(set(a.countries))
 
-        # print place['longitude']
-        # a.long +=place['longitude'] + ","
-        # a.lat +=place['latitude'] + ","
-
-        return {'aid':a.id, 'title':a.title, 'summary':a.summary, 'sentiment':a.sentiment, 'link':a.source, 'countries':a.countries, 'long':a.long, 'lat':a.lat, 'source':a.trueSource}
+        return {
+            'aid': a.id,
+            'title': a.title,
+            'summary': a.summary,
+            'sentiment': a.sentiment,
+            'link': a.source,
+            'countries': a.countries,
+            'source': a.trueSource }

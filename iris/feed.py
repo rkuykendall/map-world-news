@@ -18,6 +18,11 @@ class Feed:
             self.add_feed(feed)
 
     def add_feed(self, feed):
+        """
+        add_feed takes the URL or file path of a Feedzilla feed, cleans it up,
+        and adds the articles this Feed object's list.
+        """
+
         log.info("Retrieving feed.")
 
         f = feedparser.parse(feed)
@@ -82,7 +87,9 @@ class Feed:
         session.commit()
 
     def to_json(self):
-        """ Format this feed as single JSON response. """
+        """
+        Format this feed as single JSON response.
+        """
 
         log.info("Rendering feed to JSON.")
 

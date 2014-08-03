@@ -1,7 +1,4 @@
-import os
-
-from flask import (
-    Flask, render_template, render_template_string, url_for, Blueprint)
+from flask import Blueprint
 
 from iris.feed import Feed
 from iris.article import Article
@@ -30,7 +27,8 @@ def category_articles(category):
     Returns JSON of 100 most recent articles from the category requested.
     """
 
-    url="http://api.feedzilla.com/v1/categories/"+category+"/articles.atom?count=50"
+    url = "http://api.feedzilla.com/v1/categories/"
+    url += "{}/articles.atom?count=50".format(category)
     feed = Feed(url)
     feed.extract()
 
@@ -53,7 +51,9 @@ def country_articles(country):
     country=country.replace("Bosnia and Herz.", "Bosnia and Herzegovina")
     country=country.replace("Eq. Guinea", "Equatorial Guinea")
     country=country.replace("Cte d'Ivoire", "Ivory Coast")
-    country=country.replace("Fr. S. Antarctic Lands", "French Southern and Antarctic Lands")
+    country=country.replace(
+        "Fr. S. Antarctic Lands",
+        "French Southern and Antarctic Lands")
     country=country.replace("Is.", "Islands")
     country=country.replace("S. Sudan", "South Sudan")
 
@@ -61,10 +61,12 @@ def country_articles(country):
 
     log.info("User requested feed for '{}'".format(country))
 
-    url1="http://api.feedzilla.com/v1/categories/19/articles/search.atom?q="+country+"&count=50"
+    url1 = "http://api.feedzilla.com/v1/categories/19/articles/search.atom"
+    url1 += "?q={}&count=50".format(country)
     feed = Feed(url1)
 
-    # url2="http://api.feedzilla.com/v1/categories/26/articles/search.atom?q="+country+"&count=10"
+    # url2 = "http://api.feedzilla.com/v1/categories/26/articles/search.atom"
+    # url2 += "?q={}&count=10".format(country)
     # feed.add_feed(url2)
 
     # feed = Feed()
