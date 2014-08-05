@@ -1,6 +1,8 @@
 # IRIS World News Visualization
 ### Location extraction and sentiment analysis of world news, mapped.
 
+[![Build Status](https://travis-ci.org/rkuykendall/IRIS-News.svg?branch=master)](https://travis-ci.org/rkuykendall/IRIS-News)
+
 Iris retrieves the news stories associated with the country you select,
 extracts all other mentioned countries, and does sentiment analysis to
 determine how positive or negative the article is. This is used to color other
