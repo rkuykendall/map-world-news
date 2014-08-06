@@ -5,6 +5,6 @@
     "author": "Robert Kuykendall <robert@rkuykendall.com>",
     "dependencies": {
         "gulp": "*",
-        "gulp-uglify": "*",
+        "gulp-uglify": "*"
     }
 }
