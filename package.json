@@ -1,6 +1,6 @@
 {
     "name": "iris-news",
-    "version": "2.0",
+    "version": "2.0.0",
     "description": "Visualize world news sentiment on a global map.",
     "author": "Robert Kuykendall <robert@rkuykendall.com>",
     "dependencies": {
