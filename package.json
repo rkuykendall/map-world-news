@@ -5,6 +5,9 @@
     "author": "Robert Kuykendall <robert@rkuykendall.com>",
     "dependencies": {
         "gulp": "*",
-        "gulp-uglify": "*"
+        "gulp-uglify": "*",
+        "gulp-gzip": "*",
+        "gulp-awspublish": "*",
+        "gulp-rename": "*"
     }
 }
