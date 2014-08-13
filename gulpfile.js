@@ -14,13 +14,18 @@ gulp.task('deploy', function () {
         // ...
     };
 
-    gulp.src('./iris/static/js/*')
+    gulp.src('./iris/static/index.html')
+        .pipe(publisher.publish(headers))
+        .pipe(publisher.cache())
+        .pipe(awspublish.reporter());
+
+    gulp.src('./iris/static/js/**')
 
         // gzip, Set Content-Encoding headers and add .gz extension
         // .pipe(awspublish.gzip({ ext: '.gz' }))
 
         .pipe(rename(function (path) {
-            path.dirname += '/static/js';
+            path.dirname = '/static/js/' + path.dirname;
         }))
 
         // publisher will add Content-Length, Content-Type and  headers specified above
