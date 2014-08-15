@@ -171,7 +171,7 @@ function requestStories(query) {
     $("#footer").css("border-top", "1px solid #ddd");
 
 
-    url = "http://heroku.mapworldnews.com/" + query + "_articles.json";
+    url = "/" + query + "_articles.json";
 
     $.getJSON(url, function (data) {
         var items_positive = [];
