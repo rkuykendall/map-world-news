@@ -1,3 +1,7 @@
+node_modules
+.awspublish*
+aws.json
+
 venv
 *.pyc
 .DS_Store

@@ -6,8 +6,7 @@ var gulp = require('gulp'),
     fs = require('fs');
 
 gulp.task('deploy', function () {
-    var aws = JSON.parse(fs.readFileSync('aws.json'));
-    var publisher = awspublish.create({ key: process.env.KEY,  secret: process.env.SECRET, bucket: 'map-world-news' });
+    var publisher = awspublish.create({ key: process.env.AWS_KEY,  secret: process.env.AWS_SECRET, bucket: 'mapworldnews.com' });
 
     var headers = {
         'Cache-Control': 'max-age=315360000, no-transform, public'
@@ -41,6 +40,14 @@ gulp.task('deploy', function () {
     gulp.src('./iris/static/css/*')
         .pipe(rename(function (path) {
             path.dirname += '/static/css';
+        }))
+        .pipe(publisher.publish(headers))
+        .pipe(publisher.cache())
+        .pipe(awspublish.reporter());
+
+    gulp.src('./iris/static/img/*')
+        .pipe(rename(function (path) {
+            path.dirname += '/static/img';
         }))
         .pipe(publisher.publish(headers))
         .pipe(publisher.cache())
