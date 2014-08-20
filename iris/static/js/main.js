@@ -171,7 +171,7 @@ function requestStories(query) {
     $("#footer").css("border-top", "1px solid #ddd");
 
 
-    url = "/" + query + "_articles.json";
+    url = "http://iris-app.herokuapp.com/" + query + "_articles.json";
 
     $.getJSON(url, function (data) {
         var items_positive = [];
