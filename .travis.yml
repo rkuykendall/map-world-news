@@ -14,3 +14,6 @@ deploy:
   app: iris-app
   on:
     repo: rkuykendall/IRIS-News
+after_success:
+  - npm install
+  - gulp deploy
