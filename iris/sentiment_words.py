@@ -346,7 +346,7 @@ SENTIMENT_WORDS = {
 	"brainwashing": -3,
 	"brave": 2,
 	"breakthrough": 3,
-	"reathtaking": 5,
+	"breathtaking": 5,
 	"bribe": -3,
 	"bright": 1,
 	"brightest": 2,
