@@ -17,3 +17,4 @@ deploy:
 after_deploy:
   - npm install
   - gulp deploy
+sudo: false
