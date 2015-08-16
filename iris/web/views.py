@@ -2,7 +2,7 @@ from flask import Blueprint
 
 from iris.feed import Feed
 from iris.article import Article
-from iris.iris import iris, session, log
+from iris.iris import iris, log
 
 web = Blueprint('web', __name__, template_folder='')
 

@@ -4,7 +4,7 @@ import re
 import feedparser
 
 from article import Article
-from iris import session, log
+from iris import log
 
 
 class Feed:
@@ -55,20 +55,6 @@ class Feed:
                 # Add the article if it doesn't already exist
                 self.articles[a.id] = a
 
-    def prune(self):
-        """
-        Prune the cached extractions database to keep below 10,000 records,
-        the free limit on Heroku.
-        """
-
-        num = session.query(Article.id).count()
-        if(num > 9950):
-            for article in session.query(
-                    Article).order_by(
-                    Article.last_referenced.asc()).limit(500):
-
-                session.delete(article)
-
     def extract(self):
         """
         Extract location and sentiment data from the articles contained within
@@ -76,20 +62,8 @@ class Feed:
         """
 
         log.info("Extracing all articles in feed.")
-
-        allowance = 200
-        iterate = self.articles.keys()
-
-        for a_id in iterate:
-            result = self.articles[a_id].extract(allowance)
-
-            if (result == "Extracted"):
-                allowance = allowance - 1
-            elif (result == "Remove"):
-                del self.articles[a_id]
-
-        self.prune()
-        session.commit()
+        for article in self.articles:
+            article.extract()
 
     def to_json(self):
         """
