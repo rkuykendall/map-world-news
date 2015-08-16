@@ -7,6 +7,10 @@
     background-image: none;
 }
 
+#errors {
+    margin-top: 15px;
+}
+
 #map-background {
   background-color: #2e3540;
 }

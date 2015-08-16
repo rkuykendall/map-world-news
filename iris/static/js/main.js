@@ -46,6 +46,7 @@ function disp_num(n) {
 
 $(document).ready(function () {
     $("#countryInfo").html("").css("display", "none");
+    $("#errors").hide();
 
     $(".category").click(function (event) {
         requestStories("category_"+$(this).attr('href'));
@@ -243,6 +244,10 @@ function requestStories(query) {
         $("#items_neutral").html("<ul><h3>Neutral</h3>" + items_neutral.join("\n") + "</ul>")
         $("#items_negative").html("<ul><h3>Negative</h3>" + items_negative.join("\n") + "</ul>")
         NProgress.done();
+    }).fail(function() {
+        NProgress.done();
+        console.log( "Failure to getJSON for " + url);
+        $("#errors").slideDown().delay(30000).slideUp();
     });
 }
 

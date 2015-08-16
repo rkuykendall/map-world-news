@@ -23,9 +23,11 @@ class Feed:
         and adds the articles this Feed object's list.
         """
 
-        log.info("Retrieving feed.")
+        log.info("Retrieving feed: " + feed)
 
         f = feedparser.parse(feed)
+        
+        log.info("Processing feed")
         for item in f['entries']:
             a = Article()
 
