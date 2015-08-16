@@ -42,7 +42,6 @@ class TestBrowser(unittest.TestCase):
 
         assert True
 
-
     def click_test(self):
         element = self.driver.find_element_by_id("USA")
         element.click()

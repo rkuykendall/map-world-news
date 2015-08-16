@@ -34,5 +34,5 @@ foreman``)
 
 ### Testing
 
-Runing ``nosetests``  will run all the tests in ``*_tests.py*`` files and you
+Running ``nosetests``  will run all the tests in ``*_tests.py*`` files and you
 can write more tests or write code to fix the tests that fail.

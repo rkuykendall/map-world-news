@@ -39,7 +39,7 @@ class Article(Base):
 
         query = session.query(Article).get(self.id)
 
-        if (query != None):
+        if (query is not None):
             self.countries = query.countries
             self.sentiment = query.sentiment
             query.last_referenced = datetime.datetime.now()

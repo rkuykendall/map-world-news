@@ -1,3 +1,5 @@
+/*eslint-disable no-var, no-console, vars-on-top*/
+
 var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     gzip = require('gulp-gzip'),
@@ -6,7 +8,11 @@ var gulp = require('gulp'),
     fs = require('fs');
 
 gulp.task('deploy', function () {
-    var publisher = awspublish.create({ key: process.env.AWS_KEY,  secret: process.env.AWS_SECRET, bucket: 'mapworldnews.com' });
+    var publisher = awspublish.create({
+        key: process.env.AWS_KEY,
+        secret: process.env.AWS_SECRET,
+        bucket: 'mapworldnews.com'
+    });
 
     var headers = {
         'Cache-Control': 'max-age=315360000, no-transform, public'

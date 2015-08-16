@@ -46,7 +46,7 @@ COUNTRY_NAMES = {
     'BWA': ["botswana"],
     'CAF': ["central african republic", "centrafrique"],
     'CAN': [
-        "canada", "ottawa", "toronto","montreal", "calgary", "ottawa",
+        "canada", "ottawa", "toronto", "montreal", "calgary", "ottawa",
         "alberta", "british columbia", "manitoba", "new brunswick",
         "newfoundland", "nova scotia", "ontario", "prince edward island",
         "quebec", "saskatchewan"],

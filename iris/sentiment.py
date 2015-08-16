@@ -2,7 +2,7 @@ import re
 
 from sentiment_words import SENTIMENT_WORDS
 
-#***********************************************************************************
+# *****************************************************************************
 #
 # All code (C) Pete Warden, 2011
 # Converted to Python by Robert Kuykendall, 2014
@@ -20,10 +20,11 @@ from sentiment_words import SENTIMENT_WORDS
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#***********************************************************************************
+# *****************************************************************************
 
-# This function scans through the text, and makes a naive guess at the sentiment
-# based on how often words flagged as positive or negative appear.
+
+# This function scans through the text, and makes a naive guess at the
+# sentiment based on how often words flagged as positive or negative appear.
 def text2sentiment(text):
     words = re.split(r"[ \t.,;!]+", text.lower())
     total = 0
@@ -41,8 +42,7 @@ def text2sentiment(text):
 
         for candidate in [
                 word, ' '.join([word, second_word]),
-                ' '.join([word, second_word,
-                third_word])]:
+                ' '.join([word, second_word, third_word])]:
 
             try:
                 total += SENTIMENT_WORDS[candidate]

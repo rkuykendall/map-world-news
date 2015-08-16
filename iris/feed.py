@@ -6,6 +6,7 @@ import feedparser
 from article import Article
 from iris import session, log
 
+
 class Feed:
     """
     Feed stores a list of articles and cleans up Feedzilla junk.
@@ -26,7 +27,7 @@ class Feed:
         log.info("Retrieving feed: " + feed)
 
         f = feedparser.parse(feed)
-        
+
         log.info("Processing feed")
         for item in f['entries']:
             a = Article()
@@ -40,8 +41,10 @@ class Feed:
                 # Set source, author and title
                 a.author = item['author']
                 a.title = item['title']
-                a.source=item['source']['links'][0]['href']
-                a.trueSource="http://news.feedzilla.com/en_us/stories/world-news/"+str(a.id)
+                a.source = item['source']['links'][0]['href']
+                a.trueSource = (
+                    "http://news.feedzilla.com/en_us/stories/"
+                    "world-news/{}".format(a.id))
 
                 # Set summary, get rid of all the junk at the end
                 summary = item['summary']
@@ -60,9 +63,9 @@ class Feed:
 
         num = session.query(Article.id).count()
         if(num > 9950):
-            for article in session.query(Article
-                ).order_by(Article.last_referenced.asc()
-                ).limit(500):
+            for article in session.query(
+                    Article).order_by(
+                    Article.last_referenced.asc()).limit(500):
 
                 session.delete(article)
 
