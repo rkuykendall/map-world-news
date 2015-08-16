@@ -2,7 +2,7 @@ import unittest
 import os
 
 # Set enviornment before importing any database classes
-os.environ["CONFIG_PATH"] = "database.TestingConfig"
+os.environ["CONFIG_PATH"] = "iris.config.TestingConfig"
 from iris.feed import Feed
 
 
