@@ -37,7 +37,8 @@ class TestArticle(unittest.TestCase):
 </entry>
         '''
 
-        self.article1 = feed.articles[368827171]
+        self.article1 = feed.articles[
+            'http://feeds.feedburner.com/timeblogs/middle_east?format=xml']
         self.article1.extract(1)
 
     def test_name(self):
