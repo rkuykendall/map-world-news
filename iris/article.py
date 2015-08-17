@@ -13,7 +13,6 @@ class Article():
         self.title = ""
         self.summary = ""
         self.source = ""
-        self.trueSource = ""
 
     def extract(self):
         """
@@ -38,6 +37,5 @@ class Article():
             'summary': a.summary,
             'sentiment': a.sentiment,
             'link': a.source,
-            'countries': a.countries,
-            'source': a.trueSource
+            'countries': a.countries
         }

@@ -21,7 +21,7 @@
 }
 
 #countries {
-  cursor: pointer;
+  /*cursor: pointer;*/
   fill: #474e5b;
   stroke: #2e3540;
   stroke-width:1;

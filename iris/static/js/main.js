@@ -155,7 +155,7 @@ function requestStories(query) {
             open = '<div class="story" id="' + key + '">';
             close = '</div>';
 
-            title = '<h5><a href="' + val.source + '" target="_blank">'
+            title = '<h5><a href="' + val.link + '" target="_blank">'
                   + val.title + '</a></h5>';
 
             tag = ''
