@@ -9,7 +9,7 @@ from iris import log
 
 class Feed:
     """
-    Feed stores a list of articles and cleans up Feedzilla junk.
+    Feed stores a list of articles and cleans up junk.
     """
 
     def __init__(self, feed=None):
@@ -20,7 +20,7 @@ class Feed:
 
     def add_feed(self, feed):
         """
-        add_feed takes the URL or file path of a Feedzilla feed, cleans it up,
+        add_feed takes the URL or file path of a feed, cleans it up,
         and adds the articles this Feed object's list.
         """
 

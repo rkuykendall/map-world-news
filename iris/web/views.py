@@ -66,9 +66,9 @@ def country_articles(country):
 
     log.info("User requested feed for '{}'".format(country))
 
-    url1 = "http://api.feedzilla.com/v1/categories/19/articles/search.atom"
-    url1 += "?q={}&count=50".format(country)
-    feed = Feed(url1)
+    # url1 = "http://api.feedzilla.com/v1/categories/19/articles/search.atom"
+    # url1 += "?q={}&count=50".format(country)
+    # feed = Feed(url1)
 
     # url2 = "http://api.feedzilla.com/v1/categories/26/articles/search.atom"
     # url2 += "?q={}&count=10".format(country)
@@ -78,9 +78,10 @@ def country_articles(country):
     # feed.load()
     # feed.filter_country(country)
 
-    feed.extract()
+    # feed.extract()
 
     log.info("Returning JSON results.")
+    feed = Feed()
     return feed.to_json()
 
 
