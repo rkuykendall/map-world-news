@@ -9,9 +9,11 @@ var gulp = require('gulp'),
 
 gulp.task('deploy', function () {
     var publisher = awspublish.create({
-        key: process.env.AWS_KEY,
-        secret: process.env.AWS_SECRET,
-        bucket: 'mapworldnews.com'
+        'params': {
+            'Bucket': 'mapworldnews.com'
+        },
+        'accessKeyId': process.env.AWS_KEY,
+        'secretAccessKey': process.env.AWS_SECRET
     });
 
     var headers = {
