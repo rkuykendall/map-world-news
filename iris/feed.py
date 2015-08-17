@@ -33,18 +33,11 @@ class Feed:
             a = Article()
 
             # Set ID as integer, without feedzilla at beginning
-            a.id = item['id']
-            a.id = re.sub(r'.*feedzilla\.com:(.*)', r'\1', a.id)
-            a.id = int(a.id)
+            a.source = item['links'][0]['href']
 
-            if a.id not in self.articles.keys():
+            if a.source not in self.articles.keys():
                 # Set source, author and title
-                a.author = item['author']
                 a.title = item['title']
-                a.source = item['source']['links'][0]['href']
-                a.trueSource = (
-                    "http://news.feedzilla.com/en_us/stories/"
-                    "world-news/{}".format(a.id))
 
                 # Set summary, get rid of all the junk at the end
                 summary = item['summary']
@@ -53,7 +46,7 @@ class Feed:
                 a.summary = summary
 
                 # Add the article if it doesn't already exist
-                self.articles[a.id] = a
+                self.articles[a.source] = a
 
     def extract(self):
         """
