@@ -34,7 +34,6 @@ class Article():
         a.countries = list(set(a.countries))
 
         return {
-            'aid': a.id,
             'title': a.title,
             'summary': a.summary,
             'sentiment': a.sentiment,

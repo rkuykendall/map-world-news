@@ -55,8 +55,8 @@ class Feed:
         """
 
         log.info("Extracing all articles in feed.")
-        for article in self.articles:
-            article.extract()
+        for key in self.articles:
+            self.articles[key].extract()
 
     def to_json(self):
         """

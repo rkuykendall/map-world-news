@@ -3,43 +3,10 @@
 var places;
 
 CATEGORIES = {
-    2: 'Industry',
-    3: 'Politics',
-    4: 'Society',
-    5: 'Celebrities',
-    6: 'Entertainment',
-    7: 'USA',
-    8: 'Science',
-    9: 'Video Games',
-    10: 'Products',
-    11: 'Health',
-    12: 'Universities',
-    13: 'Art',
-    14: 'Hobbies',
-    15: 'IT',
-    16: 'Programming',
-    17: 'Events',
-    18: 'Religion And Spirituality',
-    19: 'World News',
-    20: 'Life Style',
-    21: 'Blogs',
-    22: 'Business',
-    23: 'Travel',
-    25: 'Fun Stuff',
-    26: 'Top News',
-    27: 'Sports',
-    28: 'Internet',
-    29: 'Music',
-    30: 'Technology',
-    31: 'Top Blogs',
-    33: 'Jobs',
-    34: 'Shopping',
-    36: 'Oddly Enough',
-    588: 'Columnists',
-    590: 'Video',
-    591: 'Law',
-    1168: 'General',
-    1314: 'Sports'
+    'world': 'World News',
+    'domestic': 'US News',
+    'top': 'Top News',
+    'politics': 'Politics'
 }
 
 function dispNum(n) {
@@ -50,22 +17,22 @@ $(document).ready(function () {
     $('#countryInfo').html('').css('display', 'none');
     $('#errors').hide();
 
-    $('.category').click(function (event) {
-        requestStories('category_' + $(this).attr('href'));
+    $('.slug').click(function (event) {
+        requestStories('feed/' + $(this).attr('href'));
         event.preventDefault();
         return false;
     });
 
-    $('#search').click(function (event) {
-        if (country) {
-            g.selectAll('#' + country.id).classed('selected', false);
-        }
-
-        requestStories($('#query').val());
-
-        event.preventDefault();
-        return false;
-    });
+    // $('#search').click(function (event) {
+    //     if (country) {
+    //         g.selectAll('#' + country.id).classed('selected', false);
+    //     }
+    //
+    //     requestStories($('#query').val());
+    //
+    //     event.preventDefault();
+    //     return false;
+    // });
 
     $(document).on('mousemove', function (e) {
         $('#countryInfo').css({
@@ -142,16 +109,18 @@ d3.json('static/json/countries.topo.json', function (error, us) {
 });
 
 function countryClicked(d) {
-    // Previous selection
-    if (country) {
-        g.selectAll('#' + country.id).classed('selected', false);
-    }
+    // FeedZilla is down so do nothing for now.
 
-    if (d && country !== d) {
-        country = d;
-        g.selectAll('#' + country.id).classed('selected', true);
-        requestStories(country.properties.name);
-    }
+    // // Previous selection
+    // if (country) {
+    //     g.selectAll('#' + country.id).classed('selected', false);
+    // }
+    //
+    // if (d && country !== d) {
+    //     country = d;
+    //     g.selectAll('#' + country.id).classed('selected', true);
+    //     requestStories(country.properties.name);
+    // }
 }
 
 NProgress.configure({
@@ -165,16 +134,16 @@ function requestStories(query) {
     g.selectAll('#countries *').style('fill', null);
     g.selectAll('#countries *').attr('sentiment', 0);
 
-    if (query.substring(0, 9) == 'category_') {
-        console.log(query.substring(9));
-        $('#title').html('<h1>' + CATEGORIES[parseInt(query.substring(9))] + '</h1>');
+    if (query.substring(0, 5) == 'feed/') {
+        slug = query.substring(5);
+        $('#title').html('<h1>' + CATEGORIES[slug] + '</h1>');
     } else {
         $('#title').html('<h1>' + query + '</h1>');
     }
     $('#footer').css('border-top', '1px solid #ddd');
 
-
-    url = 'http://iris-app.herokuapp.com/' + query + '_articles.json';
+    url = '/' + query + '.json';
+    // url = 'http://iris-app.herokuapp.com/' + query + '.json';
 
     $.getJSON(url, function (data) {
         var itemsPositive = [];
@@ -183,7 +152,6 @@ function requestStories(query) {
 
         var i = 1;
         $.each(data, function (key, val) {
-
             open = '<div class="story" id="' + key + '">';
             close = '</div>';
 

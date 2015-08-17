@@ -21,14 +21,19 @@ def articles():
     return feed.to_json()
 
 
-@iris.route('/category_<category>_articles.json')
-def category_articles(category):
+@iris.route('/feed/<slug>.json')
+def category_articles(slug):
     """
     Returns JSON of 100 most recent articles from the category requested.
     """
+    slugs = {
+        'world': 'http://feeds.reuters.com/Reuters/worldNews',
+        'domestic': 'http://feeds.reuters.com/Reuters/domesticNews',
+        'top': 'http://feeds.reuters.com/reuters/MostRead',
+        'politics': 'http://feeds.reuters.com/Reuters/PoliticsNews'
+    }
 
-    url = "http://api.feedzilla.com/v1/categories/"
-    url += "{}/articles.atom?count=50".format(category)
+    url = slugs[slug]
     feed = Feed(url)
     feed.extract()
 
