@@ -31,18 +31,17 @@ class TestArticle(unittest.TestCase):
     world-news/368827171?count=100&amp;client_source=api&amp;format=atom" />
     <rights type="text"></rights>
     <source>
-        <title type="text">TIME Blogs</title><link rel="self"
+        <title type="text">TIME Blogs</title>
+        <link rel="self"
         href="http://feeds.feedburner.com/timeblogs/middle_east?format=xml" />
     </source>
 </entry>
         '''
-
-        self.article1 = feed.articles[
-            'http://feeds.feedburner.com/timeblogs/middle_east?format=xml']
-        self.article1.extract(1)
-
-    def test_name(self):
-        self.assertEqual(self.article1.author, 'Sam Frizell')
+        art1_key = (
+            "http://news.feedzilla.com/en_us/stories/world-news/"
+            "368827171?count=100&client_source=api&format=atom")
+        self.article1 = feed.articles[art1_key]
+        self.article1.extract()
 
     def test_location(self):
         assert 'MYS' in self.article1.countries
