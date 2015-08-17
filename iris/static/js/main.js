@@ -142,8 +142,8 @@ function requestStories(query) {
     }
     $('#footer').css('border-top', '1px solid #ddd');
 
-    url = '/' + query + '.json';
-    // url = 'http://iris-app.herokuapp.com/' + query + '.json';
+    // url = '/' + query + '.json';
+    url = 'http://iris-app.herokuapp.com/' + query + '.json';
 
     $.getJSON(url, function (data) {
         var itemsPositive = [];
