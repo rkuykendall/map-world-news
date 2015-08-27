@@ -21,12 +21,12 @@ gulp.task('deploy', function () {
         // ...
     };
 
-    gulp.src('./iris/static/index.html')
+    gulp.src('./app/static/index.html')
         .pipe(publisher.publish(headers))
         .pipe(publisher.cache())
         .pipe(awspublish.reporter());
 
-    gulp.src('./iris/static/js/**')
+    gulp.src('./app/static/js/**')
 
         // gzip, Set Content-Encoding headers and add .gz extension
         // .pipe(awspublish.gzip({ ext: '.gz' }))
@@ -45,7 +45,7 @@ gulp.task('deploy', function () {
          // print upload updates to console
         .pipe(awspublish.reporter());
 
-    gulp.src('./iris/static/css/*')
+    gulp.src('./app/static/css/*')
         .pipe(rename(function (path) {
             path.dirname += '/static/css';
         }))
@@ -53,7 +53,7 @@ gulp.task('deploy', function () {
         .pipe(publisher.cache())
         .pipe(awspublish.reporter());
 
-    gulp.src('./iris/static/img/*')
+    gulp.src('./app/static/img/*')
         .pipe(rename(function (path) {
             path.dirname += '/static/img';
         }))
@@ -61,7 +61,7 @@ gulp.task('deploy', function () {
         .pipe(publisher.cache())
         .pipe(awspublish.reporter());
 
-    gulp.src('./iris/static/json/*')
+    gulp.src('./app/static/json/*')
         .pipe(rename(function (path) {
             path.dirname += '/static/json';
         }))

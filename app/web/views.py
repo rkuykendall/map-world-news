@@ -1,27 +1,26 @@
 from flask import Blueprint
 
 from app.feed import Feed
-from app.article import Article
-from app.iris import iris, log
+from app import app, log
 
 web = Blueprint('web', __name__, template_folder='')
 
 
-@iris.route('/')
+@app.route('/')
 def homepage():
     """ Serve up static homepage. This is the only user-facing route. """
 
-    return iris.send_static_file('index.html')
+    return app.send_static_file('index.html')
 
 
-@iris.route('/articles.json')
+@app.route('/articles.json')
 def articles():
     feed = Feed()
     feed.load()
     return feed.to_json()
 
 
-@iris.route('/feed/<slug>.json')
+@app.route('/feed/<slug>.json')
 def category_articles(slug):
     """
     Returns JSON of 100 most recent articles from the category requested.
@@ -41,7 +40,7 @@ def category_articles(slug):
     return feed.to_json()
 
 
-@iris.route('/<country>_articles.json')
+@app.route('/<country>_articles.json')
 def country_articles(country):
     """
     Returns a JSON just of articles that come up when doing a search for the
@@ -83,13 +82,3 @@ def country_articles(country):
     log.info("Returning JSON results.")
     feed = Feed()
     return feed.to_json()
-
-
-@iris.route('/count_cache')
-def count_cache():
-    """
-    Extreamly simple view of number of currently cached articles, just so I
-    can see how the system is doing.
-    """
-
-    return str(session.query(Article.id).count())

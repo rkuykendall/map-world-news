@@ -3,7 +3,7 @@ import json
 import feedparser
 
 from article import Article
-from iris import log
+from app import log
 
 
 class Feed:
