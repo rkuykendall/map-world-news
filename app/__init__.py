@@ -1,11 +1,20 @@
-from web.views import web as web_blueprint
-from iris import iris
+import sys
+import os
+import logging
 
-iris.register_blueprint(web_blueprint)
+from flask import Flask
+from flask.ext.cors import CORS
 
-if __name__ == '__main__':
-    """
-    This server can be started by running 'python -m iris.app'
-    """
+app = Flask(__name__)
 
-    iris.run()
+# Set enviornment variables from the database file
+config_path = os.environ.get("CONFIG_PATH", "app.config.DevelopmentConfig")
+app.config.from_object(config_path)
+cors = CORS(app)
+
+# Logging
+log = logging.getLogger('map-world-news_logger')
+log.setLevel(logging.DEBUG)
+out_hdlr = logging.StreamHandler(sys.stdout)
+out_hdlr.setLevel(logging.INFO)
+log.addHandler(out_hdlr)

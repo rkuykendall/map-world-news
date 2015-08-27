@@ -1,1 +1,1 @@
-web: gunicorn app.app:iris --timeout=30
+web: gunicorn app.main:app --timeout=30
