@@ -17,22 +17,11 @@ $(document).ready(function () {
     $('#countryInfo').html('').css('display', 'none');
     $('#errors').hide();
 
-    $('.slug').click(function (event) {
+    $('.slug').click(function(event) {
         requestStories('feed/' + $(this).attr('href'));
         event.preventDefault();
         return false;
     });
-
-    // $('#search').click(function (event) {
-    //     if (country) {
-    //         g.selectAll('#' + country.id).classed('selected', false);
-    //     }
-    //
-    //     requestStories($('#query').val());
-    //
-    //     event.preventDefault();
-    //     return false;
-    // });
 
     $(document).on('mousemove', function (e) {
         $('#countryInfo').css({
@@ -40,6 +29,8 @@ $(document).ready(function () {
             top: e.pageY
         });
     });
+
+    requestStories('feed/world');
 });
 
 var mWidth = $('#map').width(),
@@ -201,6 +192,7 @@ function requestStories(query) {
                     console.log('Error. Country not found: ' + original);
                 } else {
                     currentSentiment = parseFloat(entry.attr('sentiment'));
+                    currentSentiment = currentSentiment || 0;
                     newSentiment = currentSentiment + val.sentiment;
                     entry.attr('sentiment', newSentiment);
 
