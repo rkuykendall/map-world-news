@@ -1,6 +1,3 @@
-import os
-
-
 class HerokuConfig(object):
     NAME = "Heroku"
     DEBUG = True

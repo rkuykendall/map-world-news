@@ -1,6 +1,3 @@
-import json
-import datetime
-
 from sentiment import text2sentiment
 from country import extract_countries
 
