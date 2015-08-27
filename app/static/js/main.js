@@ -133,8 +133,11 @@ function requestStories(query) {
     }
     $('#footer').css('border-top', '1px solid #ddd');
 
-    // url = '/' + query + '.json';
-    url = 'http://map-world-news.herokuapp.com/' + query + '.json';
+    url = query + '.json';
+
+    if (window.location.host == 'mapworldnews.com') {
+        url = 'http://map-world-news.herokuapp.com/' + url;
+    }
 
     $.getJSON(url, function (data) {
         var itemsPositive = [];

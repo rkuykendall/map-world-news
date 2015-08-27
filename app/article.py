@@ -1,4 +1,5 @@
-from sentiment import text2sentiment
+from afinn import Afinn
+
 from country import extract_countries
 
 
@@ -23,7 +24,9 @@ class Article():
         apiSummary = apiSummary.encode('ascii', 'ignore')
 
         self.countries = extract_countries(target)
-        self.sentiment = text2sentiment(apiSummary)
+
+        afinn = Afinn()
+        self.sentiment = afinn.score(apiSummary)
 
     def to_json(self):
         a = self
