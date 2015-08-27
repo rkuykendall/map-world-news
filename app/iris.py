@@ -8,7 +8,7 @@ from flask.ext.cors import CORS
 iris = Flask(__name__)
 
 # Set enviornment variables from the database file
-config_path = os.environ.get("CONFIG_PATH", "iris.config.DevelopmentConfig")
+config_path = os.environ.get("CONFIG_PATH", "app.config.DevelopmentConfig")
 iris.config.from_object(config_path)
 cors = CORS(iris)
 

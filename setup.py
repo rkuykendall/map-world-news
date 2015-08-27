@@ -10,12 +10,12 @@ def get_requirements(suffix=''):
 
 
 setup(
-    name='iris',
-    version='1.1',
+    name='map-world-news',
+    version='3.0',
     author='',
     author_email='',
     description='',
     include_package_data=True,
     zip_safe=False,
-    packages=['iris'],
+    packages=['map-world-news'],
     install_requires=get_requirements())
