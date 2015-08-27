@@ -1,14 +1,14 @@
-# IRIS World News Visualization
+# Map World News
 ### Location extraction and sentiment analysis of world news, mapped.
 
-[![Build Status](https://travis-ci.org/rkuykendall/IRIS-News.svg?branch=master)](https://travis-ci.org/rkuykendall/IRIS-News)
+[![Build Status](https://travis-ci.org/rkuykendall/map-world-news.svg?branch=master)](https://travis-ci.org/rkuykendall/map-world-news)
 
-Iris retrieves the news stories associated with the country you select,
-extracts all other mentioned countries, and does sentiment analysis to
+Map World News retrieves the news stories associated with the country you
+select, extracts all other mentioned countries, and does sentiment analysis to
 determine how positive or negative the article is. This is used to color other
 countries red or green based on their relationship to the selected country.
 
-See it online at [iris-app.herokuapp.com](http://iris-app.herokuapp.com/).
+See it online at [mapworldnews.com](http://mapworldnews.com/).
 
 **Contributors:**
 The project was originally created by a group in a Digital Mediated
@@ -22,14 +22,14 @@ Storytelling class at Columbia University.
 
 ### Installation
 
-1. ``git clone git@github.com:rkuykendall/IRIS-News.git``
-2. ``mkvirtualenv IRIS-News``
-3. ``cd IRIS-News``
+1. ``git clone git@github.com:rkuykendall/map-world-news.git``
+2. ``mkvirtualenv map-world-news``
+3. ``cd map-world-news``
 4. ``easy_install pip``
-5. ``pip install -e . --allow-external dstk --allow-unverified dstk``
+5. ``pip install -e .``
 
 ### Starting the Server
-``python -m iris.web`` or ``foreman start`` (after having done ``gem install
+``python -m app.main`` or ``foreman start`` (after having done ``gem install
 foreman``)
 
 ### Testing

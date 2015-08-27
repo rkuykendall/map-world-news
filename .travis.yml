@@ -11,7 +11,7 @@ deploy:
   provider: heroku
   api_key:
     secure: EdHMmtZl/8+bzCTm5/ekupjVWHJ0dN5yp3xmCh0REFOHWdeD2KtRVqZssdrfmtO2S1+7buthhfRq1ay1OvQ0fI1V9x7f1VSEwhBa5ig1e6xdqmMtplHvNm/TFJeyqSNY+p3xPx5fTJiWlTQyQDreGd3+g6muMwYZ5+Z9sErluzY=
-  app: iris-app
+  app: map-world-news
   on:
     repo: rkuykendall/map-world-news
 after_deploy:
