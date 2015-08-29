@@ -3,7 +3,7 @@ python:
 - '2.7'
 install:
   - "pip install -e ."
-  - "pip install git+ssh://git@github.com/fnielsen/afinn.git"
+  - "pip install git+http://github.com/fnielsen/afinn.git"
 script: py.test
 env:
   global:
