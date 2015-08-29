@@ -1,19 +1,19 @@
 body {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 h1 {
-    font-weight: 800;
+  font-weight: 800;
 }
 
 h2, h3 {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 nav.navbar {
-    background-color: white;
-    margin-bottom: 0px;
-    border-bottom: 1px solid #2e3540;
+  background-color: white;
+  margin-bottom: 0px;
+  border-bottom: 1px solid #2e3540;
 }
 
 .navbar a:link, .navbar a:visited
@@ -21,20 +21,20 @@ nav.navbar {
 .navbar-form .btn-default,
 .form-control,
 .navbar-default .navbar-brand {
-    text-shadow: none;
-    box-shadow: none;
-    color: #2e3540;
-    border-color: #2e3540;
+  text-shadow: none;
+  box-shadow: none;
+  color: #2e3540;
+  border-color: #2e3540;
 }
 
 .navbar a:hover, .navbar a:focus,
 .btn-default:hover, .btn-default:focus,
 .form-control:hover, .form-control:focus,
 .navbar-default .navbar-brand:hover {
-    color: #428bca;
-    border-color: #428bca;
-    background-color: white;
-    box-shadow: none
+  color: #428bca;
+  border-color: #428bca;
+  background-color: white;
+  box-shadow: none
 }
 
 #countryInfo {
@@ -51,32 +51,32 @@ nav.navbar {
 }
 
 .story {
-    border-top: 1px solid #ddd;
-    padding-bottom: 20px;
+  border-top: 1px solid #ddd;
+  padding-bottom: 20px;
 }
 
 .story h5,
 .story h5 a {
-    padding-top: 5px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 2px;
+  padding-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
 }
 
 .story strong {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .story p {
-    margin-top: 1em;
+  margin-top: 1em;
 }
 
 #footer {
-    padding-top: 10px;
-    margin-top: 20px;
-    padding-bottom: 100px;
+  padding-top: 10px;
+  margin-top: 20px;
+  padding-bottom: 100px;
 }
 
 #footer ol li {
-    margin-bottom: 0.5em;
+  margin-bottom: 0.5em;
 }

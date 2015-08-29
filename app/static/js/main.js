@@ -205,9 +205,9 @@ function requestStories(query) {
             });
         });
 
-        $('#itemsPositive').html('<ul><h3>Positive</h3>' + itemsPositive.join('\n') + '</ul>')
-        $('#itemsNeutral').html('<ul><h3>Neutral</h3>' + itemsNeutral.join('\n') + '</ul>')
-        $('#itemsNegative').html('<ul><h3>Negative</h3>' + itemsNegative.join('\n') + '</ul>')
+        $('#itemsPositive').html('<h3>Positive</h3>' + itemsPositive.join('\n'))
+        $('#itemsNeutral').html('<h3>Neutral</h3>' + itemsNeutral.join('\n'))
+        $('#itemsNegative').html('<h3>Negative</h3>' + itemsNegative.join('\n'))
         NProgress.done();
     }).fail(function() {
         NProgress.done();

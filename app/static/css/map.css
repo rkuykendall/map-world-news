@@ -1,14 +1,14 @@
 #map {
-    background-size: 112px 32px;
-    background-position: 0% 100%;
-    background-repeat: no-repeat;
+  background-size: 112px 32px;
+  background-position: 0% 100%;
+  background-repeat: no-repeat;
 
-    /* Filled in by JS when map is colored. */
-    background-image: none;
+  /* Filled in by JS when map is colored. */
+  background-image: none;
 }
 
 #errors {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 #map-background {
@@ -27,30 +27,4 @@
   stroke-width:1;
   stroke-linejoin: miter;
   stroke-linecap: butt;
-}
-
-.selected,
-#countries .selected {
-    fill: #ffffff;
-    color: #ffffff;
-  }
-  .neutral {
-    fill: #40dee3;
-    color: #40dee3;
-  }
-  .positive {
-    fill: #4ffcb4;
-    color: #4ffcb4;
-  }
-  .very-positive {
-    fill: #67ff8c;
-    color: #67ff8c;
-  }
-  .negative {
-    fill: #8b8aac;
-    color: #8b8aac;
-  }
-  .very-negative {
-    fill: #f61f55;
-    color: #f61f55;
 }
