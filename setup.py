@@ -5,7 +5,7 @@ from setuptools import setup
 
 def get_requirements(suffix=''):
     with open('requirements%s.txt' % suffix) as f:
-        rv = f.read().splitlines()
+        rv = [line for line in f.read().splitlines() if 'github' not in line]
     return rv
 
 
