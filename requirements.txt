@@ -3,7 +3,7 @@ Flask-Cors==2.1.0
 Jinja2==2.8
 MarkupSafe==0.23
 Werkzeug==0.10.4
-git+http://github.com/fnielsen/afinn.git
+-e git+ssh://git@github.com/fnielsen/afinn.git#egg=afinn
 feedparser==5.2.1
 gunicorn==19.3.0
 itsdangerous==0.24
