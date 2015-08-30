@@ -56,5 +56,7 @@ gulp.task('deploy', function(callback) {
   });
 
   return gulp.src('./web/**/*')
-    .pipe(ghPages());
+    .pipe(ghPages({
+      origin: 'https://github.com/rkuykendall/map-world-news.git'
+    }));
 });
