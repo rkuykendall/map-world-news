@@ -6,34 +6,15 @@ from app import app, log
 web = Blueprint('web', __name__, template_folder='')
 
 
-@app.route('/')
-def homepage():
-    return app.send_static_file('index.html')
-
-
 @app.route('/feeds', methods=['POST'])
 def feeds():
-    data = request.json
-    feed = Feed(feed=data.get('feed'))
-    feed.extract()
-    return feed.to_json()
+    log.info("New feed process requested: ")
 
-
-@app.route('/feed/<slug>.json')
-def category_articles(slug):
-    """
-    Returns JSON of 100 most recent articles from the category requested.
-    """
-    slugs = {
-        'world': 'http://feeds.reuters.com/Reuters/worldNews',
-        'domestic': 'http://feeds.reuters.com/Reuters/domesticNews',
-        'top': 'http://feeds.reuters.com/reuters/MostRead',
-        'politics': 'http://feeds.reuters.com/Reuters/PoliticsNews'
-    }
-
-    url = slugs[slug]
-    feed = Feed(url)
+    feed_data = request.json.get('feed')
+    feed = Feed(feed=feed_data)
+    log.info("Extracting from data: {}".format(feed_data[:50]))
     feed.extract()
 
-    log.info("Returning JSON results.")
-    return feed.to_json()
+    feed_json = feed.to_json()
+    log.info("Returning processed JSON: {}".format(feed_json[:50]))
+    return feed.to_json(feed_json)
