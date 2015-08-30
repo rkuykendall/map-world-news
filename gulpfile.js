@@ -29,7 +29,7 @@ gulp.task('dev', function(callback) {
     var compiler = webpack(webpackConfig);
 
     new WebpackDevServer(compiler, {
-        contentBase: './app/static',
+        contentBase: './web',
         hot: true,
         watchOptions: {
             aggregateTimeout: 100,

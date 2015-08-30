@@ -1,4 +1,7 @@
 node_modules
+.publish
+bundle.js
+
 .awspublish*
 aws.json
 .anvil
