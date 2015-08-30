@@ -13,8 +13,8 @@ deploy:
   on:
     repo: rkuykendall/map-world-news
 after_deploy:
-  - git config user.email "travis@rkuykendall.com"
-  - git config user.name "Travis CI"
   - npm install
+  - git config --global user.email "travis@rkuykendall.com"
+  - git config --global user.name "Travis CI"
   - gulp deploy
 sudo: false
