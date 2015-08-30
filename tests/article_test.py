@@ -2,8 +2,8 @@ import unittest
 import os
 
 # Set enviornment before importing any database classes
-os.environ["CONFIG_PATH"] = "app.config.TestingConfig"
-from app.feed import Feed
+os.environ["CONFIG_PATH"] = "api.config.TestingConfig"
+from api.feed import Feed
 
 
 class TestArticle(unittest.TestCase):

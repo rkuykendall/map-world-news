@@ -1,5 +1,5 @@
 from web.views import web as web_blueprint
-from app import app
+from api import app
 
 app.register_blueprint(web_blueprint)
 

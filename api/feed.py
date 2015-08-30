@@ -1,9 +1,7 @@
-import json
-
 import feedparser
 
 from article import Article
-from app import log
+from api import log
 
 
 class Feed:

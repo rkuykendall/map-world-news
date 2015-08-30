@@ -1,12 +1,10 @@
 import json
 import requests
 
-from flask import Blueprint, request, abort
+from flask import request, abort
 
-from app.feed import Feed
-from app import app, log
-
-web = Blueprint('web', __name__, template_folder='')
+from api.feed import Feed
+from api import app, log
 
 
 @app.route('/feeds', methods=['POST'])
