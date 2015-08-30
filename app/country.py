@@ -15,7 +15,7 @@ def extract_countries(text):
     text = text.replace('\'s ', ' ')
     text = ''.join([c for c in text if c in string.letters + ' '])
     text = ' {} '.format(text)
-    print text
+    text = text.replace('  ', ' ')
 
     for code in COUNTRY_NAMES:
         for name in COUNTRY_NAMES[code]:
