@@ -1,13 +1,14 @@
-class HerokuConfig(object):
+class DefaultConfig(object):
+    DEBUG = True
+
+
+class HerokuConfig(DefaultConfig):
     NAME = "Heroku"
-    DEBUG = True
 
 
-class DevelopmentConfig(object):
+class DevelopmentConfig(DefaultConfig):
     NAME = "Developent"
-    DEBUG = True
 
 
-class TestingConfig(object):
+class TestingConfig(DefaultConfig):
     NAME = "Testing"
-    DEBUG = True

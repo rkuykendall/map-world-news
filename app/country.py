@@ -9,12 +9,13 @@ def extract_countries(text):
     extracted from the content of the text.
     """
 
-    result = set([])
+    result = set()
 
-    bad_chars = '(),?!\"\'-'
-    text = text.translate(string.maketrans("", "", ), bad_chars).lower()
-    text = ' '+text+' '
     text = text.lower()
+    text = text.replace('\'s ', ' ')
+    text = ''.join([c for c in text if c in string.letters + ' '])
+    text = ' {} '.format(text)
+    print text
 
     for code in COUNTRY_NAMES:
         for name in COUNTRY_NAMES[code]:

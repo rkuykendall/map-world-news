@@ -37,14 +37,11 @@ class TestArticle(unittest.TestCase):
     </source>
 </entry>
         '''
-        art1_key = (
-            "http://news.feedzilla.com/en_us/stories/world-news/"
-            "368827171?count=100&client_source=api&format=atom")
-        self.article1 = feed.articles[art1_key]
-        self.article1.extract()
+        self.article = feed.articles[0]
+        self.article.extract()
 
     def test_location(self):
-        assert 'MYS' in self.article1.countries
+        assert 'MYS' in self.article.countries
 
     def test_sentiment(self):
-        self.assertEqual(self.article1.sentiment, -2.0)
+        self.assertEqual(self.article.sentiment, -2.0)

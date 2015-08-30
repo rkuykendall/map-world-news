@@ -1,3 +1,5 @@
+import json
+
 from afinn import Afinn
 
 from country import extract_countries
@@ -6,36 +8,41 @@ from country import extract_countries
 class Article():
     '''Stores received and computed article data.'''
 
-    def __init__(self):
+    def __init__(self, item=None):
         self.sentiment = 0
+        self.countries = []
         self.title = ""
         self.summary = ""
         self.source = ""
+
+        if item:
+            try:
+                # Set source, author and title
+                self.link = item['links'][0]['href']
+                self.title = item.get('title')
+
+                # Set summary, get rid of all the junk at the end
+                summary = item.get('summary')
+                summary = summary[:summary.find("\n\n")]
+                summary = summary[:summary.find("<")]
+                self.summary = summary
+            except (TypeError, KeyError):
+                print "Could not find first link: {}".format(json.dumps(item))
 
     def extract(self):
         """
         Extracts location and sentiment from an article.
         """
 
-        apiSummary = self.title + ' ' + self.summary
-        target = apiSummary
-
+        afinn = Afinn()
+        target = self.title + ' ' + self.summary
         target = target.encode('ascii', 'ignore')
-        apiSummary = apiSummary.encode('ascii', 'ignore')
 
+        self.sentiment = afinn.score(target)
         self.countries = extract_countries(target)
 
-        afinn = Afinn()
-        self.sentiment = afinn.score(apiSummary)
-
     def to_json(self):
-        a = self
-        a.countries = list(set(a.countries))
+        json_attributes = (
+            'title', 'summary', 'sentiment', 'link', 'countries')
 
-        return {
-            'title': a.title,
-            'summary': a.summary,
-            'sentiment': a.sentiment,
-            'link': a.source,
-            'countries': a.countries
-        }
+        return json.dumps({key: getattr(self, key) for key in json_attributes})

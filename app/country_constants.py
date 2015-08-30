@@ -273,7 +273,7 @@ COUNTRY_NAMES = {
     'VGB': [
         "british virgin islands",  "tortola", "virgin gorda", "anegada",
         "jost van dyke"],
-    'VIR': ["u.s. virgin islands"],
+    'VIR': ["u.s. virgin islands", "us virgin islands"],
     'VNM': ["viet nam", "vietnam"],
     'VUT': ["vanuatu"],
     'WLF': ["wallis and futuna", "wallis", "futuna"],
@@ -290,7 +290,7 @@ EU = [
     "PRT", "ROU", "SVK", "SVN", "ESP", "SWE", "GBR"]
 
 for country in EU:
-    COUNTRY_NAMES[country].extend(["european union", "e.u."])
+    COUNTRY_NAMES[country].extend(["european union", "e.u.",  " eu "])
 
 WEST_AFRICA = [
     "BEN", "BFA", "CPV", "GMB", "GHA", "GIN", "GNB", "CIV", "LBR", "MLI",
