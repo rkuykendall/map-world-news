@@ -17,5 +17,5 @@ setup(
     description='',
     include_package_data=True,
     zip_safe=False,
-    packages=['app'],
+    packages=['api'],
     install_requires=get_requirements())
