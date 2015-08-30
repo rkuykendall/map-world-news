@@ -1,11 +1,38 @@
 /*eslint-disable no-var, no-console, vars-on-top*/
 
-var gulp = require('gulp'),
-    uglify = require('gulp-uglify'),
-    gzip = require('gulp-gzip'),
-    awspublish = require('gulp-awspublish'),
-    rename = require('gulp-rename'),
-    fs = require('fs');
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var uglify = require('gulp-uglify');
+var gzip = require('gulp-gzip');
+var awspublish = require('gulp-awspublish');
+var rename = require('gulp-rename');
+var fs = require('fs');
+var webpack = require('webpack');
+var WebpackDevServer = require('webpack-dev-server');
+var webpackConfig = require('./webpack.config.js')
+
+gulp.task('dev', function(callback) {
+    // Start a webpack-dev-server
+    var compiler = webpack(webpackConfig);
+
+    new WebpackDevServer(compiler, {
+        contentBase: './app/static',
+        hot: true,
+        watchOptions: {
+            aggregateTimeout: 100,
+            poll: 300
+        },
+        noInfo: true
+    }).listen(8080, 'localhost', function(err) {
+        if (err) throw new gutil.PluginError('webpack-dev-server', err);
+
+        // Server listening
+        gutil.log('[webpack-dev-server]', 'http://localhost:8080/');
+
+        // keep the server alive or continue?
+        // callback();
+    });
+});
 
 gulp.task('deploy', function () {
     var publisher = awspublish.create({

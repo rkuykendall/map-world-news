@@ -1,5 +1,10 @@
 /*eslint-disable no-var, no-console, vars-on-top*/
 
+// require('./custom.css');
+// require('./map.css');
+var Rainbow = require('rainbowvis.js');
+var NProgress = require('nprogress');
+
 var places;
 
 CATEGORIES = {
@@ -62,7 +67,7 @@ svg.append('rect')
     .on('click', countryClicked);
 
 var g = svg.append('g');
-d3.json('static/json/countries.topo.json', function (error, us) {
+d3.json('/json/countries.topo.json', function (error, us) {
     g.append('g')
         .attr('id', 'countries')
         .selectAll('path')
