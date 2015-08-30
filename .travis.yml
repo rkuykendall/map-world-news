@@ -2,8 +2,8 @@ language: python
 python:
 - '2.7'
 install:
-  - "pip install -e ."
-  - "pip install git+http://github.com/fnielsen/afinn.git"
+- pip install -e .
+- pip install git+http://github.com/fnielsen/afinn.git
 script: py.test
 deploy:
   provider: heroku
@@ -13,8 +13,12 @@ deploy:
   on:
     repo: rkuykendall/map-world-news
 after_deploy:
-  - npm install
-  - git config --global user.email "travis@rkuykendall.com"
-  - git config --global user.name "Travis CI"
-  - gulp deploy
+- npm install
+- git config --global user.email "robert@rkuykendall.com"
+- git config --global user.name "Travis CI"
+- git remote set-url origin "https://${GH_TOKEN}@github.com/rkuykendall/map-world-news.git"
+- gulp deploy
 sudo: false
+env:
+  global:
+    secure: F5EFl6w7UcdamUyDQIodvAbGEi9lyhtGxVDSa3tNMU9NPpACFBijXqBXusG0E923dAbTWRBjE8GgdNf2tfzFX2cKXP3nC0aHgeEAOdz5X7dHe5f+SRP26hUPegrAjb0ggRAGsg6n9CsB0t5n80OkShCRhp5km497xJDzJs8qubIIvJi+dfXxpG/e5KMuKez9jkHXmTTlr5iJ+SXhnKPKdl/ldku8kldyF/u+3FciObFuWw+Uy59VmF+cPcBRRDX0N6QVpw43a9B4jD0CROnRv4zPFsqfDqAZdHrEkT/jl8wvMLTaMMCLew7fEvr9BM6avcAELrbRDd4T2V8vFNlQjG3mL3JY7sqKMwmmZ4Y8mEU79nLAlXeUrAxZvkITammyRJKbrg4zsKCI45sTjnBIRcohJDuAlb8QLhGHXd12tZt1mBD2JebAxWhcUkJ2+AqIuURHIQaTQMDXaMVX4EFICSBJzqJqUKpV6UDJvCsFfChJ7w/mdU4u21CrscU8YE+vHunktI3x7YEzrxCguBYN7fGSdyDHtBZvJZAvANJtxSJcsb9aTyrNxc0v3NkOXxMJdZRQj6i5nqpI6CTJQRoDwRcC1Lqn235uPqLA+Yfohtibgcrpkrt2FNSuoLY9M2aGkglMAV6TAjfwc/8HcnzfrrI1CmbdD3OSVyPNwaVfgoU=
