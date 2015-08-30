@@ -26,13 +26,26 @@ Storytelling class at Columbia University.
 2. ``mkvirtualenv map-world-news``
 3. ``cd map-world-news``
 4. ``easy_install pip``
-5. ``pip install -e .``
+5. ``pip install -r requirements.txt``
+
 
 ### Starting the Server
-``python -m app.main`` or ``foreman start`` (after having done ``gem install
-foreman``)
+
+1. ``gem install foreman``
+2. ``foreman start``
+
 
 ### Testing
 
 Running ``nosetests``  will run all the tests in ``*_tests.py*`` files and you
 can write more tests or write code to fix the tests that fail.
+
+
+### Thanks
+
+*   [Shensi Ding](https://github.com/shensi9), [Sahil Ansari](https://github.com/sahil-ansari), and [Bo Xu](https://github.com/captainbox22)'s work with me on [IRIS](https://github.com/rkuykendall/IRIS-News), the project from which this was based.
+*   [Joe Turner](https://github.com/oampo) at [Thinkful](http://www.thinkful.com/) for many months of Python help.
+*   Susan McGregor and David Elson of the [Digitally Mediated Storytelling](https://sites.google.com/site/digitallymediatedstorytelling/) class at Columbia University in 2014 where we created IRIS.
+*   [Finn Arup](https://github.com/fnielsen/afinn) for his work on simple sentiment analysis.
+*   Tom Noda for his [D3 map tutorial](http://www.tnoda.com/blog/2013-12-07) used as the basis for the map.
+*   Pete Warden for the [Data Science Toolkit](http://www.datasciencetoolkit.org/), the original sentiment and location extraction code used here.
