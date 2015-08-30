@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "css-loader": "^0.16.0",
+    "gulp-gh-pages": "^0.5.2",
     "gulp-util": "^3.0.6",
     "style-loader": "^0.12.3",
     "webpack-dev-server": "^1.10.1"
