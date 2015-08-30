@@ -1,7 +1,7 @@
 module.exports = {
     entry: './web/js/main.js',
     output: {
-        path: 'web',
+        path: require('path').resolve('./web'),
         filename: 'bundle.js'
     },
     module: {

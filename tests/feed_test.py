@@ -8,7 +8,7 @@ from api.feed import Feed
 
 class TestFeed(unittest.TestCase):
     def test_feedzilla(self):
-        feed = Feed('tests/data/feedzilla_2014-04-05_16-54.atom')
+        feed = Feed(feed='tests/data/feedzilla_2014-04-05_16-54.atom')
         self.assertEqual(len(feed.articles), 89)
 
     def test_reuters(self):

@@ -7,8 +7,6 @@
     "gulp": "3.9.0",
     "gulp-uglify": "1.4.0",
     "gulp-gzip": "1.2.0",
-    "gulp-awspublish": "3.0.0",
-    "gulp-rename": "1.2.2",
     "nprogress": "0.2.0",
     "rainbowvis.js": "1.0.0",
     "webpack": "1.12.0"

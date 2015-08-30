@@ -5,10 +5,6 @@ install:
   - "pip install -e ."
   - "pip install git+http://github.com/fnielsen/afinn.git"
 script: py.test
-env:
-  global:
-  - secure: aN54pffCS+thsW+AGKKH3T3ZmUni93C6iN1NlSvt0GWf4NyhbtBZtYKUe8BLjmrhQrnMAfQ7zCzXivGBPV3W17+/V436FsWamh6Z8hBDlXjYemR1kRzwW1RH8RIfoPQXIngnm1ahI7eZH7fq+QUlx3McYMRl84/S64ae62gFvzM=
-  - secure: MpP86tFgKY0YamL4XVYFA6EC0gn9HaeT9ws33lw3mPF8fa15rY4BJHdHmMphAt90Y7XpubdnuT/BBMGXJw5uaQg/6UsMCrBUGuagzvmVJrYc2sccCU5VHXx1RcDYpnJD2fEFeDLSJbwrkiyg9Tlm0Bq6n8fktWu+jSym5runzzI=
 deploy:
   provider: heroku
   api_key:

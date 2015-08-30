@@ -8,7 +8,7 @@ from api.feed import Feed
 
 class TestArticle(unittest.TestCase):
     def setUp(self):
-        feed = Feed('tests/data/2014-04-05_16-54.atom')
+        feed = Feed(feed='tests/data/feedzilla_2014-04-05_16-54.atom')
         '''
 <entry>
     <id>feedzilla.com:368827171</id>
