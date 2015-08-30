@@ -1,12 +1,17 @@
 /*eslint-disable no-var, no-console, vars-on-top*/
 
+require('./custom.css');
+require('./map.css');
+var Rainbow = require('rainbowvis.js');
+var NProgress = require('nprogress');
+
 var places;
 
-CATEGORIES = {
-    'world': 'World News',
-    'domestic': 'US News',
-    'top': 'Top News',
-    'politics': 'Politics'
+const CATEGORIES = {
+    'World News': 'http://feeds.reuters.com/Reuters/worldNews',
+    'US News': 'http://feeds.reuters.com/Reuters/domesticNews',
+    'Top News': 'http://feeds.reuters.com/reuters/MostRead',
+    'Politics': 'http://feeds.reuters.com/Reuters/PoliticsNews'
 }
 
 function dispNum(n) {
@@ -18,7 +23,7 @@ $(document).ready(function () {
     $('#errors').hide();
 
     $('.slug').click(function(event) {
-        requestStories('feed/' + $(this).attr('href'));
+        requestStories($(this).text());
         event.preventDefault();
         return false;
     });
@@ -30,7 +35,7 @@ $(document).ready(function () {
         });
     });
 
-    requestStories('feed/world');
+    requestStories('World News');
 });
 
 var mWidth = $('#map').width(),
@@ -62,7 +67,7 @@ svg.append('rect')
     .on('click', countryClicked);
 
 var g = svg.append('g');
-d3.json('static/json/countries.topo.json', function (error, us) {
+d3.json('/json/countries.topo.json', function (error, us) {
     g.append('g')
         .attr('id', 'countries')
         .selectAll('path')
@@ -119,96 +124,91 @@ NProgress.configure({
     trickleSpeed: 400
 });
 
-function requestStories(query) {
+function requestStories(slug) {
     NProgress.start();
 
     g.selectAll('#countries *').style('fill', null);
     g.selectAll('#countries *').attr('sentiment', 0);
 
-    if (query.substring(0, 5) == 'feed/') {
-        slug = query.substring(5);
-        $('#title').html('<h1>' + CATEGORIES[slug] + '</h1>');
-    } else {
-        $('#title').html('<h1>' + query + '</h1>');
-    }
+    $('#title').html('<h1>' + slug + '</h1>');
     $('#footer').css('border-top', '1px solid #ddd');
 
-    url = query + '.json';
-
+    url = 'http://localhost:5000/feeds';
     if (window.location.host == 'mapworldnews.com') {
-        url = 'http://map-world-news.herokuapp.com/' + url;
+        url = 'http://map-world-news.herokuapp.com/feeds';
     }
 
-    $.getJSON(url, function (data) {
-        var itemsPositive = [];
-        var itemsNegative = [];
-        var itemsNeutral = [];
+    $.post(url, { url: CATEGORIES[slug] }, function(data) {
+        $.post(url, { data: data }, function(data) {
+            var itemsPositive = [];
+            var itemsNegative = [];
+            var itemsNeutral = [];
 
-        var i = 1;
-        $.each(data, function (key, val) {
-            open = '<div class="story" id="' + key + '">';
-            close = '</div>';
+            var i = 1;
+            console.log(data);
+            $.each(data, function(idx, val) {
+                open = '<div class="story">';
+                close = '</div>';
 
-            title = '<h5><a href="' + val.link + '" target="_blank">'
-                  + val.title + '</a></h5>';
+                title = '<h5><a href="' + val.link + '" target="_blank">'
+                      + val.title + '</a></h5>';
 
-            tag = ''
+                tag = ''
 
-            if (val.sentiment > 0) {
-                tag = '+' + dispNum(val.sentiment) + ' sentiment';
-                if (val.countries.length > 0) {
-                    tag +=  ' for ' + val.countries.join(', ');
-                }
-                tag += '.';
-            } else if (val.sentiment < 0) {
-                tag = Math.floor(val.sentiment) + ' sentiment';
-                if (val.countries.length > 0) {
-                    tag +=  ' for ' + val.countries.join(', ');
-                }
-                tag += '.';
-            } else {
-                if (val.countries.length > 0) {
-                    tag = val.countries.join(', ') + ' mentioned.';
-                }
-            }
-            tag = '<strong>' + tag + '</strong>';
-
-            text = '<p>' + val.summary + '</p>';
-
-
-            story = open + title + tag + text + close;
-
-            if (val.sentiment > 0) {
-                itemsPositive.push(story);
-            } else if (val.sentiment < 0) {
-                itemsNegative.push(story);
-            } else {
-                itemsNeutral.push(story);
-            }
-
-            i++;
-            val.countries.forEach(function (entry) {
-                original = entry;
-                entry = g.selectAll('#' + entry)
-
-                if (entry.empty()) {
-                    console.log('Error. Country not found: ' + original);
+                if (val.sentiment > 0) {
+                    tag = '+' + dispNum(val.sentiment) + ' sentiment';
+                    if (val.countries.length > 0) {
+                        tag +=  ' for ' + val.countries.join(', ');
+                    }
+                    tag += '.';
+                } else if (val.sentiment < 0) {
+                    tag = Math.floor(val.sentiment) + ' sentiment';
+                    if (val.countries.length > 0) {
+                        tag +=  ' for ' + val.countries.join(', ');
+                    }
+                    tag += '.';
                 } else {
-                    currentSentiment = parseFloat(entry.attr('sentiment'));
-                    currentSentiment = currentSentiment || 0;
-                    newSentiment = currentSentiment + val.sentiment;
-                    entry.attr('sentiment', newSentiment);
-
-                    entry.style('fill', '#' + rainbow.colourAt(Math.round(newSentiment * 100)));
-                    $('#map').css('background-image', 'url("/static/img/key.png")');
+                    if (val.countries.length > 0) {
+                        tag = val.countries.join(', ') + ' mentioned.';
+                    }
                 }
-            });
-        });
 
-        $('#itemsPositive').html('<h3>Positive</h3>' + itemsPositive.join('\n'))
-        $('#itemsNeutral').html('<h3>Neutral</h3>' + itemsNeutral.join('\n'))
-        $('#itemsNegative').html('<h3>Negative</h3>' + itemsNegative.join('\n'))
-        NProgress.done();
+                tag = '<strong>' + tag + '</strong>';
+                text = '<p>' + val.summary + '</p>';
+                story = open + title + tag + text + close;
+
+                if (val.sentiment > 0) {
+                    itemsPositive.push(story);
+                } else if (val.sentiment < 0) {
+                    itemsNegative.push(story);
+                } else {
+                    itemsNeutral.push(story);
+                }
+
+                i++;
+                val.countries.forEach(function (entry) {
+                    original = entry;
+                    entry = g.selectAll('#' + entry)
+
+                    if (entry.empty()) {
+                        console.log('Error. Country not found: ' + original);
+                    } else {
+                        currentSentiment = parseFloat(entry.attr('sentiment'));
+                        currentSentiment = currentSentiment || 0;
+                        newSentiment = currentSentiment + val.sentiment;
+                        entry.attr('sentiment', newSentiment);
+
+                        entry.style('fill', '#' + rainbow.colourAt(Math.round(newSentiment * 100)));
+                        $('#map').css('background-image', 'url("/img/key.png")');
+                    }
+                });
+            });
+
+            $('#itemsPositive').html('<h3>Positive</h3>' + itemsPositive.join('\n'))
+            $('#itemsNeutral').html('<h3>Neutral</h3>' + itemsNeutral.join('\n'))
+            $('#itemsNegative').html('<h3>Negative</h3>' + itemsNegative.join('\n'))
+            NProgress.done();
+        }, 'json');
     }).fail(function() {
         NProgress.done();
         console.log( 'Failure to getJSON for ' + url);
