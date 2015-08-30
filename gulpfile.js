@@ -35,7 +35,7 @@ gulp.task('deploy', function () {
             path.dirname = '/static/js/' + path.dirname;
         }))
 
-        // publisher will add Content-Length, Content-Type and  headers specified above
+        // publisher will add Content-Length, Content-Type and headers specified above
         // If not specified it will set x-amz-acl to public-read by default
         .pipe(publisher.publish(headers))
 
