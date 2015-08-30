@@ -41,8 +41,8 @@ class Article():
         self.sentiment = afinn.score(target)
         self.countries = extract_countries(target)
 
-    def to_json(self):
-        json_attributes = (
+    def serializable(self):
+        attributes = (
             'title', 'summary', 'sentiment', 'link', 'countries')
 
-        return json.dumps({key: getattr(self, key) for key in json_attributes})
+        return {key: getattr(self, key) for key in attributes}

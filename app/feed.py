@@ -34,6 +34,6 @@ class Feed:
         for article in self.articles:
             article.extract()
 
-    def to_json(self):
-        log.info("Rendering feed to JSON.")
-        return json.dumps([a.to_json() for a in self.articles]), 200
+    def serializable(self):
+        log.info("Rendering feed to serializable format for JSON.")
+        return [a.serializable() for a in self.articles]
