@@ -1,7 +1,6 @@
 /*eslint-disable no-var, no-console, vars-on-top*/
 
-require('./custom.css');
-require('./map.css');
+require('./style.less');
 var Rainbow = require('rainbowvis.js');
 var NProgress = require('nprogress');
 

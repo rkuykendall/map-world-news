@@ -47,9 +47,8 @@
 	/*eslint-disable no-var, no-console, vars-on-top*/
 
 	__webpack_require__(1);
-	__webpack_require__(5);
-	var Rainbow = __webpack_require__(7);
-	var NProgress = __webpack_require__(8);
+	var Rainbow = __webpack_require__(5);
+	var NProgress = __webpack_require__(6);
 
 	var places;
 
@@ -285,8 +284,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./custom.css", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./custom.css");
+			module.hot.accept("!!./../node_modules/css-loader/index.js!./../node_modules/less-loader/index.js!./style.less", function() {
+				var newContent = require("!!./../node_modules/css-loader/index.js!./../node_modules/less-loader/index.js!./style.less");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -304,7 +303,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\n\nh1 {\n  font-weight: 800;\n}\n\nh2, h3 {\n  font-weight: 600;\n}\n\nnav.navbar {\n  background-color: white;\n  margin-bottom: 0px;\n  border-bottom: 1px solid #2e3540;\n}\n\n.navbar a:link, .navbar a:visited\n.navbar-form .form-control,\n.navbar-form .btn-default,\n.form-control,\n.navbar-default .navbar-brand {\n  text-shadow: none;\n  box-shadow: none;\n  color: #2e3540;\n  border-color: #2e3540;\n}\n\n.navbar a:hover, .navbar a:focus,\n.btn-default:hover, .btn-default:focus,\n.form-control:hover, .form-control:focus,\n.navbar-default .navbar-brand:hover {\n  color: #428bca;\n  border-color: #428bca;\n  background-color: white;\n  box-shadow: none\n}\n\n#countryInfo {\n  color: #000;\n  display: block;\n  position: absolute;\n  top: -50px;\n  left: -50px;\n  margin: 5px 15px;\n  padding: 5px 10px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid #2e3540;\n}\n\n.story {\n  border-top: 1px solid #ddd;\n  padding-bottom: 20px;\n}\n\n.story h5,\n.story h5 a {\n  padding-top: 5px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin-bottom: 2px;\n}\n\n.story strong {\n  font-weight: 600;\n}\n\n.story p {\n  margin-top: 1em;\n}\n\n#footer {\n  padding-top: 10px;\n  margin-top: 20px;\n  padding-bottom: 100px;\n}\n\n#footer ol li {\n  margin-bottom: 0.5em;\n}\n", ""]);
+	exports.push([module.id, "body {\n  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\nh1 {\n  font-weight: 800;\n}\nh2,\nh3 {\n  font-weight: 600;\n}\nnav.navbar {\n  background-color: white;\n  margin-bottom: 0px;\n  border-bottom: 1px solid #2e3540;\n}\n.navbar a:link,\n.navbar a:visited .navbar-form .form-control,\n.navbar-form .btn-default,\n.form-control,\n.navbar-default .navbar-brand {\n  text-shadow: none;\n  box-shadow: none;\n  color: #2e3540;\n  border-color: #2e3540;\n}\n.navbar a:hover,\n.navbar a:focus,\n.btn-default:hover,\n.btn-default:focus,\n.form-control:hover,\n.form-control:focus,\n.navbar-default .navbar-brand:hover {\n  color: #428bca;\n  border-color: #428bca;\n  background-color: white;\n  box-shadow: none;\n}\n#countryInfo {\n  color: #000;\n  display: block;\n  position: absolute;\n  top: -50px;\n  left: -50px;\n  margin: 5px 15px;\n  padding: 5px 10px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid #2e3540;\n}\n.story {\n  border-top: 1px solid #ddd;\n  padding-bottom: 20px;\n}\n.story h5,\n.story h5 a {\n  padding-top: 5px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin-bottom: 2px;\n}\n.story strong {\n  font-weight: 600;\n}\n.story p {\n  margin-top: 1em;\n}\n#footer {\n  padding-top: 10px;\n  margin-top: 20px;\n  padding-bottom: 100px;\n}\n#footer ol li {\n  margin-bottom: 0.5em;\n}\n#map {\n  background-size: 112px 32px;\n  background-position: 0% 100%;\n  background-repeat: no-repeat;\n  /* Filled in by JS when map is colored. */\n  background-image: none;\n}\n#errors {\n  margin-top: 15px;\n}\n#map-background {\n  background-color: #2e3540;\n}\n.background {\n  fill: none;\n  pointer-events: all;\n}\n#countries {\n  /*cursor: pointer;*/\n  fill: #474e5b;\n  stroke: #2e3540;\n  stroke-width: 1;\n  stroke-linejoin: miter;\n  stroke-linecap: butt;\n}\n", ""]);
 
 	// exports
 
@@ -592,46 +591,6 @@
 
 /***/ },
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(6);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(4)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../node_modules/css-loader/index.js!./map.css", function() {
-				var newContent = require("!!./../node_modules/css-loader/index.js!./map.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(3)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "#map {\n  background-size: 112px 32px;\n  background-position: 0% 100%;\n  background-repeat: no-repeat;\n\n  /* Filled in by JS when map is colored. */\n  background-image: none;\n}\n\n#errors {\n  margin-top: 15px;\n}\n\n#map-background {\n  background-color: #2e3540;\n}\n\n.background {\n  fill: none;\n  pointer-events: all;\n}\n\n#countries {\n  /*cursor: pointer;*/\n  fill: #474e5b;\n  stroke: #2e3540;\n  stroke-width:1;\n  stroke-linejoin: miter;\n  stroke-linecap: butt;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -945,7 +904,7 @@
 
 
 /***/ },
-/* 8 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, (c) 2013, 2014 Rico Sta. Cruz - http://ricostacruz.com/nprogress
