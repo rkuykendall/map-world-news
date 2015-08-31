@@ -22,7 +22,7 @@ gulp.task('dev', function(callback) {
             aggregateTimeout: 100,
             poll: 300
         },
-        noInfo: true
+        noInfo: false
     }).listen(8080, 'localhost', function(err) {
         if (err) throw new gutil.PluginError('webpack-dev-server', err);
 
