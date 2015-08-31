@@ -199,7 +199,7 @@ function requestStories(slug) {
                         entry.attr('sentiment', newSentiment);
 
                         entry.style('fill', '#' + rainbow.colourAt(Math.round(newSentiment * 100)));
-                        $('#map').css('background-image', 'url("/img/key.png")');
+                        $('#map').css('background-image', 'url("key.png")');
                     }
                 });
             });
