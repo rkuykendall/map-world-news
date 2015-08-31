@@ -8,7 +8,7 @@ script: py.test
 env:
   global:
   - test: testing789
-  - secure: "h3pbsjWpmtngqMTFfoE3GJuLqzf0rHuj2LhRAQOTqfrrBnf6mvSTH/sAFBVXWHCWsnlur4qxdU0I5PCVc4QbvnEsh/HFUxmn6Zg+yOb7LY4n83CpdoNhTqcYCpZ/7lwOmdStzvgXY3ZSrdoXojT7BpQSjJo/SfLYxCeSX+6endF40HaXF7sDNhBktP7HXfdCIlqdB+0QwOkQZTn28VZjHZ61IGprNOJkCVNOiyNuwLW4hPuGzDaD40k8KgYdmQdfcb1pzmQ0XNZWTgg69DD+Yo9yf1imI3spnlJlMCgT0rMYb+aDPLG3nE+PXKStSHTVu6MXjKMp2Nx4yfePrJlFsvpKfmYEOBwcLMng+4vsrHSyxrdfc0vgWIRxykp5CD9nnfucSrAYnmC4vRhg7IZqA/hiciZjuDvVQXxdq/0dX0Cty6V/dB8TNkz+9lZ2tjmRJqTlcBMRkzc1QnRHI83VMYHNmLwSz8cAs8wgZtNV+KdcMOgVf4WG6cJCu0eb899t8X1eIloiyAq4U34ZxBhPeJ5r3Tuy8F/O5beovsNkm6Tz3jRxRQSPN9uHlZppZBY8ZjQAMtUbursBu0X9y0dByyidxumli8GtyW30BBJ5HdbrH0iyfvWpsEqnBYoFzunGLGXnn4DCPw+xjlWbvoX45P3M94UcSWbMAm4olrKPOoc="
+  - secure: HDaMwy2GZTN6p2sE30yzdEAws4qHiUbRqXn1Bi5tzZ4La8FzTPn8uyay1bVpjxMmngl3d/0oA2G5/qvgjsfkcHkShxYDYF1l1q6VgDdsRnFpnE2AMn6b6llZcJXWZXgBX+Vs4I/ScWtb3DQ09hJqjIu895xMje75xx1K0Sw4yQs=
 deploy:
   provider: heroku
   api_key:
@@ -17,9 +17,6 @@ deploy:
   on:
     repo: rkuykendall/map-world-news
 after_deploy:
-- echo "${test}"
-- echo "${secure}"
-- echo "${TRAVIS_SECURE_ENV_VARS}"
 - npm install
 - git remote set-url origin "https://${GH_TOKEN}@github.com/rkuykendall/map-world-news.git"
 - git config --global user.email "robert@rkuykendall.com"
