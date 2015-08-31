@@ -1,3 +1,5 @@
+@dark-grey: #2e3540;
+
 body {
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -13,29 +15,20 @@ h2, h3 {
 nav.navbar {
   background-color: white;
   margin-bottom: 0px;
-  border-bottom: 1px solid #2e3540;
+  border-bottom: 1px solid @dark-grey;
+  a:link:visited,
+  .navbar-brand {
+    text-shadow: none;
+    box-shadow: none;
+    color: @dark-grey;
+  }
+  a:hover:focus,
+  .navbar-brand:hover {
+    color: #428bca;
+    background-color: white;
+  }
 }
 
-.navbar a:link, .navbar a:visited
-.navbar-form .form-control,
-.navbar-form .btn-default,
-.form-control,
-.navbar-default .navbar-brand {
-  text-shadow: none;
-  box-shadow: none;
-  color: #2e3540;
-  border-color: #2e3540;
-}
-
-.navbar a:hover, .navbar a:focus,
-.btn-default:hover, .btn-default:focus,
-.form-control:hover, .form-control:focus,
-.navbar-default .navbar-brand:hover {
-  color: #428bca;
-  border-color: #428bca;
-  background-color: white;
-  box-shadow: none
-}
 
 #countryInfo {
   color: #000;
@@ -47,38 +40,41 @@ nav.navbar {
   padding: 5px 10px;
   background-color: white;
   border-radius: 3px;
-  border: 1px solid #2e3540;
+  border: 1px solid @dark-grey;
 }
 
 .story {
   border-top: 1px solid #ddd;
   padding-bottom: 20px;
-}
-
-.story h5,
-.story h5 a {
-  padding-top: 5px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 2px;
-}
-
-.story strong {
-  font-weight: 600;
-}
-
-.story p {
-  margin-top: 1em;
+  h5, h5 a {
+    padding-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+  strong {
+    font-weight: 600;
+  }
+  p {
+    margin-top: 1em;
+  }
 }
 
 #footer {
   padding-top: 10px;
   margin-top: 20px;
   padding-bottom: 100px;
+  ol li {
+    margin-bottom: 0.5em;
+  }
 }
 
-#footer ol li {
-  margin-bottom: 0.5em;
+#map-background {
+  background-color: @dark-grey;
+}
+
+#errors {
+  margin-top: 15px;
 }
 
 #map {
@@ -88,26 +84,18 @@ nav.navbar {
 
   /* Filled in by JS when map is colored. */
   background-image: none;
-}
 
-#errors {
-  margin-top: 15px;
-}
+  .background {
+    fill: none;
+    pointer-events: all;
+  }
 
-#map-background {
-  background-color: #2e3540;
-}
-
-.background {
-  fill: none;
-  pointer-events: all;
-}
-
-#countries {
-  /*cursor: pointer;*/
-  fill: #474e5b;
-  stroke: #2e3540;
-  stroke-width:1;
-  stroke-linejoin: miter;
-  stroke-linecap: butt;
+  #countries {
+    /*cursor: pointer;*/
+    fill: lighten(@dark-grey, 10);
+    stroke: @dark-grey;
+    stroke-width: 1;
+    stroke-linejoin: miter;
+    stroke-linecap: butt;
+  }
 }
