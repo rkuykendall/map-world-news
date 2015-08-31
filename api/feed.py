@@ -1,7 +1,7 @@
 import feedparser
 
 from article import Article
-from api import log
+from logger import log
 
 
 class Feed:

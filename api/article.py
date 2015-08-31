@@ -3,6 +3,7 @@ import json
 from afinn import Afinn
 
 from country import extract_countries
+from logger import log
 
 
 class Article():
@@ -27,7 +28,8 @@ class Article():
                 summary = summary[:summary.find("<")]
                 self.summary = summary
             except (TypeError, KeyError):
-                print "Could not find first link: {}".format(json.dumps(item))
+                log.error("Could not find first link: {}".format(
+                    json.dumps(item)))
 
     def extract(self):
         """

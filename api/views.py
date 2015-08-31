@@ -1,13 +1,15 @@
 import json
 import requests
 
-from flask import request, abort
+from flask import request, abort, Blueprint
 
 from api.feed import Feed
-from api import app, log
+from logger import log
+
+api_blueprint = Blueprint('api_blueprint', __name__, template_folder='')
 
 
-@app.route('/feeds', methods=['POST'])
+@api_blueprint.route('/feeds', methods=['POST'])
 def feeds():
     log.info("New feed process requested: {}".format(
         json.dumps(request.form)[:70]))

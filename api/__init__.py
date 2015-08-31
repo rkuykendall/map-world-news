@@ -1,22 +1,15 @@
-import sys
 import os
-import logging
 
 from flask import Flask
 from flask.ext.cors import CORS
 
+from views import api_blueprint
 
 app = Flask(__name__)
+app.register_blueprint(api_blueprint)
 
 
 # Set enviornment variables from the database file
 config_path = os.environ.get("CONFIG_PATH", "api.config.DevelopmentConfig")
 app.config.from_object(config_path)
 cors = CORS(app)
-
-# Logging
-log = logging.getLogger('map-world-news_logger')
-log.setLevel(logging.DEBUG)
-out_hdlr = logging.StreamHandler(sys.stdout)
-out_hdlr.setLevel(logging.INFO)
-log.addHandler(out_hdlr)
