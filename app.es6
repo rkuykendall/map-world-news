@@ -1,10 +1,12 @@
-/*eslint-disable no-var, no-console, vars-on-top*/
+'use strict';
 
 require('./style.less');
-var Rainbow = require('rainbowvis.js');
-var NProgress = require('nprogress');
+const Rainbow = require('rainbowvis.js');
+const NProgress = require('nprogress');
+const jsLogger = require('js-logger');
 
-var places;
+let log = jsLogger;
+log.useDefaults();
 
 const CATEGORIES = {
     'World News': 'http://feeds.reuters.com/Reuters/worldNews',
@@ -19,7 +21,6 @@ function dispNum(n) {
 
 $(document).ready(function () {
     $('#countryInfo').html('').css('display', 'none');
-    $('#errors').hide();
 
     $('.slug').click(function(event) {
         requestStories($(this).text());
@@ -37,23 +38,23 @@ $(document).ready(function () {
     requestStories('World News');
 });
 
-var mWidth = $('#map').width(),
+let mWidth = $('#map').width(),
     width = 1000,
     height = 360,
     country;
 
-var rainbow = new Rainbow();
+let rainbow = new Rainbow();
 rainbow.setSpectrum('f61f55', '40dee3', '67ff8c');
 rainbow.setNumberRange(-200, 200);
 
-var projection = d3.geo.mercator()
+let projection = d3.geo.mercator()
     .scale(150)
     .translate([width / 2, height / 1.5]);
 
-var path = d3.geo.path()
+let path = d3.geo.path()
     .projection(projection);
 
-var svg = d3.select('#map').append('svg')
+let svg = d3.select('#map').append('svg')
     .attr('preserveAspectRatio', 'xMidYMid')
     .attr('viewBox', '0 0 ' + width + ' ' + height)
     .attr('width', mWidth)
@@ -65,7 +66,7 @@ svg.append('rect')
     .attr('height', height)
     .on('click', countryClicked);
 
-var g = svg.append('g');
+let g = svg.append('g');
 d3.json('countries.topo.json', function (error, us) {
     g.append('g')
         .attr('id', 'countries')
@@ -84,7 +85,7 @@ d3.json('countries.topo.json', function (error, us) {
         .on('mouseover', function (d) {
             d3.select(this).classed('selected', true);
 
-            sentiment = d3.select(this).attr('sentiment');
+            let sentiment = d3.select(this).attr('sentiment');
             if (sentiment == null) {
                 sentiment = 0;
             }
@@ -132,27 +133,27 @@ function requestStories(slug) {
     $('#title').html('<h1>' + slug + '</h1>');
     $('#footer').css('border-top', '1px solid #ddd');
 
-    url = 'http://localhost:5000/feeds';
+    let url = 'http://localhost:5000/feeds';
     if (window.location.host == 'mapworldnews.com') {
         url = 'http://map-world-news.herokuapp.com/feeds';
     }
 
     $.post(url, { url: CATEGORIES[slug] }, function(data) {
         $.post(url, { data: data }, function(data) {
-            var itemsPositive = [];
-            var itemsNegative = [];
-            var itemsNeutral = [];
+            let itemsPositive = [];
+            let itemsNegative = [];
+            let itemsNeutral = [];
 
-            var i = 1;
-            console.log(data);
+            let i = 1;
+            log.info(data);
             $.each(data, function(idx, val) {
-                open = '<div class="story">';
-                close = '</div>';
+                let open = '<div class="story">';
+                let close = '</div>';
 
-                title = '<h5><a href="' + val.link + '" target="_blank">'
+                let title = '<h5><a href="' + val.link + '" target="_blank">'
                       + val.title + '</a></h5>';
 
-                tag = ''
+                let tag = ''
 
                 if (val.sentiment > 0) {
                     tag = '+' + dispNum(val.sentiment) + ' sentiment';
@@ -173,8 +174,8 @@ function requestStories(slug) {
                 }
 
                 tag = '<strong>' + tag + '</strong>';
-                text = '<p>' + val.summary + '</p>';
-                story = open + title + tag + text + close;
+                let text = '<p>' + val.summary + '</p>';
+                let story = open + title + tag + text + close;
 
                 if (val.sentiment > 0) {
                     itemsPositive.push(story);
@@ -186,15 +187,15 @@ function requestStories(slug) {
 
                 i++;
                 val.countries.forEach(function (entry) {
-                    original = entry;
+                    let original = entry;
                     entry = g.selectAll('#' + entry)
 
                     if (entry.empty()) {
-                        console.log('Error. Country not found: ' + original);
+                        log.error('Error. Country not found: ' + original);
                     } else {
-                        currentSentiment = parseFloat(entry.attr('sentiment'));
+                        let currentSentiment = parseFloat(entry.attr('sentiment'));
                         currentSentiment = currentSentiment || 0;
-                        newSentiment = currentSentiment + val.sentiment;
+                        let newSentiment = currentSentiment + val.sentiment;
                         entry.attr('sentiment', newSentiment);
 
                         entry.style('fill', '#' + rainbow.colourAt(Math.round(newSentiment * 100)));
@@ -210,13 +211,13 @@ function requestStories(slug) {
         }, 'json');
     }).fail(function() {
         NProgress.done();
-        console.log( 'Failure to getJSON for ' + url);
+        log.error( 'Failure to getJSON for ' + url);
         $('#errors').slideDown().delay(30000).slideUp();
     });
 }
 
 $(window).resize(function () {
-    var w = $('#map').width();
+    let w = $('#map').width();
     svg.attr('width', w);
     svg.attr('height', w * height / width);
 });

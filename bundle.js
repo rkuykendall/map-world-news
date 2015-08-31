@@ -44,13 +44,15 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*eslint-disable no-var, no-console, vars-on-top*/
+	'use strict';
 
 	__webpack_require__(1);
-	var Rainbow = __webpack_require__(5);
-	var NProgress = __webpack_require__(6);
+	const Rainbow = __webpack_require__(5);
+	const NProgress = __webpack_require__(6);
+	const jsLogger = __webpack_require__(7);
 
-	var places;
+	let log = jsLogger;
+	log.useDefaults();
 
 	const CATEGORIES = {
 	    'World News': 'http://feeds.reuters.com/Reuters/worldNews',
@@ -65,7 +67,6 @@
 
 	$(document).ready(function () {
 	    $('#countryInfo').html('').css('display', 'none');
-	    $('#errors').hide();
 
 	    $('.slug').click(function(event) {
 	        requestStories($(this).text());
@@ -83,23 +84,23 @@
 	    requestStories('World News');
 	});
 
-	var mWidth = $('#map').width(),
+	let mWidth = $('#map').width(),
 	    width = 1000,
 	    height = 360,
 	    country;
 
-	var rainbow = new Rainbow();
+	let rainbow = new Rainbow();
 	rainbow.setSpectrum('f61f55', '40dee3', '67ff8c');
 	rainbow.setNumberRange(-200, 200);
 
-	var projection = d3.geo.mercator()
+	let projection = d3.geo.mercator()
 	    .scale(150)
 	    .translate([width / 2, height / 1.5]);
 
-	var path = d3.geo.path()
+	let path = d3.geo.path()
 	    .projection(projection);
 
-	var svg = d3.select('#map').append('svg')
+	let svg = d3.select('#map').append('svg')
 	    .attr('preserveAspectRatio', 'xMidYMid')
 	    .attr('viewBox', '0 0 ' + width + ' ' + height)
 	    .attr('width', mWidth)
@@ -111,7 +112,7 @@
 	    .attr('height', height)
 	    .on('click', countryClicked);
 
-	var g = svg.append('g');
+	let g = svg.append('g');
 	d3.json('countries.topo.json', function (error, us) {
 	    g.append('g')
 	        .attr('id', 'countries')
@@ -130,7 +131,7 @@
 	        .on('mouseover', function (d) {
 	            d3.select(this).classed('selected', true);
 
-	            sentiment = d3.select(this).attr('sentiment');
+	            let sentiment = d3.select(this).attr('sentiment');
 	            if (sentiment == null) {
 	                sentiment = 0;
 	            }
@@ -178,27 +179,27 @@
 	    $('#title').html('<h1>' + slug + '</h1>');
 	    $('#footer').css('border-top', '1px solid #ddd');
 
-	    url = 'http://localhost:5000/feeds';
+	    let url = 'http://localhost:5000/feeds';
 	    if (window.location.host == 'mapworldnews.com') {
 	        url = 'http://map-world-news.herokuapp.com/feeds';
 	    }
 
 	    $.post(url, { url: CATEGORIES[slug] }, function(data) {
 	        $.post(url, { data: data }, function(data) {
-	            var itemsPositive = [];
-	            var itemsNegative = [];
-	            var itemsNeutral = [];
+	            let itemsPositive = [];
+	            let itemsNegative = [];
+	            let itemsNeutral = [];
 
-	            var i = 1;
-	            console.log(data);
+	            let i = 1;
+	            log.info(data);
 	            $.each(data, function(idx, val) {
-	                open = '<div class="story">';
-	                close = '</div>';
+	                let open = '<div class="story">';
+	                let close = '</div>';
 
-	                title = '<h5><a href="' + val.link + '" target="_blank">'
+	                let title = '<h5><a href="' + val.link + '" target="_blank">'
 	                      + val.title + '</a></h5>';
 
-	                tag = ''
+	                let tag = ''
 
 	                if (val.sentiment > 0) {
 	                    tag = '+' + dispNum(val.sentiment) + ' sentiment';
@@ -219,8 +220,8 @@
 	                }
 
 	                tag = '<strong>' + tag + '</strong>';
-	                text = '<p>' + val.summary + '</p>';
-	                story = open + title + tag + text + close;
+	                let text = '<p>' + val.summary + '</p>';
+	                let story = open + title + tag + text + close;
 
 	                if (val.sentiment > 0) {
 	                    itemsPositive.push(story);
@@ -232,15 +233,15 @@
 
 	                i++;
 	                val.countries.forEach(function (entry) {
-	                    original = entry;
+	                    let original = entry;
 	                    entry = g.selectAll('#' + entry)
 
 	                    if (entry.empty()) {
-	                        console.log('Error. Country not found: ' + original);
+	                        log.error('Error. Country not found: ' + original);
 	                    } else {
-	                        currentSentiment = parseFloat(entry.attr('sentiment'));
+	                        let currentSentiment = parseFloat(entry.attr('sentiment'));
 	                        currentSentiment = currentSentiment || 0;
-	                        newSentiment = currentSentiment + val.sentiment;
+	                        let newSentiment = currentSentiment + val.sentiment;
 	                        entry.attr('sentiment', newSentiment);
 
 	                        entry.style('fill', '#' + rainbow.colourAt(Math.round(newSentiment * 100)));
@@ -256,13 +257,13 @@
 	        }, 'json');
 	    }).fail(function() {
 	        NProgress.done();
-	        console.log( 'Failure to getJSON for ' + url);
+	        log.error( 'Failure to getJSON for ' + url);
 	        $('#errors').slideDown().delay(30000).slideUp();
 	    });
 	}
 
 	$(window).resize(function () {
-	    var w = $('#map').width();
+	    let w = $('#map').width();
 	    svg.attr('width', w);
 	    svg.attr('height', w * height / width);
 	});
@@ -303,7 +304,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\nh1 {\n  font-weight: 800;\n}\nh2,\nh3 {\n  font-weight: 600;\n}\nnav.navbar {\n  background-color: white;\n  margin-bottom: 0px;\n  border-bottom: 1px solid #2e3540;\n}\nnav.navbar a:link:visited,\nnav.navbar .navbar-brand {\n  text-shadow: none;\n  box-shadow: none;\n  color: #2e3540;\n}\nnav.navbar a:hover:focus,\nnav.navbar .navbar-brand:hover {\n  color: #428bca;\n  background-color: white;\n}\n#countryInfo {\n  color: #000;\n  display: block;\n  position: absolute;\n  top: -50px;\n  left: -50px;\n  margin: 5px 15px;\n  padding: 5px 10px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid #2e3540;\n}\n.story {\n  border-top: 1px solid #ddd;\n  padding-bottom: 20px;\n}\n.story h5,\n.story h5 a {\n  padding-top: 5px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin-bottom: 2px;\n}\n.story strong {\n  font-weight: 600;\n}\n.story p {\n  margin-top: 1em;\n}\n#footer {\n  padding-top: 10px;\n  margin-top: 20px;\n  padding-bottom: 100px;\n}\n#footer ol li {\n  margin-bottom: 0.5em;\n}\n#map-background {\n  background-color: #2e3540;\n}\n#errors {\n  margin-top: 15px;\n}\n#map {\n  background-size: 112px 32px;\n  background-position: 0% 100%;\n  background-repeat: no-repeat;\n  /* Filled in by JS when map is colored. */\n  background-image: none;\n}\n#map .background {\n  fill: none;\n  pointer-events: all;\n}\n#map #countries {\n  /*cursor: pointer;*/\n  fill: #434e5e;\n  stroke: #2e3540;\n  stroke-width: 1;\n  stroke-linejoin: miter;\n  stroke-linecap: butt;\n}\n", ""]);
+	exports.push([module.id, "body {\n  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\nh1 {\n  font-weight: 800;\n}\nh2,\nh3 {\n  font-weight: 600;\n}\nnav.navbar {\n  background-color: white;\n  margin-bottom: 0px;\n  border-bottom: 1px solid #2e3540;\n}\nnav.navbar a:link:visited,\nnav.navbar .navbar-brand {\n  text-shadow: none;\n  box-shadow: none;\n  color: #2e3540;\n}\nnav.navbar a:hover:focus,\nnav.navbar .navbar-brand:hover {\n  color: #428bca;\n  background-color: white;\n}\n#countryInfo {\n  color: #000;\n  display: block;\n  position: absolute;\n  top: -50px;\n  left: -50px;\n  margin: 5px 15px;\n  padding: 5px 10px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid #2e3540;\n}\n.story {\n  border-top: 1px solid #ddd;\n  padding-bottom: 20px;\n}\n.story h5,\n.story h5 a {\n  padding-top: 5px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin-bottom: 2px;\n}\n.story strong {\n  font-weight: 600;\n}\n.story p {\n  margin-top: 1em;\n}\n#footer {\n  padding-top: 10px;\n  margin-top: 20px;\n  padding-bottom: 100px;\n}\n#footer ol li {\n  margin-bottom: 0.5em;\n}\n#map-background {\n  background-color: #2e3540;\n}\n#errors {\n  display: none;\n  margin-top: 15px;\n}\n#map {\n  background-size: 112px 32px;\n  background-position: 0% 100%;\n  background-repeat: no-repeat;\n  /* Filled in by JS when map is colored. */\n  background-image: none;\n}\n#map .background {\n  fill: none;\n  pointer-events: all;\n}\n#map #countries {\n  /*cursor: pointer;*/\n  fill: #434e5e;\n  stroke: #2e3540;\n  stroke-width: 1;\n  stroke-linejoin: miter;\n  stroke-linecap: butt;\n}\n", ""]);
 
 	// exports
 
@@ -1384,6 +1385,252 @@
 	});
 
 
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	 * js-logger - http://github.com/jonnyreeves/js-logger 
+	 * Jonny Reeves, http://jonnyreeves.co.uk/
+	 * js-logger may be freely distributed under the MIT license. 
+	 */
+	(function (global) {
+		"use strict";
+
+		// Top level module for the global, static logger instance.
+		var Logger = { };
+		
+		// For those that are at home that are keeping score.
+		Logger.VERSION = "1.1.1";
+		
+		// Function which handles all incoming log messages.
+		var logHandler;
+		
+		// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
+		var contextualLoggersByNameMap = {};
+
+		// Polyfill for ES5's Function.bind.
+		var bind = function(scope, func) {
+			return function() {
+				return func.apply(scope, arguments);
+			};
+		};
+
+		// Super exciting object merger-matron 9000 adding another 100 bytes to your download.
+		var merge = function () {
+			var args = arguments, target = args[0], key, i;
+			for (i = 1; i < args.length; i++) {
+				for (key in args[i]) {
+					if (!(key in target) && args[i].hasOwnProperty(key)) {
+						target[key] = args[i][key];
+					}
+				}
+			}
+			return target;
+		};
+
+		// Helper to define a logging level object; helps with optimisation.
+		var defineLogLevel = function(value, name) {
+			return { value: value, name: name };
+		};
+
+		// Predefined logging levels.
+		Logger.DEBUG = defineLogLevel(1, 'DEBUG');
+		Logger.INFO = defineLogLevel(2, 'INFO');
+		Logger.TIME = defineLogLevel(3, 'TIME');
+		Logger.WARN = defineLogLevel(4, 'WARN');
+		Logger.ERROR = defineLogLevel(8, 'ERROR');
+		Logger.OFF = defineLogLevel(99, 'OFF');
+
+		// Inner class which performs the bulk of the work; ContextualLogger instances can be configured independently
+		// of each other.
+		var ContextualLogger = function(defaultContext) {
+			this.context = defaultContext;
+			this.setLevel(defaultContext.filterLevel);
+			this.log = this.info;  // Convenience alias.
+		};
+
+		ContextualLogger.prototype = {
+			// Changes the current logging level for the logging instance.
+			setLevel: function (newLevel) {
+				// Ensure the supplied Level object looks valid.
+				if (newLevel && "value" in newLevel) {
+					this.context.filterLevel = newLevel;
+				}
+			},
+
+			// Is the logger configured to output messages at the supplied level?
+			enabledFor: function (lvl) {
+				var filterLevel = this.context.filterLevel;
+				return lvl.value >= filterLevel.value;
+			},
+
+			debug: function () {
+				this.invoke(Logger.DEBUG, arguments);
+			},
+
+			info: function () {
+				this.invoke(Logger.INFO, arguments);
+			},
+
+			warn: function () {
+				this.invoke(Logger.WARN, arguments);
+			},
+
+			error: function () {
+				this.invoke(Logger.ERROR, arguments);
+			},
+
+			time: function (label) {
+				if (typeof label === 'string' && label.length > 0) {
+					this.invoke(Logger.TIME, [ label, 'start' ]);
+				}
+			},
+
+			timeEnd: function (label) {
+				if (typeof label === 'string' && label.length > 0) {
+					this.invoke(Logger.TIME, [ label, 'end' ]);
+				}
+			},
+
+			// Invokes the logger callback if it's not being filtered.
+			invoke: function (level, msgArgs) {
+				if (logHandler && this.enabledFor(level)) {
+					logHandler(msgArgs, merge({ level: level }, this.context));
+				}
+			}
+		};
+
+		// Protected instance which all calls to the to level `Logger` module will be routed through.
+		var globalLogger = new ContextualLogger({ filterLevel: Logger.OFF });
+
+		// Configure the global Logger instance.
+		(function() {
+			// Shortcut for optimisers.
+			var L = Logger;
+
+			L.enabledFor = bind(globalLogger, globalLogger.enabledFor);
+			L.debug = bind(globalLogger, globalLogger.debug);
+			L.time = bind(globalLogger, globalLogger.time);
+			L.timeEnd = bind(globalLogger, globalLogger.timeEnd);
+			L.info = bind(globalLogger, globalLogger.info);
+			L.warn = bind(globalLogger, globalLogger.warn);
+			L.error = bind(globalLogger, globalLogger.error);
+
+			// Don't forget the convenience alias!
+			L.log = L.info;
+		}());
+
+		// Set the global logging handler.  The supplied function should expect two arguments, the first being an arguments
+		// object with the supplied log messages and the second being a context object which contains a hash of stateful
+		// parameters which the logging function can consume.
+		Logger.setHandler = function (func) {
+			logHandler = func;
+		};
+
+		// Sets the global logging filter level which applies to *all* previously registered, and future Logger instances.
+		// (note that named loggers (retrieved via `Logger.get`) can be configured independently if required).
+		Logger.setLevel = function(level) {
+			// Set the globalLogger's level.
+			globalLogger.setLevel(level);
+
+			// Apply this level to all registered contextual loggers.
+			for (var key in contextualLoggersByNameMap) {
+				if (contextualLoggersByNameMap.hasOwnProperty(key)) {
+					contextualLoggersByNameMap[key].setLevel(level);
+				}
+			}
+		};
+
+		// Retrieve a ContextualLogger instance.  Note that named loggers automatically inherit the global logger's level,
+		// default context and log handler.
+		Logger.get = function (name) {
+			// All logger instances are cached so they can be configured ahead of use.
+			return contextualLoggersByNameMap[name] ||
+				(contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
+		};
+
+		// Configure and example a Default implementation which writes to the `window.console` (if present).
+		Logger.useDefaults = function(defaultLevel) {
+			// Check for the presence of a logger.
+			if (typeof console === "undefined") {
+				return;
+			}
+
+			// Map of timestamps by timer labels used to track `#time` and `#timeEnd()` invocations in environments
+			// that don't offer a native console method.
+			var timerStartTimeByLabelMap = {};
+
+			// Support for IE8+ (and other, slightly more sane environments)
+			var invokeConsoleMethod = function (hdlr, messages) {
+				Function.prototype.apply.call(hdlr, console, messages);
+			};
+
+			Logger.setLevel(defaultLevel || Logger.DEBUG);
+			Logger.setHandler(function(messages, context) {
+				var hdlr = console.log;
+				var timerLabel;
+
+				if (context.level === Logger.TIME) {
+					timerLabel = (context.name ? '[' + context.name + '] ' : '') + messages[0];
+
+					if (messages[1] === 'start') {
+						if (console.time) {
+							console.time(timerLabel);
+						}
+						else {
+							timerStartTimeByLabelMap[timerLabel] = new Date().getTime();
+						}
+					}
+					else {
+						if (console.timeEnd) {
+							console.timeEnd(timerLabel);
+						}
+						else {
+							invokeConsoleMethod(hdlr, [ timerLabel + ': ' +
+								(new Date().getTime() - timerStartTimeByLabelMap[timerLabel]) + 'ms' ]);
+						}
+					}
+				}
+				else {
+					// Delegate through to custom warn/error loggers if present on the console.
+					if (context.level === Logger.WARN && console.warn) {
+						hdlr = console.warn;
+					} else if (context.level === Logger.ERROR && console.error) {
+						hdlr = console.error;
+					} else if (context.level === Logger.INFO && console.info) {
+						hdlr = console.info;
+					}
+
+					// Prepend the logger's name to the log message for easy identification.
+					if (context.name) {
+						Array.prototype.unshift.call(messages, "[" + context.name + "] ");
+					}
+
+					invokeConsoleMethod(hdlr, messages);
+				}
+			});
+		};
+
+		// Export to popular environments boilerplate.
+		if (true) {
+			!(__WEBPACK_AMD_DEFINE_FACTORY__ = (Logger), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		}
+		else if (typeof module !== 'undefined' && module.exports) {
+			module.exports = Logger;
+		}
+		else {
+			Logger._prevLogger = global.Logger;
+
+			Logger.noConflict = function () {
+				global.Logger = Logger._prevLogger;
+				return Logger;
+			};
+
+			global.Logger = Logger;
+		}
+	}(this));
 
 /***/ }
 /******/ ]);
