@@ -5,6 +5,11 @@ install:
 - pip install -e .
 - pip install git+http://github.com/fnielsen/afinn.git
 script: py.test
+env:
+  global:
+  - test: testing123
+  - test_two: "testing456"
+  - secure: "DrbA9yMscP8fswXSkYPS/aPiyuYJhv3PMcPhOWjO5T5Jf4skpwj6J5jjRgoBEcvUSEErQjA4yfvV9izdHjrL6Ox/z7s5gkNC5SIbdeQJZ01Kp3/QW/6q/uRhneVivED6/iRB3zhni3SmbytixCNLHU94NtXTkZEmWYytEe9U8RtXvz1FrRfMp8Ccdt9V2Q4d5PsFaZeFkLTs2hysogIswxRC5ZIHpSvdIbm+bjoqn10rV8Na+tVYJzQYBYqKI68Yllsx/SKAZtVEwwZA8qp1NEl1sB5B1FtdNSgMQAM7neTs1Ahksrfj9fNJL7LqkIjj4UkYXjb9Nb1Q7zgiGM9PzvxIZMGA+bLuRuoB9D3oHzIM9T5WOj3XDxe9jh+lRZ/6uPDF2vUy1IUvKPKu2Z4kz3cZdh4HPCqDI+AtJD0D4ftg0Z2dztddknwHCJ6vnSLM4ATsMfQiEqL121UeohodBYZkLvfFyUkAzcONIyeUf8u7BlFhCRV41KlLkC9BeaQQk1HmadK+t35GYPLrkj3x5z3yl37tONaRzA9wjNjZXwZ0SQFjkqsRacaN3gF9S091ViKmS+tmj5JZrSlb669bAuRE0BRJUXxMGIMjn/6Pyd21sl98tFhE/XAkuQ2hhlStMXM7Ely42ZYkEUWiaF2r76cZeh0M3zC9SeD1ZA3xHFc="
 deploy:
   provider: heroku
   api_key:
@@ -19,6 +24,3 @@ after_deploy:
 - git config --global user.name "Travis-CI"
 - gulp deploy
 sudo: false
-env:
-  global:
-    secure: "DrbA9yMscP8fswXSkYPS/aPiyuYJhv3PMcPhOWjO5T5Jf4skpwj6J5jjRgoBEcvUSEErQjA4yfvV9izdHjrL6Ox/z7s5gkNC5SIbdeQJZ01Kp3/QW/6q/uRhneVivED6/iRB3zhni3SmbytixCNLHU94NtXTkZEmWYytEe9U8RtXvz1FrRfMp8Ccdt9V2Q4d5PsFaZeFkLTs2hysogIswxRC5ZIHpSvdIbm+bjoqn10rV8Na+tVYJzQYBYqKI68Yllsx/SKAZtVEwwZA8qp1NEl1sB5B1FtdNSgMQAM7neTs1Ahksrfj9fNJL7LqkIjj4UkYXjb9Nb1Q7zgiGM9PzvxIZMGA+bLuRuoB9D3oHzIM9T5WOj3XDxe9jh+lRZ/6uPDF2vUy1IUvKPKu2Z4kz3cZdh4HPCqDI+AtJD0D4ftg0Z2dztddknwHCJ6vnSLM4ATsMfQiEqL121UeohodBYZkLvfFyUkAzcONIyeUf8u7BlFhCRV41KlLkC9BeaQQk1HmadK+t35GYPLrkj3x5z3yl37tONaRzA9wjNjZXwZ0SQFjkqsRacaN3gF9S091ViKmS+tmj5JZrSlb669bAuRE0BRJUXxMGIMjn/6Pyd21sl98tFhE/XAkuQ2hhlStMXM7Ely42ZYkEUWiaF2r76cZeh0M3zC9SeD1ZA3xHFc="
