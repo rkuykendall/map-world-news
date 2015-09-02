@@ -4,6 +4,8 @@ require('./style.less');
 const Rainbow = require('rainbowvis.js');
 const NProgress = require('nprogress');
 const jsLogger = require('js-logger');
+const React = require('react')
+let StoryList = require('./components/storyList.jsx')
 
 let log = jsLogger;
 log.useDefaults();
@@ -13,10 +15,6 @@ const CATEGORIES = {
     'US News': 'http://feeds.reuters.com/Reuters/domesticNews',
     'Top News': 'http://feeds.reuters.com/reuters/MostRead',
     'Politics': 'http://feeds.reuters.com/Reuters/PoliticsNews'
-}
-
-function dispNum(n) {
-    return parseFloat(parseFloat(n).toFixed(1));
 }
 
 $(document).ready(function () {
@@ -146,45 +144,47 @@ function requestStories(slug) {
 
             let i = 1;
             log.info(data);
+            React.render(<StoryList stories={data} />, document.getElementById('app'));
+
             $.each(data, function(idx, val) {
-                let open = '<div class="story">';
-                let close = '</div>';
-
-                let title = '<h5><a href="' + val.link + '" target="_blank">'
-                      + val.title + '</a></h5>';
-
-                let tag = ''
-
-                if (val.sentiment > 0) {
-                    tag = '+' + dispNum(val.sentiment) + ' sentiment';
-                    if (val.countries.length > 0) {
-                        tag +=  ' for ' + val.countries.join(', ');
-                    }
-                    tag += '.';
-                } else if (val.sentiment < 0) {
-                    tag = Math.floor(val.sentiment) + ' sentiment';
-                    if (val.countries.length > 0) {
-                        tag +=  ' for ' + val.countries.join(', ');
-                    }
-                    tag += '.';
-                } else {
-                    if (val.countries.length > 0) {
-                        tag = val.countries.join(', ') + ' mentioned.';
-                    }
-                }
-
-                tag = '<strong>' + tag + '</strong>';
-                let text = '<p>' + val.summary + '</p>';
-                let story = open + title + tag + text + close;
-
-                if (val.sentiment > 0) {
-                    itemsPositive.push(story);
-                } else if (val.sentiment < 0) {
-                    itemsNegative.push(story);
-                } else {
-                    itemsNeutral.push(story);
-                }
-
+            //     let open = '<div class="story">';
+            //     let close = '</div>';
+            //
+            //     let title = '<h5><a href="' + val.link + '" target="_blank">'
+            //           + val.title + '</a></h5>';
+            //
+            //     let tag = ''
+            //
+            //     if (val.sentiment > 0) {
+            //         tag = '+' + dispNum(val.sentiment) + ' sentiment';
+            //         if (val.countries.length > 0) {
+            //             tag +=  ' for ' + val.countries.join(', ');
+            //         }
+            //         tag += '.';
+            //     } else if (val.sentiment < 0) {
+            //         tag = Math.floor(val.sentiment) + ' sentiment';
+            //         if (val.countries.length > 0) {
+            //             tag +=  ' for ' + val.countries.join(', ');
+            //         }
+            //         tag += '.';
+            //     } else {
+            //         if (val.countries.length > 0) {
+            //             tag = val.countries.join(', ') + ' mentioned.';
+            //         }
+            //     }
+            //
+            //     tag = '<strong>' + tag + '</strong>';
+            //     let text = '<p>' + val.summary + '</p>';
+            //     let story = open + title + tag + text + close;
+            //
+            //     if (val.sentiment > 0) {
+            //         itemsPositive.push(story);
+            //     } else if (val.sentiment < 0) {
+            //         itemsNegative.push(story);
+            //     } else {
+            //         itemsNeutral.push(story);
+            //     }
+            //
                 i++;
                 val.countries.forEach(function (entry) {
                     let original = entry;
@@ -203,10 +203,10 @@ function requestStories(slug) {
                     }
                 });
             });
-
-            $('#itemsPositive').html('<h3>Positive</h3>' + itemsPositive.join('\n'))
-            $('#itemsNeutral').html('<h3>Neutral</h3>' + itemsNeutral.join('\n'))
-            $('#itemsNegative').html('<h3>Negative</h3>' + itemsNegative.join('\n'))
+            //
+            // $('#itemsPositive').html('<h3>Positive</h3>' + itemsPositive.join('\n'))
+            // $('#itemsNeutral').html('<h3>Neutral</h3>' + itemsNeutral.join('\n'))
+            // $('#itemsNegative').html('<h3>Negative</h3>' + itemsNegative.join('\n'))
             NProgress.done();
         }, 'json');
     }).fail(function() {
