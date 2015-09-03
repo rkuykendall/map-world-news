@@ -72,7 +72,7 @@ function requestStories(slug) {
                 }
             }
 
-            React.render(<App countries={countries} topo={topo} />, document.getElementById('app'));
+            React.render(<App countries={countries} topo={topo} log={log} />, document.getElementById('app'));
 
             NProgress.done();
         }, 'json');

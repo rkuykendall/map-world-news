@@ -3,23 +3,35 @@
 const React = require('react');
 const StoryList = require('./storyList.jsx');
 const WorldMap = require('./worldMap.jsx');
+const countries = require('country-data').countries
 
 module.exports = React.createClass({
+  getInitialState() {
+    return {
+      country: null
+    }
+  },
+
+  countryClicked(id) {
+    this.setState({
+      country: id
+    });
+  },
+
   render: function() {
     let keys = Object.keys(this.props.countries);
+    let code = this.state.country;
 
     return <div className="app">
-      <WorldMap
-        countries={this.props.countries}
-        topo={this.props.topo} />
+      <WorldMap {...this.props} countryClicked={this.countryClicked} />
 
-      <div className="container">
-        <div className="row">
-          {keys.map(function(code) {
-            return <StoryList stories={this.props.countries[code]} title={code} />;
-          }, this)}
-        </div>;
-      </div>;
-    </div>;
+      {code &&
+        <div className="container">
+          <div className="row">
+              <StoryList stories={this.props.countries[code]} id={code} title={countries[code].name} log={this.props.log} />
+          </div>
+        </div>
+      }
+    </div>
   }
 });
