@@ -1,6 +1,7 @@
 'use strict';
 
 const React = require('react')
+const Rainbow = require('rainbowvis.js');
 
 function dispNum(n) {
     return parseFloat(parseFloat(n).toFixed(1));
@@ -8,6 +9,13 @@ function dispNum(n) {
 
 module.exports = React.createClass({
   render: function() {
+    let rainbow = new Rainbow();
+    rainbow.setSpectrum('f61f55', '40dee3', '67ff8c');
+    rainbow.setNumberRange(-200, 200);
+
+    let color = rainbow.colourAt(Math.round(this.props.sentiment * 100));
+
+
     let countriesPrint = this.props.countries.join(', ');
 
     let tag = '';
@@ -29,7 +37,12 @@ module.exports = React.createClass({
         }
     }
 
-    return <div className="story col-sm-12 col-md-4">
+
+    let styles = {
+      'borderTop': 'solid 2px #' + color
+    }
+
+    return <div className="story col-sm-12 col-md-4" style={styles}>
       <h5><a href="{this.props.link}" target="_blank">{this.props.title}</a></h5>
       <strong>{tag}</strong>
       <p>{this.props.summary}</p>

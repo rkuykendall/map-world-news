@@ -4,8 +4,8 @@ const React = require('react')
 const Rainbow = require('rainbowvis.js');
 const _ = require('lodash');
 
-function countryClicked(d) {
-    log.info('Clicked' + d);
+function dispNum(n) {
+    return parseFloat(parseFloat(n).toFixed(1));
 }
 
 module.exports = React.createClass({
@@ -45,7 +45,7 @@ module.exports = React.createClass({
       let entry = d3.select('#' + key)
 
       if (entry.empty()) {
-          log.error('Error. Country not found: ' + key);
+          this.props.log.error('Error. Country not found: ' + key);
       } else {
           let currentSentiment = parseFloat(entry.attr('sentiment'));
           currentSentiment = currentSentiment || 0;
@@ -61,6 +61,32 @@ module.exports = React.createClass({
   componentWillReceiveProps(nextProps) {
     // g.selectAll('#countries *').style('fill', null);
     // g.selectAll('#countries *').attr('sentiment', 0);
+  },
+
+  countryClicked(d) {
+    this.props.countryClicked(d.id);
+  },
+
+  onMouseOver(d) {
+    d3.select('#' + d.id).classed('selected', true);
+
+    let sentiment = d3.select('#' + d.id).attr('sentiment');
+    if (sentiment == null) {
+      sentiment = 0;
+    }
+
+    if (sentiment < 0) {
+      $('#countryInfo').html(d.properties.name + ', ' + dispNum(sentiment) + ' sentiment').css('display', 'block');
+    } else if (sentiment > 0) {
+      $('#countryInfo').html(d.properties.name + ', +' + dispNum(sentiment) + ' sentiment').css('display', 'block');
+    } else {
+      $('#countryInfo').html(d.properties.name).css('display', 'block');
+    }
+  },
+
+  onMouseOut(d) {
+    d3.select('#' + d.id).classed('selected', false);
+    $('#countryInfo').html('').css('display', 'none');
   },
 
   render() {
@@ -87,8 +113,7 @@ module.exports = React.createClass({
                   <rect
                     className='background'
                     width={width}
-                    height={height}
-                    onclick={countryClicked} />
+                    height={height} />
 
                   <g id="countries">
                     {this.props.topo.map(function(d) {
@@ -96,14 +121,18 @@ module.exports = React.createClass({
                         id={d.id}
                         name={d.properties.name}
                         d={path(d)}
-                        sentiment={0} />;
-                    })}
+                        sentiment={0}
+                        onClick={this.countryClicked.bind(this, d)}
+                        onMouseOver={this.onMouseOver.bind(this, d)}
+                        onMouseOut={this.onMouseOut.bind(this, d)} />;
+                    }, this)}
                   </g>
                 </svg>
               </div>
             </div>
           </div>
         </div>
+        <div id="countryInfo"></div>
       </div>);
   }
 });
