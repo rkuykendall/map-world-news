@@ -1,9 +1,32 @@
 @dark-grey: #2e3540;
 @light-grey: darken(white, 2);
 
+@badRed: #f61f55;
+@mildBlue: #40dee3;
+@goodGreen: #67ff8c;
+
 #nprogress .bar,
 #nprogress .spinner {
   z-index: 999999;
+}
+
+.feed-list {
+  ul {
+    padding: 0 30px 0 0;
+  }
+  li {
+    border-left: 5px solid @dark-grey;
+    display: block;
+    margin-bottom: 5px;
+    background-color: @light-grey;
+    padding: 5px;
+  }
+  li.loaded {
+    border-color: @mildBlue;
+  }
+  li span.light {
+    color: darken(@light-grey, 20);
+  }
 }
 
 body {
@@ -65,15 +88,6 @@ nav.navbar {
   }
   p {
     margin-top: 1em;
-  }
-}
-
-#footer {
-  padding-top: 10px;
-  margin-top: 20px;
-  padding-bottom: 100px;
-  ol li {
-    margin-bottom: 0.5em;
   }
 }
 

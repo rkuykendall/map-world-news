@@ -10,7 +10,7 @@ const App = require('./components/app.jsx')
 let log = jsLogger;
 log.useDefaults();
 
-const feeds = [
+let feeds = [
   {
   	name: 'Reuters',
   	url: 'http://feeds.reuters.com/Reuters/worldNews',
@@ -121,7 +121,7 @@ function requestStories() {
   }
 
   let processed = 0;
-  for (let feed of feeds) {
+  feeds.forEach(function(feed, index) {
     $.post(api, { url: feed.url }, function(data) {
       $.post(api, { data: data }, function(data) {
         feed.data = data;
@@ -150,5 +150,5 @@ function requestStories() {
       log.error( 'Failure to getJSON for ' + url);
       $('#errors').slideDown().delay(30000).slideUp();
     });
-  }
+  });
 }

@@ -56,7 +56,7 @@
 	let log = jsLogger;
 	log.useDefaults();
 
-	const feeds = [
+	let feeds = [
 	  {
 	  	name: 'Reuters',
 	  	url: 'http://feeds.reuters.com/Reuters/worldNews',
@@ -156,7 +156,7 @@
 	  requestStories();
 	});
 
-	function requestStories() {var $__0, $__1, $__2;
+	function requestStories() {
 	  NProgress.start();
 
 	  $('#footer').css('border-top', '1px solid #ddd');
@@ -167,7 +167,7 @@
 	  }
 
 	  let processed = 0;
-	  var feed;for($__0=feeds,$__1=Array.isArray($__0),$__2=0,$__0=$__1?$__0:$__0[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__1){if($__2>=$__0.length) break;feed=$__0[$__2++];}else{$__2=$__0.next();if($__2.done) break;feed=$__2.value;}
+	  feeds.forEach(function(feed, index) {
 	    $.post(api, { url: feed.url }, function(data) {
 	      $.post(api, { data: data }, function(data) {var $__0, $__1, $__2, $__3, $__4, $__5;
 	        feed.data = data;
@@ -196,7 +196,7 @@
 	      log.error( 'Failure to getJSON for ' + url);
 	      $('#errors').slideDown().delay(30000).slideUp();
 	    });
-	  }
+	  });
 	}
 
 
@@ -235,7 +235,7 @@
 
 
 	// module
-	exports.push([module.id, "#nprogress .bar,\n#nprogress .spinner {\n  z-index: 999999;\n}\nbody {\n  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\nh1 {\n  font-weight: 800;\n}\nh2,\nh3 {\n  font-weight: 600;\n}\nnav.navbar {\n  background-color: white;\n  margin-bottom: 0px;\n  border-bottom: 1px solid #2e3540;\n}\nnav.navbar a:link:visited,\nnav.navbar .navbar-brand {\n  text-shadow: none;\n  box-shadow: none;\n  color: #2e3540;\n}\nnav.navbar a:hover:focus,\nnav.navbar .navbar-brand:hover {\n  color: #428bca;\n  background-color: white;\n}\n#countryInfo {\n  color: #000;\n  display: block;\n  position: absolute;\n  top: -50px;\n  left: -50px;\n  margin: 5px 15px;\n  padding: 5px 10px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid #2e3540;\n}\n.story {\n  background-color: #fafafa;\n  border-top: 5px solid black;\n  padding: 0px 10px 10px 10px;\n  margin-bottom: 10px;\n}\n.story h5,\n.story h5 a {\n  padding-top: 5px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin-bottom: 2px;\n}\n.story strong {\n  font-weight: 600;\n}\n.story p {\n  margin-top: 1em;\n}\n#footer {\n  padding-top: 10px;\n  margin-top: 20px;\n  padding-bottom: 100px;\n}\n#footer ol li {\n  margin-bottom: 0.5em;\n}\n#map-background {\n  background-color: #2e3540;\n}\n#errors {\n  display: none;\n  margin-top: 15px;\n}\n#map {\n  background-size: 112px 32px;\n  background-position: 0% 100%;\n  background-repeat: no-repeat;\n  /* Filled in by JS when map is colored. */\n  background-image: none;\n}\n#map .background {\n  fill: none;\n  pointer-events: all;\n}\n#map #countries {\n  /*cursor: pointer;*/\n  fill: #434e5e;\n  stroke: #2e3540;\n  stroke-width: 1;\n  stroke-linejoin: miter;\n  stroke-linecap: butt;\n}\n", ""]);
+	exports.push([module.id, "#nprogress .bar,\n#nprogress .spinner {\n  z-index: 999999;\n}\n.feed-list ul {\n  padding: 0 30px 0 0;\n}\n.feed-list li {\n  border-left: 5px solid #2e3540;\n  display: block;\n  margin-bottom: 5px;\n  background-color: #fafafa;\n  padding: 5px;\n}\n.feed-list li.loaded {\n  border-color: #40dee3;\n}\n.feed-list li span.light {\n  color: #c7c7c7;\n}\nbody {\n  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\nh1 {\n  font-weight: 800;\n}\nh2,\nh3 {\n  font-weight: 600;\n}\nnav.navbar {\n  background-color: white;\n  margin-bottom: 0px;\n  border-bottom: 1px solid #2e3540;\n}\nnav.navbar a:link:visited,\nnav.navbar .navbar-brand {\n  text-shadow: none;\n  box-shadow: none;\n  color: #2e3540;\n}\nnav.navbar a:hover:focus,\nnav.navbar .navbar-brand:hover {\n  color: #428bca;\n  background-color: white;\n}\n#countryInfo {\n  color: #000;\n  display: block;\n  position: absolute;\n  top: -50px;\n  left: -50px;\n  margin: 5px 15px;\n  padding: 5px 10px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid #2e3540;\n}\n.story {\n  background-color: #fafafa;\n  border-top: 5px solid black;\n  padding: 0px 10px 10px 10px;\n  margin-bottom: 10px;\n}\n.story h5,\n.story h5 a {\n  padding-top: 5px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin-bottom: 2px;\n}\n.story strong {\n  font-weight: 600;\n}\n.story p {\n  margin-top: 1em;\n}\n#map-background {\n  background-color: #2e3540;\n}\n#errors {\n  display: none;\n  margin-top: 15px;\n}\n#map {\n  background-size: 112px 32px;\n  background-position: 0% 100%;\n  background-repeat: no-repeat;\n  /* Filled in by JS when map is colored. */\n  background-image: none;\n}\n#map .background {\n  fill: none;\n  pointer-events: all;\n}\n#map #countries {\n  /*cursor: pointer;*/\n  fill: #434e5e;\n  stroke: #2e3540;\n  stroke-width: 1;\n  stroke-linejoin: miter;\n  stroke-linecap: butt;\n}\n", ""]);
 
 	// exports
 
@@ -21978,15 +21978,20 @@
 	        width: 1000, 
 	        height: 360})), 
 
-	      React.createElement(Feeds, {feeds: this.props.feeds}), 
+	      React.createElement("div", {className: "container"}, 
+	        React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-sm-12 col-md-4"}, 
+	            React.createElement(Feeds, {feeds: this.props.feeds, log: this.props.log})
+	          ), 
 
-	      code &&
-	        React.createElement("div", {className: "container"}, 
-	          React.createElement("div", {className: "row"}, 
+	          React.createElement("div", {className: "col-sm-12 col-md-8"}, 
+	            code ?
 	              React.createElement(StoryList, {stories: this.props.countries[code], id: code, title: countries[code].name, log: this.props.log})
+	              : React.createElement("h3", null, "Select a country to see stories.")
+	            
 	          )
 	        )
-	      
+	      )
 	    )
 	  }
 	});
@@ -22003,14 +22008,33 @@
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  render: function() {
-	    return React.createElement("div", {id: this.props.id, className: "story-list col-sm-12 col-md-12"}, 
-	      React.createElement("h3", null, this.props.title), 
+	    let $__0=     this.props,stories=$__0.stories,title=$__0.title,id=$__0.id,log=$__0.log;
+
+	    let positives = _.dropRightWhile(_.sortBy(stories, 'sentiment').reverse(), function(story) {
+	      return story.sentiment < 0;
+	    });
+
+	    let negatives = _.dropRightWhile(_.sortBy(stories, 'sentiment'), function(story) {
+	      return story.sentiment >= 0;
+	    });
+
+	    return React.createElement("div", {id: id, className: "story-list"}, 
+	      React.createElement("h3", null, title), 
 	      React.createElement("div", {className: "row"}, 
-	      this.props.stories ?
-	        this.props.stories.map(function(story) {
-	          return React.createElement(Story, React.__spread({key: story.link},  story))
-	        })
-	      : React.createElement("div", {className: "col-sm-12 col-md-4"}, "No Stories were found which mention ", this.props.title)
+	        React.createElement("div", {className: "col-sm-12 col-md-6"}, 
+	          positives.length > 0 ?
+	            positives.map(function(story) {
+	              return React.createElement(Story, React.__spread({key: story.link},  story))
+	            })
+	          : React.createElement("p", null, "No positve stories were found which mention ", title)
+	        ), 
+	        React.createElement("div", {className: "col-sm-12 col-md-6"}, 
+	          negatives.length > 0 ?
+	            negatives.map(function(story) {
+	              return React.createElement(Story, React.__spread({key: story.link},  story))
+	            })
+	          : React.createElement("p", null, "No negative stories were found which mention ", title)
+	        )
 	      )
 	    );
 	  }
@@ -22032,44 +22056,26 @@
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  render: function() {
+	    let $__0=     this.props,countries=$__0.countries,sentiment=$__0.sentiment,title=$__0.title,link=$__0.link;
+
 	    let rainbow = new Rainbow();
 	    rainbow.setSpectrum('f61f55', '40dee3', '67ff8c');
-	    rainbow.setNumberRange(-200, 200);
-
-	    let color = rainbow.colourAt(Math.round(this.props.sentiment * 100));
-
-
-	    let countriesPrint = this.props.countries.join(', ');
-
-	    let tag = '';
-	    if (this.props.sentiment > 0) {
-	        tag = '+' + dispNum(this.props.sentiment) + ' sentiment';
-	        if (this.props.countries.length > 0) {
-	            tag +=  ' for ' + countriesPrint;
-	        }
-	        tag += '.';
-	    } else if (this.props.sentiment < 0) {
-	        tag = Math.floor(this.props.sentiment) + ' sentiment';
-	        if (this.props.countries.length > 0) {
-	            tag +=  ' for ' + countriesPrint;
-	        }
-	        tag += '.';
-	    } else {
-	        if (this.props.countries.length > 0) {
-	            tag = countriesPrint + ' mentioned.';
-	        }
-	    }
-
+	    rainbow.setNumberRange(-10, 10);
 	    let styles = {
-	      'borderColor': '#' + color
+	      'borderColor': '#' + rainbow.colourAt(Math.round(sentiment))
 	    }
 
-	    return React.createElement("div", {className: "col-sm-12 col-md-4"}, 
-	      React.createElement("div", {className: "story", style: styles}, 
-	        React.createElement("h5", null, React.createElement("a", {href: this.props.link, target: "_blank"}, this.props.title)), 
-	        React.createElement("strong", null, tag), 
-	        React.createElement("p", null, this.props.summary)
-	      )
+	    let sentFmt = parseFloat(parseFloat(sentiment).toFixed(1));
+	    if (sentFmt > 0) {
+	      sentFmt = '+' + sentFmt;
+	    }
+
+	    return React.createElement("div", {className: "story", style: styles}, 
+	      React.createElement("h5", null, React.createElement("a", {href: link, target: "_blank"}, title)), 
+	      React.createElement("strong", null, 
+	        sentFmt, " sentiment ", countries.length > 0 ? ' for ' + countries.join(', ') : ''
+	      ), 
+	      React.createElement("p", null, this.props.summary)
 	    );
 	  }
 	});
@@ -34623,7 +34629,20 @@
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  render: function() {
-	    return React.createElement("div", {className: "feed-list col-sm-12 col-md-12"}
+	    let $__0=   this.props,feeds=$__0.feeds,log=$__0.log;
+
+	    log.info(feeds);
+	    return React.createElement("div", {className: "feed-list"}, 
+	      React.createElement("h3", null, "News Feeds"), 
+	      React.createElement("ul", null, 
+	        feeds.map(function(feed) {
+	          return React.createElement("li", {key: feed.name, className: feed.fetched ? 'loaded' : 'loading'}, 
+	            feed.data && feed.data.length > 0 ?
+	              React.createElement("span", null, feed.name, " ", React.createElement("span", {className: "light"}, "(", feed.data.length, ")"))
+	              : feed.name
+	          )
+	        })
+	      )
 	    );
 	  }
 	});
