@@ -12,16 +12,26 @@ log.useDefaults();
 
 let topo = [];
 let countries = {};
+React.render(<App countries={countries} topo={topo} log={log} />, document.getElementById('app'));
 
 $.get('countries.topo.json', function(data) {
   topo = topojson.feature(data, data.objects.countries).features
+  React.render(<App countries={countries} topo={topo} log={log} />, document.getElementById('app'));
 });
 
 const CATEGORIES = {
-  'World News': 'http://feeds.reuters.com/Reuters/worldNews',
-  'US News': 'http://feeds.reuters.com/Reuters/domesticNews',
-  'Top News': 'http://feeds.reuters.com/reuters/MostRead',
-  'Politics': 'http://feeds.reuters.com/Reuters/PoliticsNews'
+  'Reuters': 'http://feeds.reuters.com/Reuters/worldNews',
+  'Associated Press': 'http://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5',
+  'BBC': 'http://feeds.bbci.co.uk/news/world/rss.xml',
+  'Fox': 'http://feeds.foxnews.com/foxnews/world',
+  'NPR': 'http://www.npr.org/rss/rss.php?id=1004',
+  'USNews': 'http://www.usnews.com/rss/news',
+  'CNN': 'http://rss.cnn.com/rss/cnn_world.rss',
+  'NYTimes Middle East': 'http://rss.nytimes.com/services/xml/rss/nyt/MiddleEast.xml',
+  'NYTimes Europe': 'http://rss.nytimes.com/services/xml/rss/nyt/Europe.xml',
+  'NYTimes Asia Pacific': 'http://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml',
+  'NYTimes Africa': 'http://rss.nytimes.com/services/xml/rss/nyt/Africa.xml',
+  'NYTimes Americas': 'http://rss.nytimes.com/services/xml/rss/nyt/Americas.xml'
 }
 
 function dispNum(n) {
@@ -37,10 +47,10 @@ $(document).ready(function () {
     return false;
   });
 
-  requestStories('World News');
+  requestStories();
 });
 
-function requestStories(slug) {
+function requestStories() {
   NProgress.start();
 
   $('#footer').css('border-top', '1px solid #ddd');
@@ -50,6 +60,7 @@ function requestStories(slug) {
     url = 'http://map-world-news.herokuapp.com/feeds';
   }
 
+  let processed = 0;
   let keys = Object.keys(CATEGORIES);
   for (let key of keys) {
     $.post(url, { url: CATEGORIES[key] }, function(data) {
@@ -62,7 +73,14 @@ function requestStories(slug) {
             countries[country].push(story);
           }
         }
-        NProgress.done();
+
+        processed += 1;
+        if (processed == keys.length) {
+          NProgress.done();
+        } else {
+          NProgress.inc(0.8 / keys.length);
+        }
+
         React.render(<App countries={countries} topo={topo} log={log} />, document.getElementById('app'));
       }, 'json');
     }).fail(function() {

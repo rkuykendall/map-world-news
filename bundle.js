@@ -58,16 +58,26 @@
 
 	let topo = [];
 	let countries = {};
+	React.render(React.createElement(App, {countries: countries, topo: topo, log: log}), document.getElementById('app'));
 
 	$.get('countries.topo.json', function(data) {
 	  topo = topojson.feature(data, data.objects.countries).features
+	  React.render(React.createElement(App, {countries: countries, topo: topo, log: log}), document.getElementById('app'));
 	});
 
 	const CATEGORIES = {
-	  'World News': 'http://feeds.reuters.com/Reuters/worldNews',
-	  'US News': 'http://feeds.reuters.com/Reuters/domesticNews',
-	  'Top News': 'http://feeds.reuters.com/reuters/MostRead',
-	  'Politics': 'http://feeds.reuters.com/Reuters/PoliticsNews'
+	  'Reuters': 'http://feeds.reuters.com/Reuters/worldNews',
+	  'Associated Press': 'http://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5',
+	  'BBC': 'http://feeds.bbci.co.uk/news/world/rss.xml',
+	  'Fox': 'http://feeds.foxnews.com/foxnews/world',
+	  'NPR': 'http://www.npr.org/rss/rss.php?id=1004',
+	  'USNews': 'http://www.usnews.com/rss/news',
+	  'CNN': 'http://rss.cnn.com/rss/cnn_world.rss',
+	  'NYTimes Middle East': 'http://rss.nytimes.com/services/xml/rss/nyt/MiddleEast.xml',
+	  'NYTimes Europe': 'http://rss.nytimes.com/services/xml/rss/nyt/Europe.xml',
+	  'NYTimes Asia Pacific': 'http://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml',
+	  'NYTimes Africa': 'http://rss.nytimes.com/services/xml/rss/nyt/Africa.xml',
+	  'NYTimes Americas': 'http://rss.nytimes.com/services/xml/rss/nyt/Americas.xml'
 	}
 
 	function dispNum(n) {
@@ -83,10 +93,10 @@
 	    return false;
 	  });
 
-	  requestStories('World News');
+	  requestStories();
 	});
 
-	function requestStories(slug) {var $__0, $__1, $__2;
+	function requestStories() {var $__0, $__1, $__2;
 	  NProgress.start();
 
 	  $('#footer').css('border-top', '1px solid #ddd');
@@ -96,6 +106,7 @@
 	    url = 'http://map-world-news.herokuapp.com/feeds';
 	  }
 
+	  let processed = 0;
 	  let keys = Object.keys(CATEGORIES);
 	  var key;for($__0=keys,$__1=Array.isArray($__0),$__2=0,$__0=$__1?$__0:$__0[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__1){if($__2>=$__0.length) break;key=$__0[$__2++];}else{$__2=$__0.next();if($__2.done) break;key=$__2.value;}
 	    $.post(url, { url: CATEGORIES[key] }, function(data) {
@@ -108,7 +119,14 @@
 	            countries[country].push(story);
 	          }
 	        }
-	        NProgress.done();
+
+	        processed += 1;
+	        if (processed == keys.length) {
+	          NProgress.done();
+	        } else {
+	          NProgress.inc(0.8 / keys.length);
+	        }
+
 	        React.render(React.createElement(App, {countries: countries, topo: topo, log: log}), document.getElementById('app'));
 	      }, 'json');
 	    }).fail(function() {
@@ -22013,20 +22031,24 @@
 	      let sentiment = _.sum(countries[key], function(story) {
 	        return story.sentiment;
 	      });
+	      // sentimentAverage += sentimentTotal / countries[key].length * 2;
 	      newSentiments[key] = sentiment;
 	    }
 
 	    if (Object.keys(newSentiments).length > 0) {
 	      let rainbowLows = new Rainbow();
 	      rainbowLows.setSpectrum('f61f55', '40dee3');
-	      rainbowLows.setNumberRange(_.min(newSentiments), 0);
+	      rainbowLows.setNumberRange(_.min(newSentiments) / 3, 0);
 
 	      let rainbowHighs = new Rainbow();
 	      rainbowHighs.setSpectrum('40dee3', '67ff8c');
-	      rainbowHighs.setNumberRange(0, _.max(newSentiments));
+	      rainbowHighs.setNumberRange(0, _.max(newSentiments) / 3);
+
+	      let max = _.max(newSentiments);
 
 	      var key;for($__3=keys,$__4=Array.isArray($__3),$__5=0,$__3=$__4?$__3:$__3[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__4){if($__5>=$__3.length) break;key=$__3[$__5++];}else{$__5=$__3.next();if($__5.done) break;key=$__5.value;}
 	        let sentiment = newSentiments[key];
+
 	        if (sentiment < 0) {
 	          newFills[key] = rainbowLows.colourAt(sentiment);
 	        } else {
@@ -22105,7 +22127,6 @@
 
 	  render:function() {
 	    let $__0=      this.state,mWidth=$__0.mWidth,height=$__0.height,width=$__0.width,sentiments=$__0.sentiments,fills=$__0.fills;
-	    this.props.log.error(sentiments);
 
 	    let projection = d3.geo.mercator()
 	      .scale(150)

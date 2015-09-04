@@ -14,20 +14,24 @@ module.exports = React.createClass({
       let sentiment = _.sum(countries[key], function(story) {
         return story.sentiment;
       });
+      // sentimentAverage += sentimentTotal / countries[key].length * 2;
       newSentiments[key] = sentiment;
     }
 
     if (Object.keys(newSentiments).length > 0) {
       let rainbowLows = new Rainbow();
       rainbowLows.setSpectrum('f61f55', '40dee3');
-      rainbowLows.setNumberRange(_.min(newSentiments), 0);
+      rainbowLows.setNumberRange(_.min(newSentiments) / 3, 0);
 
       let rainbowHighs = new Rainbow();
       rainbowHighs.setSpectrum('40dee3', '67ff8c');
-      rainbowHighs.setNumberRange(0, _.max(newSentiments));
+      rainbowHighs.setNumberRange(0, _.max(newSentiments) / 3);
+
+      let max = _.max(newSentiments);
 
       for (let key of keys) {
         let sentiment = newSentiments[key];
+
         if (sentiment < 0) {
           newFills[key] = rainbowLows.colourAt(sentiment);
         } else {
@@ -106,7 +110,6 @@ module.exports = React.createClass({
 
   render() {
     let {mWidth, height, width, sentiments, fills} = this.state;
-    this.props.log.error(sentiments);
 
     let projection = d3.geo.mercator()
       .scale(150)
