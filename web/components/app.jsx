@@ -34,15 +34,20 @@ module.exports = React.createClass({
         width={1000}
         height={360} />
 
-      <Feeds feeds={this.props.feeds} />
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-12 col-md-4">
+            <Feeds feeds={this.props.feeds} log={this.props.log} />
+          </div>
 
-      {code &&
-        <div className="container">
-          <div className="row">
+          <div className="col-sm-12 col-md-8">
+            {code ?
               <StoryList stories={this.props.countries[code]} id={code} title={countries[code].name} log={this.props.log} />
+              : <h3>Select a country to see stories.</h3>
+            }
           </div>
         </div>
-      }
+      </div>
     </div>
   }
 });
