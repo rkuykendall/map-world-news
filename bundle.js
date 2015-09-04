@@ -56,29 +56,89 @@
 	let log = jsLogger;
 	log.useDefaults();
 
+	const feeds = [
+	  {
+	  	name: 'Reuters',
+	  	url: 'http://feeds.reuters.com/Reuters/worldNews',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	  	name: 'Associated Press',
+	  	url: 'http://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	  	name: 'BBC',
+	  	url: 'http://feeds.bbci.co.uk/news/world/rss.xml',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	  	name: 'Fox',
+	  	url: 'http://feeds.foxnews.com/foxnews/world',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	  	name: 'NPR',
+	  	url: 'http://www.npr.org/rss/rss.php?id=1004',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	  	name: 'USNews',
+	  	url: 'http://www.usnews.com/rss/news',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	  	name: 'CNN',
+	  	url: 'http://rss.cnn.com/rss/cnn_world.rss',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	  	name: 'NYTimes Middle East',
+	  	url: 'http://rss.nytimes.com/services/xml/rss/nyt/MiddleEast.xml',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	  	name: 'NYTimes Europe',
+	  	url: 'http://rss.nytimes.com/services/xml/rss/nyt/Europe.xml',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	  	name: 'NYTimes Asia Pacific',
+	  	url: 'http://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	  	name: 'NYTimes Africa',
+	  	url: 'http://rss.nytimes.com/services/xml/rss/nyt/Africa.xml',
+	  	data: [],
+	  	fetched: false
+	  },
+	  {
+	    name: 'NYTimes Americas',
+	    url: 'http://rss.nytimes.com/services/xml/rss/nyt/Americas.xml',
+	    data: [],
+	    fetched: false
+	  }
+	]
+
 	let topo = [];
 	let countries = {};
-	React.render(React.createElement(App, {countries: countries, topo: topo, log: log}), document.getElementById('app'));
+	React.render(React.createElement(App, {countries: countries, topo: topo, log: log, feeds: feeds}), document.getElementById('app'));
 
 	$.get('countries.topo.json', function(data) {
 	  topo = topojson.feature(data, data.objects.countries).features
-	  React.render(React.createElement(App, {countries: countries, topo: topo, log: log}), document.getElementById('app'));
+	  React.render(React.createElement(App, {countries: countries, topo: topo, log: log, feeds: feeds}), document.getElementById('app'));
 	});
-
-	const CATEGORIES = {
-	  'Reuters': 'http://feeds.reuters.com/Reuters/worldNews',
-	  'Associated Press': 'http://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5',
-	  'BBC': 'http://feeds.bbci.co.uk/news/world/rss.xml',
-	  'Fox': 'http://feeds.foxnews.com/foxnews/world',
-	  'NPR': 'http://www.npr.org/rss/rss.php?id=1004',
-	  'USNews': 'http://www.usnews.com/rss/news',
-	  'CNN': 'http://rss.cnn.com/rss/cnn_world.rss',
-	  'NYTimes Middle East': 'http://rss.nytimes.com/services/xml/rss/nyt/MiddleEast.xml',
-	  'NYTimes Europe': 'http://rss.nytimes.com/services/xml/rss/nyt/Europe.xml',
-	  'NYTimes Asia Pacific': 'http://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml',
-	  'NYTimes Africa': 'http://rss.nytimes.com/services/xml/rss/nyt/Africa.xml',
-	  'NYTimes Americas': 'http://rss.nytimes.com/services/xml/rss/nyt/Americas.xml'
-	}
 
 	function dispNum(n) {
 	  return parseFloat(parseFloat(n).toFixed(1));
@@ -101,16 +161,18 @@
 
 	  $('#footer').css('border-top', '1px solid #ddd');
 
-	  let url = 'http://localhost:5000/feeds';
+	  let api = 'http://localhost:5000/feeds';
 	  if (window.location.host == 'mapworldnews.com') {
-	    url = 'http://map-world-news.herokuapp.com/feeds';
+	    api = 'http://map-world-news.herokuapp.com/feeds';
 	  }
 
 	  let processed = 0;
-	  let keys = Object.keys(CATEGORIES);
-	  var key;for($__0=keys,$__1=Array.isArray($__0),$__2=0,$__0=$__1?$__0:$__0[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__1){if($__2>=$__0.length) break;key=$__0[$__2++];}else{$__2=$__0.next();if($__2.done) break;key=$__2.value;}
-	    $.post(url, { url: CATEGORIES[key] }, function(data) {
-	      $.post(url, { data: data }, function(data) {var $__0, $__1, $__2, $__3, $__4, $__5;
+	  var feed;for($__0=feeds,$__1=Array.isArray($__0),$__2=0,$__0=$__1?$__0:$__0[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__1){if($__2>=$__0.length) break;feed=$__0[$__2++];}else{$__2=$__0.next();if($__2.done) break;feed=$__2.value;}
+	    $.post(api, { url: feed.url }, function(data) {
+	      $.post(api, { data: data }, function(data) {var $__0, $__1, $__2, $__3, $__4, $__5;
+	        feed.data = data;
+	        feed.fetched = true;
+
 	        var story;for($__0=data,$__1=Array.isArray($__0),$__2=0,$__0=$__1?$__0:$__0[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__1){if($__2>=$__0.length) break;story=$__0[$__2++];}else{$__2=$__0.next();if($__2.done) break;story=$__2.value;}
 	          var country;for($__3=story.countries,$__4=Array.isArray($__3),$__5=0,$__3=$__4?$__3:$__3[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__4){if($__5>=$__3.length) break;country=$__3[$__5++];}else{$__5=$__3.next();if($__5.done) break;country=$__5.value;}
 	            if (!(country in countries)) {
@@ -121,13 +183,13 @@
 	        }
 
 	        processed += 1;
-	        if (processed == keys.length) {
+	        if (processed == feeds.length) {
 	          NProgress.done();
 	        } else {
-	          NProgress.inc(0.8 / keys.length);
+	          NProgress.inc(0.8 / feeds.length);
 	        }
 
-	        React.render(React.createElement(App, {countries: countries, topo: topo, log: log}), document.getElementById('app'));
+	        React.render(React.createElement(App, {countries: countries, topo: topo, log: log, feeds: feeds}), document.getElementById('app'));
 	      }, 'json');
 	    }).fail(function() {
 	      NProgress.done();
@@ -21885,7 +21947,8 @@
 	const React = __webpack_require__(6);
 	const StoryList = __webpack_require__(165);
 	const WorldMap = __webpack_require__(167);
-	const countries = __webpack_require__(170).countries
+	const Feeds = __webpack_require__(170);
+	const countries = __webpack_require__(171).countries
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  getInitialState:function() {
@@ -21914,6 +21977,8 @@
 	        {countryClicked: this.countryClicked, 
 	        width: 1000, 
 	        height: 360})), 
+
+	      React.createElement(Feeds, {feeds: this.props.feeds}), 
 
 	      code &&
 	        React.createElement("div", {className: "container"}, 
@@ -21945,7 +22010,7 @@
 	        this.props.stories.map(function(story) {
 	          return React.createElement(Story, React.__spread({key: story.link},  story))
 	        })
-	      : React.createElement("div", {className: "col-sm-12 col-md-4"}, "No Stories were found which mention ", this.props.title, ".")
+	      : React.createElement("div", {className: "col-sm-12 col-md-4"}, "No Stories were found which mention ", this.props.title)
 	      )
 	    );
 	  }
@@ -21995,14 +22060,13 @@
 	        }
 	    }
 
-
 	    let styles = {
 	      'borderColor': '#' + color
 	    }
 
 	    return React.createElement("div", {className: "col-sm-12 col-md-4"}, 
 	      React.createElement("div", {className: "story", style: styles}, 
-	        React.createElement("h5", null, React.createElement("a", {href: "{this.props.link}", target: "_blank"}, this.props.title)), 
+	        React.createElement("h5", null, React.createElement("a", {href: this.props.link, target: "_blank"}, this.props.title)), 
 	        React.createElement("strong", null, tag), 
 	        React.createElement("p", null, this.props.summary)
 	      )
@@ -34553,17 +34617,33 @@
 /* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/** @jsx React.DOM */'use strict';
+
+	const React = __webpack_require__(6)
+
+	module.exports = React.createClass({displayName: "module.exports",
+	  render: function() {
+	    return React.createElement("div", {className: "feed-list col-sm-12 col-md-12"}
+	    );
+	  }
+	});
+
+
+/***/ },
+/* 171 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
-	var _ = __webpack_require__(171);
-	var continents = __webpack_require__(172);
-	var regions = __webpack_require__(173);
-	var countriesAll = __webpack_require__(174);
-	var currenciesAll = __webpack_require__(175);
-	var languagesAll = __webpack_require__(176);
-	var lookup = __webpack_require__(177);
+	var _ = __webpack_require__(172);
+	var continents = __webpack_require__(173);
+	var regions = __webpack_require__(174);
+	var countriesAll = __webpack_require__(175);
+	var currenciesAll = __webpack_require__(176);
+	var languagesAll = __webpack_require__(177);
+	var lookup = __webpack_require__(178);
 
-	var getSymbol = __webpack_require__(178)
+	var getSymbol = __webpack_require__(179)
 
 	exports.continents = continents;
 	exports.regions = regions;
@@ -34663,7 +34743,7 @@
 
 
 /***/ },
-/* 171 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3
@@ -36217,13 +36297,13 @@
 
 
 /***/ },
-/* 172 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _ = __webpack_require__(171);
-	var regions = __webpack_require__(173);
+	var _ = __webpack_require__(172);
+	var regions = __webpack_require__(174);
 	var continents = {};
 
 	continents.asia = {
@@ -36309,7 +36389,7 @@
 
 
 /***/ },
-/* 173 */
+/* 174 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -36730,7 +36810,7 @@
 
 
 /***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -40958,7 +41038,7 @@
 	]
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -42033,7 +42113,7 @@
 	]
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -45424,10 +45504,10 @@
 	]
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(171);
+	var _ = __webpack_require__(172);
 
 	module.exports = init;
 
@@ -45454,12 +45534,12 @@
 	}
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = mapSymbol
 
-	var map = __webpack_require__(179)
+	var map = __webpack_require__(180)
 
 	function mapSymbol(currencyCode) {
 	  if (map.hasOwnProperty(currencyCode)) {
@@ -45470,7 +45550,7 @@
 	}
 
 /***/ },
-/* 179 */
+/* 180 */
 /***/ function(module, exports) {
 
 	module.exports = {

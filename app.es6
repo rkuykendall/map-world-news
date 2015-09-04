@@ -10,29 +10,89 @@ const App = require('./components/app.jsx')
 let log = jsLogger;
 log.useDefaults();
 
+const feeds = [
+  {
+  	name: 'Reuters',
+  	url: 'http://feeds.reuters.com/Reuters/worldNews',
+  	data: [],
+  	fetched: false
+  },
+  {
+  	name: 'Associated Press',
+  	url: 'http://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5',
+  	data: [],
+  	fetched: false
+  },
+  {
+  	name: 'BBC',
+  	url: 'http://feeds.bbci.co.uk/news/world/rss.xml',
+  	data: [],
+  	fetched: false
+  },
+  {
+  	name: 'Fox',
+  	url: 'http://feeds.foxnews.com/foxnews/world',
+  	data: [],
+  	fetched: false
+  },
+  {
+  	name: 'NPR',
+  	url: 'http://www.npr.org/rss/rss.php?id=1004',
+  	data: [],
+  	fetched: false
+  },
+  {
+  	name: 'USNews',
+  	url: 'http://www.usnews.com/rss/news',
+  	data: [],
+  	fetched: false
+  },
+  {
+  	name: 'CNN',
+  	url: 'http://rss.cnn.com/rss/cnn_world.rss',
+  	data: [],
+  	fetched: false
+  },
+  {
+  	name: 'NYTimes Middle East',
+  	url: 'http://rss.nytimes.com/services/xml/rss/nyt/MiddleEast.xml',
+  	data: [],
+  	fetched: false
+  },
+  {
+  	name: 'NYTimes Europe',
+  	url: 'http://rss.nytimes.com/services/xml/rss/nyt/Europe.xml',
+  	data: [],
+  	fetched: false
+  },
+  {
+  	name: 'NYTimes Asia Pacific',
+  	url: 'http://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml',
+  	data: [],
+  	fetched: false
+  },
+  {
+  	name: 'NYTimes Africa',
+  	url: 'http://rss.nytimes.com/services/xml/rss/nyt/Africa.xml',
+  	data: [],
+  	fetched: false
+  },
+  {
+    name: 'NYTimes Americas',
+    url: 'http://rss.nytimes.com/services/xml/rss/nyt/Americas.xml',
+    data: [],
+    fetched: false
+  }
+]
+
 let topo = [];
 let countries = {};
-React.render(<App countries={countries} topo={topo} log={log} />, document.getElementById('app'));
+React.render(<App countries={countries} topo={topo} log={log} feeds={feeds} />, document.getElementById('app'));
 
 $.get('countries.topo.json', function(data) {
   topo = topojson.feature(data, data.objects.countries).features
-  React.render(<App countries={countries} topo={topo} log={log} />, document.getElementById('app'));
+  React.render(<App countries={countries} topo={topo} log={log} feeds={feeds} />, document.getElementById('app'));
 });
-
-const CATEGORIES = {
-  'Reuters': 'http://feeds.reuters.com/Reuters/worldNews',
-  'Associated Press': 'http://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5',
-  'BBC': 'http://feeds.bbci.co.uk/news/world/rss.xml',
-  'Fox': 'http://feeds.foxnews.com/foxnews/world',
-  'NPR': 'http://www.npr.org/rss/rss.php?id=1004',
-  'USNews': 'http://www.usnews.com/rss/news',
-  'CNN': 'http://rss.cnn.com/rss/cnn_world.rss',
-  'NYTimes Middle East': 'http://rss.nytimes.com/services/xml/rss/nyt/MiddleEast.xml',
-  'NYTimes Europe': 'http://rss.nytimes.com/services/xml/rss/nyt/Europe.xml',
-  'NYTimes Asia Pacific': 'http://rss.nytimes.com/services/xml/rss/nyt/AsiaPacific.xml',
-  'NYTimes Africa': 'http://rss.nytimes.com/services/xml/rss/nyt/Africa.xml',
-  'NYTimes Americas': 'http://rss.nytimes.com/services/xml/rss/nyt/Americas.xml'
-}
 
 function dispNum(n) {
   return parseFloat(parseFloat(n).toFixed(1));
@@ -55,16 +115,18 @@ function requestStories() {
 
   $('#footer').css('border-top', '1px solid #ddd');
 
-  let url = 'http://localhost:5000/feeds';
+  let api = 'http://localhost:5000/feeds';
   if (window.location.host == 'mapworldnews.com') {
-    url = 'http://map-world-news.herokuapp.com/feeds';
+    api = 'http://map-world-news.herokuapp.com/feeds';
   }
 
   let processed = 0;
-  let keys = Object.keys(CATEGORIES);
-  for (let key of keys) {
-    $.post(url, { url: CATEGORIES[key] }, function(data) {
-      $.post(url, { data: data }, function(data) {
+  for (let feed of feeds) {
+    $.post(api, { url: feed.url }, function(data) {
+      $.post(api, { data: data }, function(data) {
+        feed.data = data;
+        feed.fetched = true;
+
         for (let story of data) {
           for (let country of story.countries) {
             if (!(country in countries)) {
@@ -75,13 +137,13 @@ function requestStories() {
         }
 
         processed += 1;
-        if (processed == keys.length) {
+        if (processed == feeds.length) {
           NProgress.done();
         } else {
-          NProgress.inc(0.8 / keys.length);
+          NProgress.inc(0.8 / feeds.length);
         }
 
-        React.render(<App countries={countries} topo={topo} log={log} />, document.getElementById('app'));
+        React.render(<App countries={countries} topo={topo} log={log} feeds={feeds} />, document.getElementById('app'));
       }, 'json');
     }).fail(function() {
       NProgress.done();

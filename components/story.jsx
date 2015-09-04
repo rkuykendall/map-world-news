@@ -37,14 +37,13 @@ module.exports = React.createClass({
         }
     }
 
-
     let styles = {
       'borderColor': '#' + color
     }
 
     return <div className="col-sm-12 col-md-4">
       <div className="story" style={styles}>
-        <h5><a href="{this.props.link}" target="_blank">{this.props.title}</a></h5>
+        <h5><a href={this.props.link} target="_blank">{this.props.title}</a></h5>
         <strong>{tag}</strong>
         <p>{this.props.summary}</p>
       </div>

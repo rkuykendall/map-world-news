@@ -3,6 +3,7 @@
 const React = require('react');
 const StoryList = require('./storyList.jsx');
 const WorldMap = require('./worldMap.jsx');
+const Feeds = require('./feeds.jsx');
 const countries = require('country-data').countries
 
 module.exports = React.createClass({
@@ -32,6 +33,8 @@ module.exports = React.createClass({
         countryClicked={this.countryClicked}
         width={1000}
         height={360} />
+
+      <Feeds feeds={this.props.feeds} />
 
       {code &&
         <div className="container">
