@@ -12,7 +12,7 @@ module.exports = React.createClass({
         this.props.stories.map(function(story) {
           return <Story key={story.link} {...story} />
         })
-      : 'No Stories'}
+      : <div className="col-sm-12 col-md-4">No Stories were found which mention {this.props.title}.</div>}
       </div>
     </div>;
   }
