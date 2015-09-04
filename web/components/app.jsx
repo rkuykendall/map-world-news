@@ -23,7 +23,11 @@ module.exports = React.createClass({
     let code = this.state.country;
 
     return <div className="app">
-      <WorldMap {...this.props} countryClicked={this.countryClicked} />
+      <WorldMap
+        {...this.props}
+        countryClicked={this.countryClicked}
+        width={1000}
+        height={360} />
 
       {code &&
         <div className="container">

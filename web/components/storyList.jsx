@@ -10,7 +10,7 @@ module.exports = React.createClass({
       <div className="row">
       {this.props.stories ?
         this.props.stories.map(function(story) {
-          return <Story {...story} />
+          return <Story key={story.link} {...story} />
         })
       : 'No Stories'}
       </div>

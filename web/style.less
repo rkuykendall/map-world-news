@@ -1,4 +1,5 @@
 @dark-grey: #2e3540;
+@light-grey: darken(white, 2);
 
 #nprogress .bar,
 #nprogress .spinner {
@@ -49,8 +50,10 @@ nav.navbar {
 }
 
 .story {
-  border-top: 1px solid #ddd;
-  padding-bottom: 20px;
+  background-color: @light-grey;
+  border-top: 5px solid black;
+  padding: 0px 10px 10px 10px;
+  margin-bottom: 10px;
   h5, h5 a {
     padding-top: 5px;
     text-transform: uppercase;

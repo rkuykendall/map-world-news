@@ -4,63 +4,72 @@ const React = require('react')
 const Rainbow = require('rainbowvis.js');
 const _ = require('lodash');
 
-function dispNum(n) {
-    return parseFloat(parseFloat(n).toFixed(1));
-}
-
 module.exports = React.createClass({
-  getInitialState() {
+  getSentiments(countries) {
+    let newSentiments = {};
+    let newFills = {};
+
+    let keys = Object.keys(countries);
+    for (let key of keys) {
+      let sentiment = _.sum(countries[key], function(story) {
+        return story.sentiment;
+      });
+      newSentiments[key] = sentiment;
+    }
+
+    let rainbowLows = new Rainbow();
+    rainbowLows.setSpectrum('f61f55', '40dee3');
+    rainbowLows.setNumberRange(_.min(newSentiments), 0);
+
+    let rainbowHighs = new Rainbow();
+    rainbowHighs.setSpectrum('40dee3', '67ff8c');
+    rainbowHighs.setNumberRange(0, _.max(newSentiments));
+
+    for (let key of keys) {
+      let sentiment = newSentiments[key];
+      if (sentiment < 0) {
+        newFills[key] = rainbowLows.colourAt(sentiment);
+      } else {
+        newFills[key] = rainbowHighs.colourAt(sentiment);
+      }
+      newFills[key] = '#' + newFills[key];
+    }
+
     return {
-      mWidth: 50,
-      height: 360,
-      width: 1000
+      sentiments: newSentiments,
+      fills: newFills
     }
   },
 
-  handleResize: function(e) {
+  getInitialState() {
+    let {sentiments, fills} = this.getSentiments(this.props.countries);
+
+    return {
+      mWidth: 50,
+      height: this.props.height,
+      width: this.props.width,
+      sentiments: sentiments,
+      fills: fills
+    }
+  },
+
+  handleResize(e) {
     let w = $('#map').width();
     this.setState({
       mWidth: w,
       width: w,
-      height:  this.state.mWidth * this.state.height / this.state.width
+      height:  w * this.props.height / this.props.width
     })
   },
 
   componentDidMount() {
-    this.setState({
-      mWidth: $('#map').width()
-    })
+    this.handleResize(null);
     window.addEventListener('resize', this.handleResize);
-
-    let rainbow = new Rainbow();
-    rainbow.setSpectrum('f61f55', '40dee3', '67ff8c');
-    rainbow.setNumberRange(-200, 200);
-
-    let keys = Object.keys(this.props.countries);
-    for (let key of keys) {
-      let sentiment = _.sum(this.props.countries[key], function(story) {
-        return story.sentiment;
-      });
-      let stories = this.props.countries[key]
-      let entry = d3.select('#' + key)
-
-      if (entry.empty()) {
-          this.props.log.error('Error. Country not found: ' + key);
-      } else {
-          let currentSentiment = parseFloat(entry.attr('sentiment'));
-          currentSentiment = currentSentiment || 0;
-          let newSentiment = currentSentiment + sentiment;
-          entry.attr('sentiment', newSentiment);
-
-          entry.style('fill', '#' + rainbow.colourAt(Math.round(newSentiment * 100)));
-          $('#map').css('background-image', 'url("key.png")');
-      }
-    }
+    $('#map').css('background-image', 'url("key.png")');
   },
 
   componentWillReceiveProps(nextProps) {
-    // g.selectAll('#countries *').style('fill', null);
-    // g.selectAll('#countries *').attr('sentiment', 0);
+    this.setState(this.getSentiments(nextProps.countries));
   },
 
   countryClicked(d) {
@@ -68,33 +77,30 @@ module.exports = React.createClass({
   },
 
   onMouseOver(d) {
-    d3.select('#' + d.id).classed('selected', true);
+    let name = d.properties.name;
 
-    let sentiment = d3.select('#' + d.id).attr('sentiment');
-    if (sentiment == null) {
-      sentiment = 0;
-    }
-
-    if (sentiment < 0) {
-      $('#countryInfo').html(d.properties.name + ', ' + dispNum(sentiment) + ' sentiment').css('display', 'block');
-    } else if (sentiment > 0) {
-      $('#countryInfo').html(d.properties.name + ', +' + dispNum(sentiment) + ' sentiment').css('display', 'block');
+    if (d.id in this.state.sentiments && this.state.sentiments[d.id] != 0) {
+      let sentiment = this.state.sentiments[d.id];
+      sentiment = parseFloat(parseFloat(sentiment).toFixed(1))
+      sentiment = sentiment > 0 ? '+' + sentiment : sentiment;
+      $('#countryInfo').html(name + ', ' + sentiment + ' sentiment');
     } else {
-      $('#countryInfo').html(d.properties.name).css('display', 'block');
+      $('#countryInfo').html(name);
     }
+    $('#countryInfo').show();
   },
 
   onMouseOut(d) {
-    d3.select('#' + d.id).classed('selected', false);
-    $('#countryInfo').html('').css('display', 'none');
+    $('#countryInfo').hide();
   },
 
   render() {
-    let {mWidth, height, width} = this.state;
+    let {mWidth, height, width, sentiments, fills} = this.state;
+    this.props.log.error(sentiments);
 
     let projection = d3.geo.mercator()
       .scale(150)
-      .translate([width / 2, height / 1.5]);
+      .translate([this.props.width / 2, this.props.height / 1.5]);
 
     let path = d3.geo.path().projection(projection);
 
@@ -106,22 +112,23 @@ module.exports = React.createClass({
               <div id="map">
                 <svg
                   preserveAspectRatio='xMidYMid'
-                  viewBox={'0 0 ' + width + ' ' + height}
-                  width={mWidth}
-                  height={mWidth * height / width}>
+                  viewBox={'0 0 ' + this.props.width + ' ' + this.props.height}
+                  width={width}
+                  height={height}>
 
                   <rect
                     className='background'
-                    width={width}
-                    height={height} />
+                    width={this.props.width}
+                    height={this.props.height} />
 
                   <g id="countries">
                     {this.props.topo.map(function(d) {
                       return <path
+                        key={d.id}
                         id={d.id}
                         name={d.properties.name}
                         d={path(d)}
-                        sentiment={0}
+                        fill={d.id in fills ? fills[d.id] : null}
                         onClick={this.countryClicked.bind(this, d)}
                         onMouseOver={this.onMouseOver.bind(this, d)}
                         onMouseOut={this.onMouseOut.bind(this, d)} />;
