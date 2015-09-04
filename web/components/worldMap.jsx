@@ -17,22 +17,24 @@ module.exports = React.createClass({
       newSentiments[key] = sentiment;
     }
 
-    let rainbowLows = new Rainbow();
-    rainbowLows.setSpectrum('f61f55', '40dee3');
-    rainbowLows.setNumberRange(_.min(newSentiments), 0);
+    if (Object.keys(newSentiments).length > 0) {
+      let rainbowLows = new Rainbow();
+      rainbowLows.setSpectrum('f61f55', '40dee3');
+      rainbowLows.setNumberRange(_.min(newSentiments), 0);
 
-    let rainbowHighs = new Rainbow();
-    rainbowHighs.setSpectrum('40dee3', '67ff8c');
-    rainbowHighs.setNumberRange(0, _.max(newSentiments));
+      let rainbowHighs = new Rainbow();
+      rainbowHighs.setSpectrum('40dee3', '67ff8c');
+      rainbowHighs.setNumberRange(0, _.max(newSentiments));
 
-    for (let key of keys) {
-      let sentiment = newSentiments[key];
-      if (sentiment < 0) {
-        newFills[key] = rainbowLows.colourAt(sentiment);
-      } else {
-        newFills[key] = rainbowHighs.colourAt(sentiment);
+      for (let key of keys) {
+        let sentiment = newSentiments[key];
+        if (sentiment < 0) {
+          newFills[key] = rainbowLows.colourAt(sentiment);
+        } else {
+          newFills[key] = rainbowHighs.colourAt(sentiment);
+        }
+        newFills[key] = '#' + newFills[key];
       }
-      newFills[key] = '#' + newFills[key];
     }
 
     return {
@@ -65,6 +67,14 @@ module.exports = React.createClass({
   componentDidMount() {
     this.handleResize(null);
     window.addEventListener('resize', this.handleResize);
+
+    $(document).on('mousemove', function (e) {
+        $('#countryInfo').css({
+            left: e.pageX,
+            top: e.pageY
+        });
+    });
+
     $('#map').css('background-image', 'url("key.png")');
   },
 

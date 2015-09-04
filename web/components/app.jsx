@@ -18,6 +18,10 @@ module.exports = React.createClass({
     });
   },
 
+  onPropsChange() {
+    this.props.log.info(this.props);
+  },
+
   render: function() {
     let keys = Object.keys(this.props.countries);
     let code = this.state.country;
