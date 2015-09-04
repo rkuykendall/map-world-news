@@ -21945,7 +21945,7 @@
 	        this.props.stories.map(function(story) {
 	          return React.createElement(Story, React.__spread({key: story.link},  story))
 	        })
-	      : 'No Stories'
+	      : React.createElement("div", {className: "col-sm-12 col-md-4"}, "No Stories were found which mention ", this.props.title, ".")
 	      )
 	    );
 	  }
