@@ -165,7 +165,7 @@
 
 
 	// module
-	exports.push([module.id, "#nprogress .bar,\n#nprogress .spinner {\n  z-index: 999999;\n}\nbody {\n  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\nh1 {\n  font-weight: 800;\n}\nh2,\nh3 {\n  font-weight: 600;\n}\nnav.navbar {\n  background-color: white;\n  margin-bottom: 0px;\n  border-bottom: 1px solid #2e3540;\n}\nnav.navbar a:link:visited,\nnav.navbar .navbar-brand {\n  text-shadow: none;\n  box-shadow: none;\n  color: #2e3540;\n}\nnav.navbar a:hover:focus,\nnav.navbar .navbar-brand:hover {\n  color: #428bca;\n  background-color: white;\n}\n#countryInfo {\n  color: #000;\n  display: block;\n  position: absolute;\n  top: -50px;\n  left: -50px;\n  margin: 5px 15px;\n  padding: 5px 10px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid #2e3540;\n}\n.story {\n  border-top: 1px solid #ddd;\n  padding-bottom: 20px;\n}\n.story h5,\n.story h5 a {\n  padding-top: 5px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin-bottom: 2px;\n}\n.story strong {\n  font-weight: 600;\n}\n.story p {\n  margin-top: 1em;\n}\n#footer {\n  padding-top: 10px;\n  margin-top: 20px;\n  padding-bottom: 100px;\n}\n#footer ol li {\n  margin-bottom: 0.5em;\n}\n#map-background {\n  background-color: #2e3540;\n}\n#errors {\n  display: none;\n  margin-top: 15px;\n}\n#map {\n  background-size: 112px 32px;\n  background-position: 0% 100%;\n  background-repeat: no-repeat;\n  /* Filled in by JS when map is colored. */\n  background-image: none;\n}\n#map .background {\n  fill: none;\n  pointer-events: all;\n}\n#map #countries {\n  /*cursor: pointer;*/\n  fill: #434e5e;\n  stroke: #2e3540;\n  stroke-width: 1;\n  stroke-linejoin: miter;\n  stroke-linecap: butt;\n}\n", ""]);
+	exports.push([module.id, "#nprogress .bar,\n#nprogress .spinner {\n  z-index: 999999;\n}\nbody {\n  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\nh1 {\n  font-weight: 800;\n}\nh2,\nh3 {\n  font-weight: 600;\n}\nnav.navbar {\n  background-color: white;\n  margin-bottom: 0px;\n  border-bottom: 1px solid #2e3540;\n}\nnav.navbar a:link:visited,\nnav.navbar .navbar-brand {\n  text-shadow: none;\n  box-shadow: none;\n  color: #2e3540;\n}\nnav.navbar a:hover:focus,\nnav.navbar .navbar-brand:hover {\n  color: #428bca;\n  background-color: white;\n}\n#countryInfo {\n  color: #000;\n  display: block;\n  position: absolute;\n  top: -50px;\n  left: -50px;\n  margin: 5px 15px;\n  padding: 5px 10px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid #2e3540;\n}\n.story {\n  background-color: #fafafa;\n  border-top: 5px solid black;\n  padding: 0px 10px 10px 10px;\n  margin-bottom: 10px;\n}\n.story h5,\n.story h5 a {\n  padding-top: 5px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n  margin-bottom: 2px;\n}\n.story strong {\n  font-weight: 600;\n}\n.story p {\n  margin-top: 1em;\n}\n#footer {\n  padding-top: 10px;\n  margin-top: 20px;\n  padding-bottom: 100px;\n}\n#footer ol li {\n  margin-bottom: 0.5em;\n}\n#map-background {\n  background-color: #2e3540;\n}\n#errors {\n  display: none;\n  margin-top: 15px;\n}\n#map {\n  background-size: 112px 32px;\n  background-position: 0% 100%;\n  background-repeat: no-repeat;\n  /* Filled in by JS when map is colored. */\n  background-image: none;\n}\n#map .background {\n  fill: none;\n  pointer-events: all;\n}\n#map #countries {\n  /*cursor: pointer;*/\n  fill: #434e5e;\n  stroke: #2e3540;\n  stroke-width: 1;\n  stroke-linejoin: miter;\n  stroke-linecap: butt;\n}\n", ""]);
 
 	// exports
 
@@ -21897,7 +21897,11 @@
 	    let code = this.state.country;
 
 	    return React.createElement("div", {className: "app"}, 
-	      React.createElement(WorldMap, React.__spread({},  this.props, {countryClicked: this.countryClicked})), 
+	      React.createElement(WorldMap, React.__spread({}, 
+	        this.props, 
+	        {countryClicked: this.countryClicked, 
+	        width: 1000, 
+	        height: 360})), 
 
 	      code &&
 	        React.createElement("div", {className: "container"}, 
@@ -21927,7 +21931,7 @@
 	      React.createElement("div", {className: "row"}, 
 	      this.props.stories ?
 	        this.props.stories.map(function(story) {
-	          return React.createElement(Story, React.__spread({},  story))
+	          return React.createElement(Story, React.__spread({key: story.link},  story))
 	        })
 	      : 'No Stories'
 	      )
@@ -21981,13 +21985,15 @@
 
 
 	    let styles = {
-	      'borderTop': 'solid 2px #' + color
+	      'borderColor': '#' + color
 	    }
 
-	    return React.createElement("div", {className: "story col-sm-12 col-md-4", style: styles}, 
-	      React.createElement("h5", null, React.createElement("a", {href: "{this.props.link}", target: "_blank"}, this.props.title)), 
-	      React.createElement("strong", null, tag), 
-	      React.createElement("p", null, this.props.summary)
+	    return React.createElement("div", {className: "col-sm-12 col-md-4"}, 
+	      React.createElement("div", {className: "story", style: styles}, 
+	        React.createElement("h5", null, React.createElement("a", {href: "{this.props.link}", target: "_blank"}, this.props.title)), 
+	        React.createElement("strong", null, tag), 
+	        React.createElement("p", null, this.props.summary)
+	      )
 	    );
 	  }
 	});
@@ -22003,63 +22009,72 @@
 	const Rainbow = __webpack_require__(162);
 	const _ = __webpack_require__(168);
 
-	function dispNum(n) {
-	    return parseFloat(parseFloat(n).toFixed(1));
-	}
-
 	module.exports = React.createClass({displayName: "module.exports",
-	  getInitialState:function() {
+	  getSentiments:function(countries) {var $__0, $__1, $__2, $__3, $__4, $__5;
+	    let newSentiments = {};
+	    let newFills = {};
+
+	    let keys = Object.keys(countries);
+	    var key;for($__0=keys,$__1=Array.isArray($__0),$__2=0,$__0=$__1?$__0:$__0[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__1){if($__2>=$__0.length) break;key=$__0[$__2++];}else{$__2=$__0.next();if($__2.done) break;key=$__2.value;}
+	      let sentiment = _.sum(countries[key], function(story) {
+	        return story.sentiment;
+	      });
+	      newSentiments[key] = sentiment;
+	    }
+
+	    let rainbowLows = new Rainbow();
+	    rainbowLows.setSpectrum('f61f55', '40dee3');
+	    rainbowLows.setNumberRange(_.min(newSentiments), 0);
+
+	    let rainbowHighs = new Rainbow();
+	    rainbowHighs.setSpectrum('40dee3', '67ff8c');
+	    rainbowHighs.setNumberRange(0, _.max(newSentiments));
+
+	    var key;for($__3=keys,$__4=Array.isArray($__3),$__5=0,$__3=$__4?$__3:$__3[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__4){if($__5>=$__3.length) break;key=$__3[$__5++];}else{$__5=$__3.next();if($__5.done) break;key=$__5.value;}
+	      let sentiment = newSentiments[key];
+	      if (sentiment < 0) {
+	        newFills[key] = rainbowLows.colourAt(sentiment);
+	      } else {
+	        newFills[key] = rainbowHighs.colourAt(sentiment);
+	      }
+	      newFills[key] = '#' + newFills[key];
+	    }
+
 	    return {
-	      mWidth: 50,
-	      height: 360,
-	      width: 1000
+	      sentiments: newSentiments,
+	      fills: newFills
 	    }
 	  },
 
-	  handleResize: function(e) {
+	  getInitialState:function() {
+	    let $__0=   this.getSentiments(this.props.countries),sentiments=$__0.sentiments,fills=$__0.fills;
+
+	    return {
+	      mWidth: 50,
+	      height: this.props.height,
+	      width: this.props.width,
+	      sentiments: sentiments,
+	      fills: fills
+	    }
+	  },
+
+	  handleResize:function(e) {
 	    let w = $('#map').width();
 	    this.setState({
 	      mWidth: w,
 	      width: w,
-	      height:  this.state.mWidth * this.state.height / this.state.width
+	      height:  w * this.props.height / this.props.width
 	    })
 	  },
 
-	  componentDidMount:function() {var $__0, $__1, $__2;
-	    this.setState({
-	      mWidth: $('#map').width()
-	    })
+	  componentDidMount:function() {
+	    this.handleResize(null);
 	    window.addEventListener('resize', this.handleResize);
-
-	    let rainbow = new Rainbow();
-	    rainbow.setSpectrum('f61f55', '40dee3', '67ff8c');
-	    rainbow.setNumberRange(-200, 200);
-
-	    let keys = Object.keys(this.props.countries);
-	    var key;for($__0=keys,$__1=Array.isArray($__0),$__2=0,$__0=$__1?$__0:$__0[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__1){if($__2>=$__0.length) break;key=$__0[$__2++];}else{$__2=$__0.next();if($__2.done) break;key=$__2.value;}
-	      let sentiment = _.sum(this.props.countries[key], function(story) {
-	        return story.sentiment;
-	      });
-	      let stories = this.props.countries[key]
-	      let entry = d3.select('#' + key)
-
-	      if (entry.empty()) {
-	          this.props.log.error('Error. Country not found: ' + key);
-	      } else {
-	          let currentSentiment = parseFloat(entry.attr('sentiment'));
-	          currentSentiment = currentSentiment || 0;
-	          let newSentiment = currentSentiment + sentiment;
-	          entry.attr('sentiment', newSentiment);
-
-	          entry.style('fill', '#' + rainbow.colourAt(Math.round(newSentiment * 100)));
-	          $('#map').css('background-image', 'url("key.png")');
-	      }
-	    }
+	    $('#map').css('background-image', 'url("key.png")');
 	  },
 
 	  componentWillReceiveProps:function(nextProps) {
-	    // g.selectAll('#countries *').style('fill', null);
-	    // g.selectAll('#countries *').attr('sentiment', 0);
+	    this.setState(this.getSentiments(nextProps.countries));
 	  },
 
 	  countryClicked:function(d) {
@@ -22067,33 +22082,30 @@
 	  },
 
 	  onMouseOver:function(d) {
-	    d3.select('#' + d.id).classed('selected', true);
+	    let name = d.properties.name;
 
-	    let sentiment = d3.select('#' + d.id).attr('sentiment');
-	    if (sentiment == null) {
-	      sentiment = 0;
-	    }
-
-	    if (sentiment < 0) {
-	      $('#countryInfo').html(d.properties.name + ', ' + dispNum(sentiment) + ' sentiment').css('display', 'block');
-	    } else if (sentiment > 0) {
-	      $('#countryInfo').html(d.properties.name + ', +' + dispNum(sentiment) + ' sentiment').css('display', 'block');
+	    if (d.id in this.state.sentiments && this.state.sentiments[d.id] != 0) {
+	      let sentiment = this.state.sentiments[d.id];
+	      sentiment = parseFloat(parseFloat(sentiment).toFixed(1))
+	      sentiment = sentiment > 0 ? '+' + sentiment : sentiment;
+	      $('#countryInfo').html(name + ', ' + sentiment + ' sentiment');
 	    } else {
-	      $('#countryInfo').html(d.properties.name).css('display', 'block');
+	      $('#countryInfo').html(name);
 	    }
+	    $('#countryInfo').show();
 	  },
 
 	  onMouseOut:function(d) {
-	    d3.select('#' + d.id).classed('selected', false);
-	    $('#countryInfo').html('').css('display', 'none');
+	    $('#countryInfo').hide();
 	  },
 
 	  render:function() {
-	    let $__0=    this.state,mWidth=$__0.mWidth,height=$__0.height,width=$__0.width;
+	    let $__0=      this.state,mWidth=$__0.mWidth,height=$__0.height,width=$__0.width,sentiments=$__0.sentiments,fills=$__0.fills;
+	    this.props.log.error(sentiments);
 
 	    let projection = d3.geo.mercator()
 	      .scale(150)
-	      .translate([width / 2, height / 1.5]);
+	      .translate([this.props.width / 2, this.props.height / 1.5]);
 
 	    let path = d3.geo.path().projection(projection);
 
@@ -22105,22 +22117,23 @@
 	              React.createElement("div", {id: "map"}, 
 	                React.createElement("svg", {
 	                  preserveAspectRatio: "xMidYMid", 
-	                  viewBox: '0 0 ' + width + ' ' + height, 
-	                  width: mWidth, 
-	                  height: mWidth * height / width}, 
+	                  viewBox: '0 0 ' + this.props.width + ' ' + this.props.height, 
+	                  width: width, 
+	                  height: height}, 
 
 	                  React.createElement("rect", {
 	                    className: "background", 
-	                    width: width, 
-	                    height: height}), 
+	                    width: this.props.width, 
+	                    height: this.props.height}), 
 
 	                  React.createElement("g", {id: "countries"}, 
 	                    this.props.topo.map(function(d) {
 	                      return React.createElement("path", {
+	                        key: d.id, 
 	                        id: d.id, 
 	                        name: d.properties.name, 
 	                        d: path(d), 
-	                        sentiment: 0, 
+	                        fill: d.id in fills ? fills[d.id] : null, 
 	                        onClick: this.countryClicked.bind(this, d), 
 	                        onMouseOver: this.onMouseOver.bind(this, d), 
 	                        onMouseOut: this.onMouseOut.bind(this, d)});
