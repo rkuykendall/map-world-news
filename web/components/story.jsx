@@ -1,5 +1,3 @@
-'use strict';
-
 const React = require('react')
 const Rainbow = require('rainbowvis.js');
 

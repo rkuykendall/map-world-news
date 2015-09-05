@@ -1,35 +1,43 @@
-'use strict';
-
 const React = require('react');
+const Reflux = require('reflux');
 const StoryList = require('./storyList.jsx');
 const WorldMap = require('./worldMap.jsx');
 const Feeds = require('./feeds.jsx');
+const FeedStore = require('../stores/feedStore.es6');
 const countries = require('country-data').countries
 
 module.exports = React.createClass({
+  mixins: [Reflux.connect(FeedStore, 'feedstore')],
+
   getInitialState() {
     return {
-      country: null
+      selected: null
     }
   },
 
   countryClicked(id) {
     this.setState({
-      country: id
+      selected: id
     });
   },
 
-  onPropsChange() {
-    this.props.log.info(this.props);
-  },
-
   render: function() {
-    let keys = Object.keys(this.props.countries);
-    let code = this.state.country;
+    let {selected, feedstore} = this.state;
+    let {log} = this.props;
+
+    let feeds = {};
+    let countries = {};
+    let keys = {}
+    if (this.state.feedstore) {
+      feeds = this.state.feedstore.feeds;
+      countries = this.state.feedstore.countries
+      keys = Object.keys(countries);
+    }
 
     return <div className="app">
       <WorldMap
-        {...this.props}
+        countries={countries}
+        topo={this.props.topo}
         countryClicked={this.countryClicked}
         width={1000}
         height={360} />
@@ -37,12 +45,12 @@ module.exports = React.createClass({
       <div className="container">
         <div className="row">
           <div className="col-sm-12 col-md-4">
-            <Feeds feeds={this.props.feeds} log={this.props.log} />
+            <Feeds feeds={feeds} log={log} />
           </div>
 
           <div className="col-sm-12 col-md-8">
-            {code ?
-              <StoryList stories={this.props.countries[code]} id={code} title={countries[code].name} log={this.props.log} />
+            {selected ?
+              <StoryList stories={countries[selected]} id={selected} title={selected} log={log} />
               : <h3>Select a country to see stories.</h3>
             }
           </div>

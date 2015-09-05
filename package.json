@@ -17,11 +17,14 @@
     "css-loader": "^0.16.0",
     "gulp-gh-pages": "^0.5.2",
     "gulp-util": "^3.0.6",
+    "jquery": "^2.1.4",
     "json-loader": "^0.5.2",
     "jsx-loader": "^0.13.2",
     "less-loader": "^2.2.0",
     "lodash": "^3.10.1",
     "react": "^0.13.3",
+    "reflux": "^0.2.12",
+    "strict-loader": "^0.1.2",
     "style-loader": "^0.12.3",
     "webpack-dev-server": "^1.10.1"
   }

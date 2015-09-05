@@ -1,5 +1,3 @@
-'use strict';
-
 const React = require('react')
 const Rainbow = require('rainbowvis.js');
 const _ = require('lodash');
@@ -8,6 +6,13 @@ module.exports = React.createClass({
   getSentiments(countries) {
     let newSentiments = {};
     let newFills = {};
+
+    if (!countries) {
+      return {
+        sentiments: {},
+        fills: {}
+      }
+    }
 
     let keys = Object.keys(countries);
     for (let key of keys) {
@@ -18,7 +23,7 @@ module.exports = React.createClass({
       newSentiments[key] = sentiment;
     }
 
-    if (Object.keys(newSentiments).length > 0) {
+    if (newSentiments) {
       let rainbowLows = new Rainbow();
       rainbowLows.setSpectrum('f61f55', '40dee3');
       rainbowLows.setNumberRange(_.min(newSentiments) / 3, 0);
@@ -48,14 +53,12 @@ module.exports = React.createClass({
   },
 
   getInitialState() {
-    let {sentiments, fills} = this.getSentiments(this.props.countries);
-
     return {
       mWidth: 50,
       height: this.props.height,
       width: this.props.width,
-      sentiments: sentiments,
-      fills: fills
+      sentiments: {},
+      fills: {}
     }
   },
 
@@ -135,7 +138,7 @@ module.exports = React.createClass({
                     height={this.props.height} />
 
                   <g id="countries">
-                    {this.props.topo.map(function(d) {
+                    {this.props.topo && this.props.topo.map(function(d) {
                       return <path
                         key={d.id}
                         id={d.id}
