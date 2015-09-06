@@ -6,7 +6,13 @@ module.exports = React.createClass({
     let keys = [];
     if (feeds) {
       keys = Object.keys(feeds);
-      keys.sort();
+      let selected = _.remove(keys, function(key) {
+        return feeds[key].show == true;
+      });
+      let unselected = _.remove(keys, function(key) {
+        return feeds[key].show == false;
+      });
+      keys = selected.sort().concat(unselected.sort());
     }
 
     return <div className="feed-list">
