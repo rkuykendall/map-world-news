@@ -13,7 +13,6 @@ module.exports = React.createClass({
         fills: {}
       }
     }
-    console.log(countries);
 
     let keys = Object.keys(countries);
     for (let key of keys) {

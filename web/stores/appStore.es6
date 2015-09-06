@@ -1,32 +1,46 @@
 const Reflux = require('reflux');
 const $ = require('jquery');
 const NProgress = require('nprogress');
-const FeedActions = require('../actions/feedActions.es6');
+const AppActions = require('../actions/appActions.es6');
 const defaultFeeds = require('./defaultFeeds.es6');
 
-let FeedStore = Reflux.createStore({
-  listenables: [FeedActions],
-  feedstore: {
-    feeds: defaultFeeds,
-    countries: {}
-  },
+let AppStore = Reflux.createStore({
+  listenables: [AppActions],
+  feeds: defaultFeeds,
+  countries: {},
+  selected: null,
   url: window.location.host.indexOf('.com') == -1 ? 'localhost:5000' : 'map-world-news.herokuapp.com',
   processing: 0,
   total: 0,
 
   init() {
-    this.trigger(this.feedstore);
-    let keys = Object.keys(this.feedstore.feeds);
+    this.listenTo(AppActions.countryClicked, 'onCountryClicked');
+
+    let keys = Object.keys(this.feeds);
     this.total = keys.length;
+    NProgress.start();
     for (let key of keys) {
       this.fetchFeed(key);
+    }
+  },
+
+  onCountryClicked(id) {
+    this.selected = id;
+    this.trigger(this);
+  },
+
+  getInitialState() {
+    return {
+      feeds: defaultFeeds,
+      countries: {},
+      selected: null
     }
   },
 
   feedsToCountries() {
     // Take in a list of feeds with data
     // Output a hash of countries with all associated stories
-    let feeds = this.feedstore.feeds;
+    let feeds = this.feeds;
     let countriesNew = {};
 
     let keys = Object.keys(feeds);
@@ -42,7 +56,7 @@ let FeedStore = Reflux.createStore({
       }
     }
 
-    this.feedstore.countries = countriesNew;
+    this.countries = countriesNew;
   },
 
   completedGet() {
@@ -54,18 +68,18 @@ let FeedStore = Reflux.createStore({
       NProgress.inc(0.8 / this.total);
     }
     this.feedsToCountries();
-    this.trigger(this.feedstore);
+    this.trigger(this);
   },
 
   fetchFeed(id) {
-    if (this.processing == 0) {
-      this.total = 0;
+    this.processing += 1;
+    if (this.total == 0) {
+      this.total = 1;
       NProgress.start();
     }
-    this.processing += 1;
 
     let api = 'http://' + this.url + '/feeds';
-    let newFeed = this.feedstore.feeds[id];
+    let newFeed = this.feeds[id];
     let completedGet = this.completedGet;
     newFeed.show = true;
 
@@ -82,8 +96,8 @@ let FeedStore = Reflux.createStore({
       $('#errors').slideDown().delay(30000).slideUp();
     });
 
-    this.feedstore.feeds[id] = newFeed;
+    this.feeds[id] = newFeed;
   }
 });
 
-module.exports = FeedStore;
+module.exports = AppStore;

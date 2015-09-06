@@ -3,42 +3,28 @@ const Reflux = require('reflux');
 const StoryList = require('./storyList.jsx');
 const WorldMap = require('./worldMap.jsx');
 const Feeds = require('./feeds.jsx');
-const FeedStore = require('../stores/feedStore.es6');
+const AppStore = require('../stores/appStore.es6');
+const AppActions = require('../actions/appActions.es6');
 const countryNames = require('country-data').countries
 
 module.exports = React.createClass({
-  mixins: [Reflux.connect(FeedStore, 'feedstore')],
-
-  getInitialState() {
-    return {
-      selected: null
-    }
-  },
-
-  countryClicked(id) {
-    this.setState({
-      selected: id
-    });
-  },
+  mixins: [Reflux.connect(AppStore)],
 
   render: function() {
-    let {selected, feedstore} = this.state;
-    let {log} = this.props;
+    let {selected, feeds, countries} = this.state;
+    let {log, topo} = this.props;
 
-    let feeds = {};
-    let countries = {};
-    let keys = {}
-    if (this.state.feedstore) {
-      feeds = this.state.feedstore.feeds;
-      countries = this.state.feedstore.countries
-      keys = Object.keys(countries);
+    if (!this.state.feeds) {
+      let feeds = [];
+      let countries = {};
+      let selected = null;
     }
 
     return <div className="app">
       <WorldMap
         countries={countries}
-        topo={this.props.topo}
-        countryClicked={this.countryClicked}
+        topo={topo}
+        countryClicked={AppActions.countryClicked}
         width={1000}
         height={360} />
 
