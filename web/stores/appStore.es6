@@ -18,10 +18,10 @@ let AppStore = Reflux.createStore({
     this.listenTo(AppActions.feedClicked, 'onFeedClicked');
 
     let keys = Object.keys(this.feeds);
-    this.total = keys.length;
-    NProgress.start();
     for (let key of keys) {
-      this.fetchFeed(key);
+      if (this.feeds[key].startload) {
+        this.fetchFeed(key);
+      }
     }
   },
 
@@ -31,6 +31,15 @@ let AppStore = Reflux.createStore({
   },
 
   onFeedClicked(id, state) {
+    // Ignore double-emit
+    if (this.feeds[id].show == state) {
+      return;
+    }
+    if (state == true) {
+      if (this.feeds[id].data.length == 0) {
+        this.fetchFeed(id);
+      }
+    }
     this.feeds[id].show = state;
     this.feedsToCountries();
   },
@@ -52,6 +61,13 @@ let AppStore = Reflux.createStore({
     let keys = Object.keys(feeds);
     for (let key of keys) {
       let feed = feeds[key];
+
+      let newClass = '';
+      if (feed.fetched) { newClass += ' loaded'; }
+      if (!feed.show) { newClass += ' unselected'; }
+      if (feed.failed) { newClass += ' failed'; }
+      this.feeds[key].class = newClass;
+
       if (feed.show == true) {
         for (let story of feed.data) {
           for (let country of story.countries) {
@@ -80,9 +96,10 @@ let AppStore = Reflux.createStore({
   },
 
   fetchFeed(id) {
+    this.feeds[id].subtitle = 'Loading...';
     this.processing += 1;
+    this.total += 1;
     if (this.total == 0) {
-      this.total = 1;
       NProgress.start();
     }
 
@@ -95,11 +112,13 @@ let AppStore = Reflux.createStore({
       $.post(api, { data: data }, function(data) {
         newFeed.data = data;
         newFeed.fetched = true;
+        newFeed.subtitle = '(' + newFeed.data.length + ')';
         completedGet()
       }, 'json');
     }).fail(function() {
       completedGet()
       newFeed.failed = true;
+      newFeed.subtitle = 'Failed to load.';
       // log.error( 'Failure to getJSON for ' + id);
       $('#errors').slideDown().delay(30000).slideUp();
     });

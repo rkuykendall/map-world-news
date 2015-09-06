@@ -1,4 +1,5 @@
 import json
+from dateutil import parser
 
 from afinn import Afinn
 
@@ -14,13 +15,15 @@ class Article():
         self.countries = []
         self.title = ""
         self.summary = ""
-        self.source = ""
+        self.link = ""
+        self.publushed = None
 
         if item:
             try:
                 # Set source, author and title
                 self.link = item['links'][0]['href']
                 self.title = item.get('title')
+                self.published = parser.parse(item.get('published'))
 
                 # Set summary, get rid of all the junk at the end
                 summary = item.get('summary')
@@ -47,4 +50,9 @@ class Article():
         attributes = (
             'title', 'summary', 'sentiment', 'link', 'countries')
 
-        return {key: getattr(self, key) for key in attributes}
+        article = {
+            key: getattr(self, key) for key in attributes
+        }
+        article['published'] = self.published.isoformat()
+
+        return article

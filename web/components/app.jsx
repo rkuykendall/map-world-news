@@ -30,6 +30,17 @@ module.exports = React.createClass({
 
       <div className="container">
         <div className="row">
+          <div id="errors" className="col-sm-12 col-md-12">
+            <div className="alert alert-danger" role="alert">
+              <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span className="sr-only">Error:</span>
+              &nbsp;Problem retrieving one of your feeds.
+              &nbsp;Please wait a few seconds and try again.
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
           <div className="col-sm-12 col-md-4">
             <Feeds feeds={feeds} log={log} feedClicked={AppActions.feedClicked} />
           </div>

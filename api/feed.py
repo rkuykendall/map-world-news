@@ -1,4 +1,6 @@
 import feedparser
+import datetime
+import pytz
 
 from article import Article
 from logger import log
@@ -22,10 +24,17 @@ class Feed:
         """
         log.info("Retrieving feed: " + feed[:30])
         f = feedparser.parse(feed)
+        ago24h = (
+            datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+            - datetime.timedelta(hours=24))
 
         log.info("Processing feed")
         for item in f['entries']:
-            self.articles.append(Article(item))
+            a = Article(item)
+            if a.published > ago24h:
+                self.articles.append(Article(item))
+            else:
+                print "{} more than 24h ago".format(a.published)
 
     def extract(self):
         log.info("Extracing location and sentiment from articles in feed.")
@@ -34,4 +43,5 @@ class Feed:
 
     def serializable(self):
         log.info("Rendering feed to serializable format for JSON.")
-        return [a.serializable() for a in self.articles]
+        return [
+            a.serializable() for a in self.articles]

@@ -6,6 +6,7 @@ module.exports = React.createClass({
     let keys = [];
     if (feeds) {
       keys = Object.keys(feeds);
+      keys.sort();
     }
 
     return <div className="feed-list">
@@ -15,10 +16,8 @@ module.exports = React.createClass({
           return <li
               onMouseDown={this.props.feedClicked.bind(this, key, !feeds[key].show)}
               key={key}
-              className={(feeds[key].fetched ? 'loaded' : 'loading') + (feeds[key].show ? '' : ' unselected')}>
-            {feeds[key].data && feeds[key].data.length > 0 ?
-              <span>{key} <span className='light'>({feeds[key].data.length})</span></span>
-              : key}
+              className={feeds[key].class}>
+            <span>{key} <span className='light'>{feeds[key].subtitle}</span></span>
           </li>
         }, this)}
       </ul>
