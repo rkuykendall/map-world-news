@@ -1,22 +1,31 @@
-'use strict';
-
 const React = require('react')
 
 module.exports = React.createClass({
   render: function() {
     let {feeds, log} = this.props;
+    let keys = [];
+    if (feeds) {
+      keys = Object.keys(feeds);
+      let selected = _.remove(keys, function(key) {
+        return feeds[key].show == true;
+      });
+      let unselected = _.remove(keys, function(key) {
+        return feeds[key].show == false;
+      });
+      keys = selected.sort().concat(unselected.sort());
+    }
 
-    log.info(feeds);
     return <div className="feed-list">
       <h3>News Feeds</h3>
       <ul>
-        {feeds.map(function(feed) {
-          return <li key={feed.name} className={feed.fetched ? 'loaded' : 'loading'}>
-            {feed.data && feed.data.length > 0 ?
-              <span>{feed.name} <span className='light'>({feed.data.length})</span></span>
-              : feed.name}
+        {keys && keys.map(function(key) {
+          return <li
+              onMouseDown={this.props.feedClicked.bind(this, key, !feeds[key].show)}
+              key={key}
+              className={feeds[key].class}>
+            <span>{key} <span className='light'>{feeds[key].subtitle}</span></span>
           </li>
-        })}
+        }, this)}
       </ul>
     </div>;
   }

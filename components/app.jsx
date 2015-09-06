@@ -1,48 +1,53 @@
-'use strict';
-
 const React = require('react');
+const Reflux = require('reflux');
 const StoryList = require('./storyList.jsx');
 const WorldMap = require('./worldMap.jsx');
 const Feeds = require('./feeds.jsx');
-const countries = require('country-data').countries
+const AppStore = require('../stores/appStore.es6');
+const AppActions = require('../actions/appActions.es6');
+const countryNames = require('country-data').countries
 
 module.exports = React.createClass({
-  getInitialState() {
-    return {
-      country: null
-    }
-  },
-
-  countryClicked(id) {
-    this.setState({
-      country: id
-    });
-  },
-
-  onPropsChange() {
-    this.props.log.info(this.props);
-  },
+  mixins: [Reflux.connect(AppStore)],
 
   render: function() {
-    let keys = Object.keys(this.props.countries);
-    let code = this.state.country;
+    let {selected, feeds, countries} = this.state;
+    let {log, topo} = this.props;
+
+    if (!this.state.feeds) {
+      let feeds = [];
+      let countries = {};
+      let selected = null;
+    }
 
     return <div className="app">
       <WorldMap
-        {...this.props}
-        countryClicked={this.countryClicked}
+        countries={countries}
+        topo={topo}
+        countryClicked={AppActions.countryClicked}
         width={1000}
         height={360} />
 
       <div className="container">
         <div className="row">
+          <div id="errors" className="col-sm-12 col-md-12">
+            <div className="alert alert-danger" role="alert">
+              <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span className="sr-only">Error:</span>
+              &nbsp;Problem retrieving one of your feeds.
+              &nbsp;Please wait a few seconds and try again.
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
           <div className="col-sm-12 col-md-4">
-            <Feeds feeds={this.props.feeds} log={this.props.log} />
+            <Feeds feeds={feeds} log={log} feedClicked={AppActions.feedClicked} />
           </div>
 
           <div className="col-sm-12 col-md-8">
-            {code ?
-              <StoryList stories={this.props.countries[code]} id={code} title={countries[code].name} log={this.props.log} />
+            {selected ?
+              <StoryList stories={countries[selected]} id={selected} title={countryNames[selected].name} log={log} />
               : <h3>Select a country to see stories.</h3>
             }
           </div>

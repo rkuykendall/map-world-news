@@ -2,7 +2,7 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Location extraction and sentiment analysis of world news, mapped.">
-  <title>Map World News - Visualize sentiment of new stories for countries across the globe.</title>
+  <title>Map World News - Visualize sentiment of world news stories.</title>
 
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,800' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css">
@@ -27,35 +27,10 @@
 
   <div id="app"></div>
 
-  <div class="container">
-    <div class="row">
-
-      <div class="col-md-12">
-        <div class="articles-box">
-          <div id="errors">
-            <div class="alert alert-danger" role="alert">
-              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-              <span class="sr-only">Error:</span>
-              Timeout due to >30 second response time from news API.
-              Please wait a few seconds and try again.
-            </div>
-          </div>
-          <h1 id="title"></h3>
-          <div class="row">
-              <div class="col-sm-12 col-md-4" id="itemsPositive"></div>
-              <div class="col-sm-12 col-md-4" id="itemsNeutral"></div>
-              <div class="col-sm-12 col-md-4" id="itemsNegative"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="http://d3js.org/topojson.v1.min.js"></script>
-
   <script src="/bundle.js"></script>
 
 <script>
