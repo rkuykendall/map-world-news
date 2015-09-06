@@ -8,11 +8,13 @@ from api.feed import Feed
 
 class TestFeed(unittest.TestCase):
     def test_feedzilla(self):
-        feed = Feed(feed='tests/data/feedzilla_2014-04-05_16-54.atom')
+        feed = Feed(
+            feed='tests/data/feedzilla_2014-04-05_16-54.atom',
+            disableFilter=True)
         self.assertEqual(len(feed.articles), 89)
 
     def test_reuters(self):
-        feed = Feed('tests/data/reuters_worldNews.xml')
+        feed = Feed('tests/data/reuters_worldNews.xml', disableFilter=True)
         item = feed.articles[0]
         item.extract()
 
@@ -23,7 +25,7 @@ class TestFeed(unittest.TestCase):
         self.assertEqual(len(feed.articles), 20)
 
     def test_bbc(self):
-        feed = Feed('tests/data/bbc_world.xml')
+        feed = Feed('tests/data/bbc_world.xml', disableFilter=True)
         item = feed.articles[0]
         item.extract()
 
@@ -34,7 +36,7 @@ class TestFeed(unittest.TestCase):
         self.assertEqual(len(feed.articles), 49)
 
     def test_ap(self):
-        feed = Feed('tests/data/associated_press.xml')
+        feed = Feed('tests/data/associated_press.xml', disableFilter=True)
         item = feed.articles[0]
         item.extract()
 

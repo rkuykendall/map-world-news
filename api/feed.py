@@ -11,8 +11,9 @@ class Feed:
     Feed stores a list of articles and cleans up junk.
     """
 
-    def __init__(self, feed=None):
+    def __init__(self, feed=None, disableFilter=False):
         self.articles = []
+        self.disableFilter = disableFilter
 
         if feed:
             self.add_feed(feed)
@@ -31,7 +32,7 @@ class Feed:
         log.info("Processing feed")
         for item in f['entries']:
             a = Article(item)
-            if a.published > ago24h:
+            if self.disableFilter or a.published > ago24h:
                 self.articles.append(Article(item))
             else:
                 print "{} more than 24h ago".format(a.published)
