@@ -15,6 +15,7 @@ let AppStore = Reflux.createStore({
 
   init() {
     this.listenTo(AppActions.countryClicked, 'onCountryClicked');
+    this.listenTo(AppActions.feedClicked, 'onFeedClicked');
 
     let keys = Object.keys(this.feeds);
     this.total = keys.length;
@@ -26,14 +27,19 @@ let AppStore = Reflux.createStore({
 
   onCountryClicked(id) {
     this.selected = id;
-    this.trigger(this);
+    this.trigger(this.getInitialState());
+  },
+
+  onFeedClicked(id, state) {
+    this.feeds[id].show = state;
+    this.feedsToCountries();
   },
 
   getInitialState() {
     return {
-      feeds: defaultFeeds,
-      countries: {},
-      selected: null
+      feeds: this.feeds,
+      countries: this.countries,
+      selected: this.selected
     }
   },
 
@@ -46,17 +52,20 @@ let AppStore = Reflux.createStore({
     let keys = Object.keys(feeds);
     for (let key of keys) {
       let feed = feeds[key];
-      for (let story of feed.data) {
-        for (let country of story.countries) {
-          if (!(country in countriesNew)) {
-            countriesNew[country] = [];
+      if (feed.show == true) {
+        for (let story of feed.data) {
+          for (let country of story.countries) {
+            if (!(country in countriesNew)) {
+              countriesNew[country] = [];
+            }
+            countriesNew[country].push(story);
           }
-          countriesNew[country].push(story);
         }
       }
     }
 
     this.countries = countriesNew;
+    this.trigger(this.getInitialState());
   },
 
   completedGet() {
@@ -68,7 +77,6 @@ let AppStore = Reflux.createStore({
       NProgress.inc(0.8 / this.total);
     }
     this.feedsToCountries();
-    this.trigger(this);
   },
 
   fetchFeed(id) {

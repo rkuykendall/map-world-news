@@ -31,7 +31,7 @@ module.exports = React.createClass({
       <div className="container">
         <div className="row">
           <div className="col-sm-12 col-md-4">
-            <Feeds feeds={feeds} log={log} />
+            <Feeds feeds={feeds} log={log} feedClicked={AppActions.feedClicked} />
           </div>
 
           <div className="col-sm-12 col-md-8">

@@ -15,6 +15,7 @@
     padding: 0 30px 0 0;
   }
   li {
+    cursor: pointer;
     border-left: 5px solid @dark-grey;
     display: block;
     margin-bottom: 5px;
@@ -23,6 +24,9 @@
   }
   li.loaded {
     border-color: @mildBlue;
+  }
+  li.unselected {
+    opacity: 0.25;
   }
   li span.light {
     color: darken(@light-grey, 20);

@@ -20,7 +20,7 @@ for (let key of keys) {
   defaultFeeds[key] = {
     url: defaults[key],
     fetched: false,
-    show: false,
+    show: true,
     data: [],
     failed: false
   }
