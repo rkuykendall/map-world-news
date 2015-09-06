@@ -4,7 +4,7 @@ const StoryList = require('./storyList.jsx');
 const WorldMap = require('./worldMap.jsx');
 const Feeds = require('./feeds.jsx');
 const FeedStore = require('../stores/feedStore.es6');
-const countries = require('country-data').countries
+const countryNames = require('country-data').countries
 
 module.exports = React.createClass({
   mixins: [Reflux.connect(FeedStore, 'feedstore')],
@@ -50,7 +50,7 @@ module.exports = React.createClass({
 
           <div className="col-sm-12 col-md-8">
             {selected ?
-              <StoryList stories={countries[selected]} id={selected} title={selected} log={log} />
+              <StoryList stories={countries[selected]} id={selected} title={countryNames[selected].name} log={log} />
               : <h3>Select a country to see stories.</h3>
             }
           </div>

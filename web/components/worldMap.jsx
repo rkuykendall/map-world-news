@@ -7,12 +7,13 @@ module.exports = React.createClass({
     let newSentiments = {};
     let newFills = {};
 
-    if (!countries) {
+    if (!countries || Object.keys(countries).length == 0) {
       return {
         sentiments: {},
         fills: {}
       }
     }
+    console.log(countries);
 
     let keys = Object.keys(countries);
     for (let key of keys) {
