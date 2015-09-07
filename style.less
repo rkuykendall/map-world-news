@@ -10,12 +10,29 @@
   z-index: 999999;
 }
 
+.country-list {
+  ul {
+    padding: 0;
+    li {
+      margin: 3px;
+      display: inline-block;
+      padding: 2px 5px;
+      background-color: @light-grey;
+      color: @dark-grey;
+      border: 1px solid darken(@light-grey, 10);
+    }
+  }
+}
+
+.clickable {
+  cursor: pointer;
+}
+
 .feed-list {
   ul {
     padding: 0 30px 0 0;
   }
   li {
-    cursor: pointer;
     border-left: 5px solid @dark-grey;
     display: block;
     margin-bottom: 5px;
@@ -121,7 +138,7 @@ nav.navbar {
   }
 
   #countries {
-    /*cursor: pointer;*/
+    .clickable;
     fill: lighten(@dark-grey, 10);
     stroke: @dark-grey;
     stroke-width: 1;

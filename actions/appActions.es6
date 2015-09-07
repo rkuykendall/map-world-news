@@ -3,7 +3,8 @@ const Reflux = require('reflux');
 let appActions = Reflux.createActions([
   'fetchFeed',
   'countryClicked',
-  'feedClicked'
+  'feedClicked',
+  'deselectCountry'
 ]);
 
 module.exports = appActions;

@@ -2,6 +2,7 @@ const React = require('react');
 const Reflux = require('reflux');
 const StoryList = require('./storyList.jsx');
 const WorldMap = require('./worldMap.jsx');
+const CountryList = require('./countryList.jsx');
 const Feeds = require('./feeds.jsx');
 const AppStore = require('../stores/appStore.es6');
 const AppActions = require('../actions/appActions.es6');
@@ -47,8 +48,8 @@ module.exports = React.createClass({
 
           <div className="col-sm-12 col-md-8">
             {selected ?
-              <StoryList stories={countries[selected]} id={selected} title={countryNames[selected].name} log={log} />
-              : <h3>Select a country to see stories.</h3>
+              <StoryList stories={countries[selected]} id={selected} title={countryNames[selected].name} log={log} deselectCountry={AppActions.deselectCountry} />
+              : <CountryList countries={countries} log={log} countryClicked={AppActions.countryClicked} />
             }
           </div>
         </div>

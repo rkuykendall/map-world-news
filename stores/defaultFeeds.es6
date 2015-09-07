@@ -28,11 +28,8 @@ let defaults = {
   'Global News World': 'http://globalnews.ca/world/feed/',
   'CBC World': 'http://www.cbc.ca/cmlink/rss-world',
   'Telegraph Worldnews': 'http://www.telegraph.co.uk/news/worldnews/rss',
-  'Reddit /r/worldnews': 'https://www.reddit.com/r/worldnews/.rss',
   'Al Jazeera English': 'http://www.aljazeera.com/xml/rss/all.xml'
 }
-
-let autoload = ['Reuters', 'BBC World', 'NPR World']
 
 let keys = Object.keys(defaults);
 let defaultFeeds = {}
@@ -45,8 +42,7 @@ for (let key of keys) {
     failed: false,
     data: [],
     class: 'unselected',
-    subtitle: '',
-    startload: autoload.indexOf(key) !== -1
+    subtitle: ''
   }
 }
 
