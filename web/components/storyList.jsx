@@ -1,9 +1,10 @@
 const React = require('react')
 const Story = require('./story.jsx')
+const log = require('../log.es6')
 
 module.exports = React.createClass({
   render: function() {
-    let {stories, title, id, log, deselectCountry} = this.props;
+    let {stories, title, id, deselectCountry} = this.props;
 
     let positives = _.dropRightWhile(_.sortBy(stories, 'sentiment').reverse(), function(story) {
       return story.sentiment < 0;

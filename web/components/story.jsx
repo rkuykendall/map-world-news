@@ -1,5 +1,6 @@
 const React = require('react')
 const Rainbow = require('rainbowvis.js');
+const log = require('../log.es6')
 
 function dispNum(n) {
     return parseFloat(parseFloat(n).toFixed(1));

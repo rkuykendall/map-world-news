@@ -1,9 +1,10 @@
 const React = require('react')
 const countryNames = require('country-data').countries
+const log = require('../log.es6')
 
 module.exports = React.createClass({
   render: function() {
-    let {countries, log, countryClicked} = this.props;
+    let {countries, countryClicked} = this.props;
     let keys = [];
     if (countries) {
       keys = Object.keys(countries);
