@@ -17,6 +17,7 @@ deploy:
     repo: rkuykendall/map-world-news
 after_deploy:
 - npm install
+- gulp pack
 - git remote set-url origin "https://${GH_TOKEN}@github.com/rkuykendall/map-world-news.git"
 - git config --global user.email "robert@rkuykendall.com"
 - git config --global user.name "Travis-CI"

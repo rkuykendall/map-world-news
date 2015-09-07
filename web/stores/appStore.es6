@@ -16,13 +16,17 @@ let AppStore = Reflux.createStore({
   init() {
     this.listenTo(AppActions.countryClicked, 'onCountryClicked');
     this.listenTo(AppActions.feedClicked, 'onFeedClicked');
+    this.listenTo(AppActions.deselectCountry, 'onDeselectCountry');
 
     let keys = Object.keys(this.feeds);
     for (let key of keys) {
-      if (this.feeds[key].startload) {
-        this.fetchFeed(key);
-      }
+        this.onFeedClicked(key, true);
     }
+  },
+
+  onDeselectCountry() {
+    this.selected = null;
+    this.trigger(this.getInitialState());
   },
 
   onCountryClicked(id) {
@@ -99,7 +103,7 @@ let AppStore = Reflux.createStore({
     this.feeds[id].subtitle = 'Loading...';
     this.processing += 1;
     this.total += 1;
-    if (this.total == 0) {
+    if (this.total == 1) {
       NProgress.start();
     }
 

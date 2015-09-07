@@ -3,7 +3,7 @@ const Story = require('./story.jsx')
 
 module.exports = React.createClass({
   render: function() {
-    let {stories, title, id, log} = this.props;
+    let {stories, title, id, log, deselectCountry} = this.props;
 
     let positives = _.dropRightWhile(_.sortBy(stories, 'sentiment').reverse(), function(story) {
       return story.sentiment < 0;
@@ -14,7 +14,7 @@ module.exports = React.createClass({
     });
 
     return <div id={id} className="story-list">
-      <h3>{title}</h3>
+      <h3>{title} <small className="clickable" onClick={deselectCountry}>back</small></h3>
       <div className="row">
         <div className='col-sm-12 col-md-6'>
           {positives.length > 0 ?

@@ -5,14 +5,7 @@ module.exports = React.createClass({
     let {feeds, log} = this.props;
     let keys = [];
     if (feeds) {
-      keys = Object.keys(feeds);
-      let selected = _.remove(keys, function(key) {
-        return feeds[key].show == true;
-      });
-      let unselected = _.remove(keys, function(key) {
-        return feeds[key].show == false;
-      });
-      keys = selected.sort().concat(unselected.sort());
+      keys = Object.keys(feeds).sort();
     }
 
     return <div className="feed-list">
@@ -22,7 +15,7 @@ module.exports = React.createClass({
           return <li
               onMouseDown={this.props.feedClicked.bind(this, key, !feeds[key].show)}
               key={key}
-              className={feeds[key].class}>
+              className={'clickable ' + feeds[key].class}>
             <span>{key} <span className='light'>{feeds[key].subtitle}</span></span>
           </li>
         }, this)}
