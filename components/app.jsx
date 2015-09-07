@@ -7,13 +7,14 @@ const Feeds = require('./feeds.jsx');
 const AppStore = require('../stores/appStore.es6');
 const AppActions = require('../actions/appActions.es6');
 const countryNames = require('country-data').countries
+const log = require('../log.es6')
 
 module.exports = React.createClass({
   mixins: [Reflux.connect(AppStore)],
 
   render: function() {
     let {selected, feeds, countries} = this.state;
-    let {log, topo} = this.props;
+    let {topo} = this.props;
 
     if (!this.state.feeds) {
       let feeds = [];
@@ -43,13 +44,13 @@ module.exports = React.createClass({
 
         <div className="row">
           <div className="col-sm-12 col-md-4">
-            <Feeds feeds={feeds} log={log} feedClicked={AppActions.feedClicked} />
+            <Feeds feeds={feeds} feedClicked={AppActions.feedClicked} />
           </div>
 
           <div className="col-sm-12 col-md-8">
             {selected ?
-              <StoryList stories={countries[selected]} id={selected} title={countryNames[selected].name} log={log} deselectCountry={AppActions.deselectCountry} />
-              : <CountryList countries={countries} log={log} countryClicked={AppActions.countryClicked} />
+              <StoryList stories={countries[selected]} id={selected} title={countryNames[selected].name} deselectCountry={AppActions.deselectCountry} />
+              : <CountryList countries={countries} countryClicked={AppActions.countryClicked} />
             }
           </div>
         </div>

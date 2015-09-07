@@ -1,8 +1,9 @@
 const React = require('react')
+const log = require('../log.es6')
 
 module.exports = React.createClass({
   render: function() {
-    let {feeds, log} = this.props;
+    let {feeds} = this.props;
     let keys = [];
     if (feeds) {
       keys = Object.keys(feeds).sort();

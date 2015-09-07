@@ -3,6 +3,7 @@ const $ = require('jquery');
 const NProgress = require('nprogress');
 const AppActions = require('../actions/appActions.es6');
 const defaultFeeds = require('./defaultFeeds.es6');
+const log = require('../log.es6')
 
 let AppStore = Reflux.createStore({
   listenables: [AppActions],
@@ -118,12 +119,18 @@ let AppStore = Reflux.createStore({
         newFeed.fetched = true;
         newFeed.subtitle = '(' + newFeed.data.length + ')';
         completedGet()
-      }, 'json');
+      }, 'json').fail(function() {
+        completedGet()
+        newFeed.failed = true;
+        newFeed.subtitle = 'Failed to load.';
+        log.error('Failed to load feed ' + id);
+        $('#errors').slideDown().delay(30000).slideUp();
+      });
     }).fail(function() {
       completedGet()
       newFeed.failed = true;
       newFeed.subtitle = 'Failed to load.';
-      // log.error( 'Failure to getJSON for ' + id);
+      log.error('Failed to load feed ' + id);
       $('#errors').slideDown().delay(30000).slideUp();
     });
 
