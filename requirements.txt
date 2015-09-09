@@ -1,7 +1,9 @@
 Flask==0.10.1
 Flask-Cors==2.1.0
+Flask-SQLAlchemy==2.0
 Jinja2==2.8
 MarkupSafe==0.23
+SQLAlchemy==1.0.8
 Werkzeug==0.10.4
 -e git+http://github.com/fnielsen/afinn.git@2360bb03f8e94079fe13ed53f56ab56b24ae4d90#egg=afinn-master
 feedparser==5.2.1
