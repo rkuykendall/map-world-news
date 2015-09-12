@@ -582,7 +582,9 @@
 	        currentQueue = queue;
 	        queue = [];
 	        while (++queueIndex < len) {
-	            currentQueue[queueIndex].run();
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
 	        }
 	        queueIndex = -1;
 	        len = queue.length;
@@ -634,7 +636,6 @@
 	    throw new Error('process.binding is not supported');
 	};
 
-	// TODO(shtylman)
 	process.cwd = function () { return '/' };
 	process.chdir = function (dir) {
 	    throw new Error('process.chdir is not supported');
@@ -22866,22 +22867,22 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-	 * js-logger - http://github.com/jonnyreeves/js-logger 
+	 * js-logger - http://github.com/jonnyreeves/js-logger
 	 * Jonny Reeves, http://jonnyreeves.co.uk/
-	 * js-logger may be freely distributed under the MIT license. 
+	 * js-logger may be freely distributed under the MIT license.
 	 */
 	(function (global) {
 		"use strict";
 
 		// Top level module for the global, static logger instance.
 		var Logger = { };
-		
+
 		// For those that are at home that are keeping score.
-		Logger.VERSION = "1.1.1";
-		
+		Logger.VERSION = "1.2.0";
+
 		// Function which handles all incoming log messages.
 		var logHandler;
-		
+
 		// Map of ContextualLogger instances by name; used by Logger.get() to return the same named instance.
 		var contextualLoggersByNameMap = {};
 
@@ -23026,8 +23027,18 @@
 				(contextualLoggersByNameMap[name] = new ContextualLogger(merge({ name: name }, globalLogger.context)));
 		};
 
-		// Configure and example a Default implementation which writes to the `window.console` (if present).
-		Logger.useDefaults = function(defaultLevel) {
+		// Configure and example a Default implementation which writes to the `window.console` (if present).  The
+		// `options` hash can be used to configure the default logLevel and provide a custom message formatter.
+		Logger.useDefaults = function(options) {
+			options = options || {};
+
+			options.formatter = options.formatter || function defaultMessageFormatter(messages, context) {
+				// Prepend the logger's name to the log message for easy identification.
+				if (context.name) {
+					messages.unshift("[" + context.name + "]");
+				}
+			};
+
 			// Check for the presence of a logger.
 			if (typeof console === "undefined") {
 				return;
@@ -23042,8 +23053,11 @@
 				Function.prototype.apply.call(hdlr, console, messages);
 			};
 
-			Logger.setLevel(defaultLevel || Logger.DEBUG);
+			Logger.setLevel(options.defaultLevel || Logger.DEBUG);
 			Logger.setHandler(function(messages, context) {
+				// Convert arguments object to Array.
+				messages = Array.prototype.slice.call(messages);
+
 				var hdlr = console.log;
 				var timerLabel;
 
@@ -23078,11 +23092,7 @@
 						hdlr = console.info;
 					}
 
-					// Prepend the logger's name to the log message for easy identification.
-					if (context.name) {
-						Array.prototype.unshift.call(messages, "[" + context.name + "] ");
-					}
-
+					options.formatter(messages, context);
 					invokeConsoleMethod(hdlr, messages);
 				}
 			});
@@ -23106,6 +23116,7 @@
 			global.Logger = Logger;
 		}
 	}(this));
+
 
 /***/ },
 /* 187 */
@@ -46788,7 +46799,7 @@
 
 	    let keys = Object.keys(this.feeds);
 	    var key;for($__0=keys,$__1=Array.isArray($__0),$__2=0,$__0=$__1?$__0:$__0[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__1){if($__2>=$__0.length) break;key=$__0[$__2++];}else{$__2=$__0.next();if($__2.done) break;key=$__2.value;}
-	        this.onFeedClicked(key, true);
+	        // this.onFeedClicked(key, true);
 	    }
 	  },
 
