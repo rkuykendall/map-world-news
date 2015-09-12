@@ -23,19 +23,21 @@ class Feed:
         add_feed takes the URL, file path, or data of a feed, cleans it up,
         and adds the articles this Feed object's list.
         """
-        log.info("Retrieving feed: " + feed[:30])
         f = feedparser.parse(feed)
         ago24h = (
             datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
             - datetime.timedelta(hours=24))
 
-        log.info("Processing feed")
+        ignore_total = 0
         for item in f['entries']:
             a = Article(item)
             if self.disableFilter or a.published > ago24h:
                 self.articles.append(Article(item))
             else:
-                print "{} more than 24h ago".format(a.published)
+                ignore_total += 1
+
+        if ignore_total > 0:
+            print "Ignored {} from more than 24h ago".format(ignore_total)
 
     def extract(self):
         log.info("Extracing location and sentiment from articles in feed.")
@@ -43,6 +45,5 @@ class Feed:
             article.extract()
 
     def serializable(self):
-        log.info("Rendering feed to serializable format for JSON.")
         return [
             a.serializable() for a in self.articles]
