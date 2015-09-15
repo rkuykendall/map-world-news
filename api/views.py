@@ -45,6 +45,14 @@ default_feeds = [
 ]
 
 
+@api_blueprint.route('/clear', methods=['GET'])
+def clear():
+    from api.kv_store import Base, engine
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
+    return json.dumps({}), 200
+
+
 @api_blueprint.route('/store', methods=['GET'])
 def store():
     from api.kv_store import KvStore, session
