@@ -56658,7 +56658,6 @@
 	  'NYTimes Americas': 'http://rss.nytimes.com/services/xml/rss/nyt/Americas.xml',
 	  'USA Today World': 'http://rssfeeds.usatoday.com/usatodaycomworld-topstories&x=1',
 	  'ABC World News': 'http://feeds.abcnews.com/abcnews/internationalheadlines',
-	  'ABD International News': 'http://feeds.abcnews.com/abcnews/worldnewsheadlines',
 	  'SkyNews World': 'http://feeds.skynews.com/feeds/rss/world.xml',
 	  'Global News World': 'http://globalnews.ca/world/feed/',
 	  'CBC World': 'http://www.cbc.ca/cmlink/rss-world',
