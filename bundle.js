@@ -46,15 +46,16 @@
 
 	'use strict';
 
-	/** @jsx React.DOM */'use strict';
-
-	__webpack_require__(1);
+	/** @jsx React.DOM */__webpack_require__(1);
 	const React = __webpack_require__(5);
 	const Rainbow = __webpack_require__(161);
-	const App = __webpack_require__(162)
-	const log = __webpack_require__(185)
+	const NProgress = __webpack_require__(162);
+	const App = __webpack_require__(163)
+	const log = __webpack_require__(186)
 
 	let topo = [];
+	NProgress.configure({ easing: 'ease', speed: 1500 });
+	NProgress.start();
 	React.render(React.createElement(App, {topo: topo}), document.getElementById('app'));
 
 	$.get('countries.topo.json', function(data) {
@@ -21078,18 +21079,500 @@
 /* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, (c) 2013, 2014 Rico Sta. Cruz - http://ricostacruz.com/nprogress
+	 * @license MIT */
+
+	;(function(root, factory) {
+
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    module.exports = factory();
+	  } else {
+	    root.NProgress = factory();
+	  }
+
+	})(this, function() {
+	  var NProgress = {};
+
+	  NProgress.version = '0.2.0';
+
+	  var Settings = NProgress.settings = {
+	    minimum: 0.08,
+	    easing: 'ease',
+	    positionUsing: '',
+	    speed: 200,
+	    trickle: true,
+	    trickleRate: 0.02,
+	    trickleSpeed: 800,
+	    showSpinner: true,
+	    barSelector: '[role="bar"]',
+	    spinnerSelector: '[role="spinner"]',
+	    parent: 'body',
+	    template: '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
+	  };
+
+	  /**
+	   * Updates configuration.
+	   *
+	   *     NProgress.configure({
+	   *       minimum: 0.1
+	   *     });
+	   */
+	  NProgress.configure = function(options) {
+	    var key, value;
+	    for (key in options) {
+	      value = options[key];
+	      if (value !== undefined && options.hasOwnProperty(key)) Settings[key] = value;
+	    }
+
+	    return this;
+	  };
+
+	  /**
+	   * Last number.
+	   */
+
+	  NProgress.status = null;
+
+	  /**
+	   * Sets the progress bar status, where `n` is a number from `0.0` to `1.0`.
+	   *
+	   *     NProgress.set(0.4);
+	   *     NProgress.set(1.0);
+	   */
+
+	  NProgress.set = function(n) {
+	    var started = NProgress.isStarted();
+
+	    n = clamp(n, Settings.minimum, 1);
+	    NProgress.status = (n === 1 ? null : n);
+
+	    var progress = NProgress.render(!started),
+	        bar      = progress.querySelector(Settings.barSelector),
+	        speed    = Settings.speed,
+	        ease     = Settings.easing;
+
+	    progress.offsetWidth; /* Repaint */
+
+	    queue(function(next) {
+	      // Set positionUsing if it hasn't already been set
+	      if (Settings.positionUsing === '') Settings.positionUsing = NProgress.getPositioningCSS();
+
+	      // Add transition
+	      css(bar, barPositionCSS(n, speed, ease));
+
+	      if (n === 1) {
+	        // Fade out
+	        css(progress, { 
+	          transition: 'none', 
+	          opacity: 1 
+	        });
+	        progress.offsetWidth; /* Repaint */
+
+	        setTimeout(function() {
+	          css(progress, { 
+	            transition: 'all ' + speed + 'ms linear', 
+	            opacity: 0 
+	          });
+	          setTimeout(function() {
+	            NProgress.remove();
+	            next();
+	          }, speed);
+	        }, speed);
+	      } else {
+	        setTimeout(next, speed);
+	      }
+	    });
+
+	    return this;
+	  };
+
+	  NProgress.isStarted = function() {
+	    return typeof NProgress.status === 'number';
+	  };
+
+	  /**
+	   * Shows the progress bar.
+	   * This is the same as setting the status to 0%, except that it doesn't go backwards.
+	   *
+	   *     NProgress.start();
+	   *
+	   */
+	  NProgress.start = function() {
+	    if (!NProgress.status) NProgress.set(0);
+
+	    var work = function() {
+	      setTimeout(function() {
+	        if (!NProgress.status) return;
+	        NProgress.trickle();
+	        work();
+	      }, Settings.trickleSpeed);
+	    };
+
+	    if (Settings.trickle) work();
+
+	    return this;
+	  };
+
+	  /**
+	   * Hides the progress bar.
+	   * This is the *sort of* the same as setting the status to 100%, with the
+	   * difference being `done()` makes some placebo effect of some realistic motion.
+	   *
+	   *     NProgress.done();
+	   *
+	   * If `true` is passed, it will show the progress bar even if its hidden.
+	   *
+	   *     NProgress.done(true);
+	   */
+
+	  NProgress.done = function(force) {
+	    if (!force && !NProgress.status) return this;
+
+	    return NProgress.inc(0.3 + 0.5 * Math.random()).set(1);
+	  };
+
+	  /**
+	   * Increments by a random amount.
+	   */
+
+	  NProgress.inc = function(amount) {
+	    var n = NProgress.status;
+
+	    if (!n) {
+	      return NProgress.start();
+	    } else {
+	      if (typeof amount !== 'number') {
+	        amount = (1 - n) * clamp(Math.random() * n, 0.1, 0.95);
+	      }
+
+	      n = clamp(n + amount, 0, 0.994);
+	      return NProgress.set(n);
+	    }
+	  };
+
+	  NProgress.trickle = function() {
+	    return NProgress.inc(Math.random() * Settings.trickleRate);
+	  };
+
+	  /**
+	   * Waits for all supplied jQuery promises and
+	   * increases the progress as the promises resolve.
+	   *
+	   * @param $promise jQUery Promise
+	   */
+	  (function() {
+	    var initial = 0, current = 0;
+
+	    NProgress.promise = function($promise) {
+	      if (!$promise || $promise.state() === "resolved") {
+	        return this;
+	      }
+
+	      if (current === 0) {
+	        NProgress.start();
+	      }
+
+	      initial++;
+	      current++;
+
+	      $promise.always(function() {
+	        current--;
+	        if (current === 0) {
+	            initial = 0;
+	            NProgress.done();
+	        } else {
+	            NProgress.set((initial - current) / initial);
+	        }
+	      });
+
+	      return this;
+	    };
+
+	  })();
+
+	  /**
+	   * (Internal) renders the progress bar markup based on the `template`
+	   * setting.
+	   */
+
+	  NProgress.render = function(fromStart) {
+	    if (NProgress.isRendered()) return document.getElementById('nprogress');
+
+	    addClass(document.documentElement, 'nprogress-busy');
+	    
+	    var progress = document.createElement('div');
+	    progress.id = 'nprogress';
+	    progress.innerHTML = Settings.template;
+
+	    var bar      = progress.querySelector(Settings.barSelector),
+	        perc     = fromStart ? '-100' : toBarPerc(NProgress.status || 0),
+	        parent   = document.querySelector(Settings.parent),
+	        spinner;
+	    
+	    css(bar, {
+	      transition: 'all 0 linear',
+	      transform: 'translate3d(' + perc + '%,0,0)'
+	    });
+
+	    if (!Settings.showSpinner) {
+	      spinner = progress.querySelector(Settings.spinnerSelector);
+	      spinner && removeElement(spinner);
+	    }
+
+	    if (parent != document.body) {
+	      addClass(parent, 'nprogress-custom-parent');
+	    }
+
+	    parent.appendChild(progress);
+	    return progress;
+	  };
+
+	  /**
+	   * Removes the element. Opposite of render().
+	   */
+
+	  NProgress.remove = function() {
+	    removeClass(document.documentElement, 'nprogress-busy');
+	    removeClass(document.querySelector(Settings.parent), 'nprogress-custom-parent');
+	    var progress = document.getElementById('nprogress');
+	    progress && removeElement(progress);
+	  };
+
+	  /**
+	   * Checks if the progress bar is rendered.
+	   */
+
+	  NProgress.isRendered = function() {
+	    return !!document.getElementById('nprogress');
+	  };
+
+	  /**
+	   * Determine which positioning CSS rule to use.
+	   */
+
+	  NProgress.getPositioningCSS = function() {
+	    // Sniff on document.body.style
+	    var bodyStyle = document.body.style;
+
+	    // Sniff prefixes
+	    var vendorPrefix = ('WebkitTransform' in bodyStyle) ? 'Webkit' :
+	                       ('MozTransform' in bodyStyle) ? 'Moz' :
+	                       ('msTransform' in bodyStyle) ? 'ms' :
+	                       ('OTransform' in bodyStyle) ? 'O' : '';
+
+	    if (vendorPrefix + 'Perspective' in bodyStyle) {
+	      // Modern browsers with 3D support, e.g. Webkit, IE10
+	      return 'translate3d';
+	    } else if (vendorPrefix + 'Transform' in bodyStyle) {
+	      // Browsers without 3D support, e.g. IE9
+	      return 'translate';
+	    } else {
+	      // Browsers without translate() support, e.g. IE7-8
+	      return 'margin';
+	    }
+	  };
+
+	  /**
+	   * Helpers
+	   */
+
+	  function clamp(n, min, max) {
+	    if (n < min) return min;
+	    if (n > max) return max;
+	    return n;
+	  }
+
+	  /**
+	   * (Internal) converts a percentage (`0..1`) to a bar translateX
+	   * percentage (`-100%..0%`).
+	   */
+
+	  function toBarPerc(n) {
+	    return (-1 + n) * 100;
+	  }
+
+
+	  /**
+	   * (Internal) returns the correct CSS for changing the bar's
+	   * position given an n percentage, and speed and ease from Settings
+	   */
+
+	  function barPositionCSS(n, speed, ease) {
+	    var barCSS;
+
+	    if (Settings.positionUsing === 'translate3d') {
+	      barCSS = { transform: 'translate3d('+toBarPerc(n)+'%,0,0)' };
+	    } else if (Settings.positionUsing === 'translate') {
+	      barCSS = { transform: 'translate('+toBarPerc(n)+'%,0)' };
+	    } else {
+	      barCSS = { 'margin-left': toBarPerc(n)+'%' };
+	    }
+
+	    barCSS.transition = 'all '+speed+'ms '+ease;
+
+	    return barCSS;
+	  }
+
+	  /**
+	   * (Internal) Queues a function to be executed.
+	   */
+
+	  var queue = (function() {
+	    var pending = [];
+	    
+	    function next() {
+	      var fn = pending.shift();
+	      if (fn) {
+	        fn(next);
+	      }
+	    }
+
+	    return function(fn) {
+	      pending.push(fn);
+	      if (pending.length == 1) next();
+	    };
+	  })();
+
+	  /**
+	   * (Internal) Applies css properties to an element, similar to the jQuery 
+	   * css method.
+	   *
+	   * While this helper does assist with vendor prefixed property names, it 
+	   * does not perform any manipulation of values prior to setting styles.
+	   */
+
+	  var css = (function() {
+	    var cssPrefixes = [ 'Webkit', 'O', 'Moz', 'ms' ],
+	        cssProps    = {};
+
+	    function camelCase(string) {
+	      return string.replace(/^-ms-/, 'ms-').replace(/-([\da-z])/gi, function(match, letter) {
+	        return letter.toUpperCase();
+	      });
+	    }
+
+	    function getVendorProp(name) {
+	      var style = document.body.style;
+	      if (name in style) return name;
+
+	      var i = cssPrefixes.length,
+	          capName = name.charAt(0).toUpperCase() + name.slice(1),
+	          vendorName;
+	      while (i--) {
+	        vendorName = cssPrefixes[i] + capName;
+	        if (vendorName in style) return vendorName;
+	      }
+
+	      return name;
+	    }
+
+	    function getStyleProp(name) {
+	      name = camelCase(name);
+	      return cssProps[name] || (cssProps[name] = getVendorProp(name));
+	    }
+
+	    function applyCss(element, prop, value) {
+	      prop = getStyleProp(prop);
+	      element.style[prop] = value;
+	    }
+
+	    return function(element, properties) {
+	      var args = arguments,
+	          prop, 
+	          value;
+
+	      if (args.length == 2) {
+	        for (prop in properties) {
+	          value = properties[prop];
+	          if (value !== undefined && properties.hasOwnProperty(prop)) applyCss(element, prop, value);
+	        }
+	      } else {
+	        applyCss(element, args[1], args[2]);
+	      }
+	    }
+	  })();
+
+	  /**
+	   * (Internal) Determines if an element or space separated list of class names contains a class name.
+	   */
+
+	  function hasClass(element, name) {
+	    var list = typeof element == 'string' ? element : classList(element);
+	    return list.indexOf(' ' + name + ' ') >= 0;
+	  }
+
+	  /**
+	   * (Internal) Adds a class to an element.
+	   */
+
+	  function addClass(element, name) {
+	    var oldList = classList(element),
+	        newList = oldList + name;
+
+	    if (hasClass(oldList, name)) return; 
+
+	    // Trim the opening space.
+	    element.className = newList.substring(1);
+	  }
+
+	  /**
+	   * (Internal) Removes a class from an element.
+	   */
+
+	  function removeClass(element, name) {
+	    var oldList = classList(element),
+	        newList;
+
+	    if (!hasClass(element, name)) return;
+
+	    // Replace the class name.
+	    newList = oldList.replace(' ' + name + ' ', ' ');
+
+	    // Trim the opening and closing spaces.
+	    element.className = newList.substring(1, newList.length - 1);
+	  }
+
+	  /**
+	   * (Internal) Gets a space separated list of the class names on the element. 
+	   * The list is wrapped with a single space on each end to facilitate finding 
+	   * matches within the list.
+	   */
+
+	  function classList(element) {
+	    return (' ' + (element.className || '') + ' ').replace(/\s+/gi, ' ');
+	  }
+
+	  /**
+	   * (Internal) Removes an element from the DOM.
+	   */
+
+	  function removeElement(element) {
+	    element && element.parentNode && element.parentNode.removeChild(element);
+	  }
+
+	  return NProgress;
+	});
+
+
+
+/***/ },
+/* 163 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 
 	/** @jsx React.DOM */const React = __webpack_require__(5);
-	const Reflux = __webpack_require__(163);
-	const StoryList = __webpack_require__(183);
-	const WorldMap = __webpack_require__(187);
-	const CountryList = __webpack_require__(190);
-	const Feeds = __webpack_require__(201);
-	const AppStore = __webpack_require__(202);
+	const Reflux = __webpack_require__(164);
+	const StoryList = __webpack_require__(184);
+	const WorldMap = __webpack_require__(188);
+	const CountryList = __webpack_require__(191);
+	const Feeds = __webpack_require__(202);
+	const AppStore = __webpack_require__(203);
 	const AppActions = __webpack_require__(205);
-	const countryNames = __webpack_require__(191).countries
-	const log = __webpack_require__(185)
+	const countryNames = __webpack_require__(192).countries
+	const log = __webpack_require__(186)
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  mixins: [Reflux.connect(AppStore)],
@@ -21143,26 +21626,26 @@
 
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Reflux = __webpack_require__(164);
+	var Reflux = __webpack_require__(165);
 
-	Reflux.connect = __webpack_require__(178);
+	Reflux.connect = __webpack_require__(179);
 
-	Reflux.connectFilter = __webpack_require__(180);
+	Reflux.connectFilter = __webpack_require__(181);
 
-	Reflux.ListenerMixin = __webpack_require__(179);
+	Reflux.ListenerMixin = __webpack_require__(180);
 
-	Reflux.listenTo = __webpack_require__(181);
+	Reflux.listenTo = __webpack_require__(182);
 
-	Reflux.listenToMany = __webpack_require__(182);
+	Reflux.listenToMany = __webpack_require__(183);
 
 	module.exports = Reflux;
 
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21176,19 +21659,19 @@
 	    }
 	};
 
-	Reflux.ActionMethods = __webpack_require__(165);
+	Reflux.ActionMethods = __webpack_require__(166);
 
-	Reflux.ListenerMethods = __webpack_require__(166);
+	Reflux.ListenerMethods = __webpack_require__(167);
 
-	Reflux.PublisherMethods = __webpack_require__(176);
+	Reflux.PublisherMethods = __webpack_require__(177);
 
-	Reflux.StoreMethods = __webpack_require__(175);
+	Reflux.StoreMethods = __webpack_require__(176);
 
-	Reflux.createAction = __webpack_require__(177);
+	Reflux.createAction = __webpack_require__(178);
 
-	Reflux.createStore = __webpack_require__(171);
+	Reflux.createStore = __webpack_require__(172);
 
-	var maker = __webpack_require__(170).staticJoinCreator;
+	var maker = __webpack_require__(171).staticJoinCreator;
 
 	Reflux.joinTrailing = Reflux.all = maker("last"); // Reflux.all alias for backward compatibility
 
@@ -21198,7 +21681,7 @@
 
 	Reflux.joinConcat = maker("all");
 
-	var _ = Reflux.utils = __webpack_require__(167);
+	var _ = Reflux.utils = __webpack_require__(168);
 
 	Reflux.EventEmitter = _.EventEmitter;
 
@@ -21272,7 +21755,7 @@
 	 * Provides the set of created actions and stores for introspection
 	 */
 	/*eslint-disable no-underscore-dangle*/
-	Reflux.__keep = __webpack_require__(172);
+	Reflux.__keep = __webpack_require__(173);
 	/*eslint-enable no-underscore-dangle*/
 
 	/**
@@ -21286,7 +21769,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports) {
 
 	/**
@@ -21298,13 +21781,13 @@
 	module.exports = {};
 
 /***/ },
-/* 166 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _ = __webpack_require__(167),
-	    maker = __webpack_require__(170).instanceJoinCreator;
+	var _ = __webpack_require__(168),
+	    maker = __webpack_require__(171).instanceJoinCreator;
 
 	/**
 	 * Extract child listenables from a parent from their
@@ -21536,7 +22019,7 @@
 	};
 
 /***/ },
-/* 167 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate) {"use strict";
@@ -21614,7 +22097,7 @@
 	    return typeof value === "function";
 	}
 
-	exports.EventEmitter = __webpack_require__(169);
+	exports.EventEmitter = __webpack_require__(170);
 
 	if (environment.hasSetImmediate) {
 	    exports.nextTick = function (callback) {
@@ -21654,10 +22137,10 @@
 	        throw Error(msg || val);
 	    }
 	}
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(168).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(169).setImmediate))
 
 /***/ },
-/* 168 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(7).nextTick;
@@ -21736,10 +22219,10 @@
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(168).setImmediate, __webpack_require__(168).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(169).setImmediate, __webpack_require__(169).clearImmediate))
 
 /***/ },
-/* 169 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22007,7 +22490,7 @@
 
 
 /***/ },
-/* 170 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22016,8 +22499,8 @@
 
 	"use strict";
 
-	var createStore = __webpack_require__(171),
-	    _ = __webpack_require__(167);
+	var createStore = __webpack_require__(172),
+	    _ = __webpack_require__(168);
 
 	var slice = Array.prototype.slice,
 	    strategyMethodNames = {
@@ -22128,15 +22611,15 @@
 	}
 
 /***/ },
-/* 171 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _ = __webpack_require__(167),
-	    Keep = __webpack_require__(172),
-	    mixer = __webpack_require__(173),
-	    bindMethods = __webpack_require__(174);
+	var _ = __webpack_require__(168),
+	    Keep = __webpack_require__(173),
+	    mixer = __webpack_require__(174),
+	    bindMethods = __webpack_require__(175);
 
 	var allowed = { preEmit: 1, shouldEmit: 1 };
 
@@ -22150,9 +22633,9 @@
 	 */
 	module.exports = function (definition) {
 
-	    var StoreMethods = __webpack_require__(175),
-	        PublisherMethods = __webpack_require__(176),
-	        ListenerMethods = __webpack_require__(166);
+	    var StoreMethods = __webpack_require__(176),
+	        PublisherMethods = __webpack_require__(177),
+	        ListenerMethods = __webpack_require__(167);
 
 	    definition = definition || {};
 
@@ -22197,7 +22680,7 @@
 	};
 
 /***/ },
-/* 172 */
+/* 173 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22216,12 +22699,12 @@
 	};
 
 /***/ },
-/* 173 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _ = __webpack_require__(167);
+	var _ = __webpack_require__(168);
 
 	module.exports = function mix(def) {
 	    var composed = {
@@ -22280,7 +22763,7 @@
 	};
 
 /***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22310,7 +22793,7 @@
 	};
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports) {
 
 	/**
@@ -22322,12 +22805,12 @@
 	module.exports = {};
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _ = __webpack_require__(167);
+	var _ = __webpack_require__(168);
 
 	/**
 	 * A module of methods for object that you want to be able to listen to.
@@ -22510,15 +22993,15 @@
 	};
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var _ = __webpack_require__(167),
-	    ActionMethods = __webpack_require__(165),
-	    PublisherMethods = __webpack_require__(176),
-	    Keep = __webpack_require__(172);
+	var _ = __webpack_require__(168),
+	    ActionMethods = __webpack_require__(166),
+	    PublisherMethods = __webpack_require__(177),
+	    Keep = __webpack_require__(173);
 
 	var allowed = { preEmit: 1, shouldEmit: 1 };
 
@@ -22581,12 +23064,12 @@
 	module.exports = createAction;
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ListenerMethods = __webpack_require__(166),
-	    ListenerMixin = __webpack_require__(179),
-	    _ = __webpack_require__(167);
+	var ListenerMethods = __webpack_require__(167),
+	    ListenerMixin = __webpack_require__(180),
+	    _ = __webpack_require__(168);
 
 	module.exports = function(listenable,key){
 	    return {
@@ -22614,11 +23097,11 @@
 
 
 /***/ },
-/* 179 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(167),
-	    ListenerMethods = __webpack_require__(166);
+	var _ = __webpack_require__(168),
+	    ListenerMethods = __webpack_require__(167);
 
 	/**
 	 * A module meant to be consumed as a mixin by a React component. Supplies the methods from
@@ -22637,12 +23120,12 @@
 
 
 /***/ },
-/* 180 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ListenerMethods = __webpack_require__(166),
-	    ListenerMixin = __webpack_require__(179),
-	    _ = __webpack_require__(167);
+	var ListenerMethods = __webpack_require__(167),
+	    ListenerMixin = __webpack_require__(180),
+	    _ = __webpack_require__(168);
 
 	module.exports = function(listenable, key, filterFunc) {
 	    filterFunc = _.isFunction(key) ? key : filterFunc;
@@ -22683,10 +23166,10 @@
 
 
 /***/ },
-/* 181 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ListenerMethods = __webpack_require__(166);
+	var ListenerMethods = __webpack_require__(167);
 
 	/**
 	 * A mixin factory for a React component. Meant as a more convenient way of using the `ListenerMixin`,
@@ -22724,10 +23207,10 @@
 
 
 /***/ },
-/* 182 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var ListenerMethods = __webpack_require__(166);
+	var ListenerMethods = __webpack_require__(167);
 
 	/**
 	 * A mixin factory for a React component. Meant as a more convenient way of using the `listenerMixin`,
@@ -22763,14 +23246,14 @@
 
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/** @jsx React.DOM */const React = __webpack_require__(5)
-	const Story = __webpack_require__(184)
-	const log = __webpack_require__(185)
+	const Story = __webpack_require__(185)
+	const log = __webpack_require__(186)
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  render: function() {
@@ -22808,14 +23291,14 @@
 
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/** @jsx React.DOM */const React = __webpack_require__(5)
 	const Rainbow = __webpack_require__(161);
-	const log = __webpack_require__(185)
+	const log = __webpack_require__(186)
 
 	function dispNum(n) {
 	    return parseFloat(parseFloat(n).toFixed(1));
@@ -22849,12 +23332,12 @@
 
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	/** @jsx React.DOM */const jsLogger = __webpack_require__(186);
+	/** @jsx React.DOM */const jsLogger = __webpack_require__(187);
 
 	let log = jsLogger;
 	log.useDefaults();
@@ -22863,7 +23346,7 @@
 
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -23119,15 +23602,15 @@
 
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/** @jsx React.DOM */const React = __webpack_require__(5)
 	const Rainbow = __webpack_require__(161);
-	const _ = __webpack_require__(188);
-	const log = __webpack_require__(185)
+	const _ = __webpack_require__(189);
+	const log = __webpack_require__(186)
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  getSentiments:function(countries) {var $__0, $__1, $__2, $__3, $__4, $__5;
@@ -23289,7 +23772,7 @@
 
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -35644,10 +36127,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(189)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(190)(module), (function() { return this; }())))
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -35663,14 +36146,14 @@
 
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/** @jsx React.DOM */const React = __webpack_require__(5)
-	const countryNames = __webpack_require__(191).countries
-	const log = __webpack_require__(185)
+	const countryNames = __webpack_require__(192).countries
+	const log = __webpack_require__(186)
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  render: function() {
@@ -35694,20 +36177,20 @@
 
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _ = __webpack_require__(192);
-	var continents = __webpack_require__(193);
-	var regions = __webpack_require__(194);
-	var countriesAll = __webpack_require__(195);
-	var currenciesAll = __webpack_require__(196);
-	var languagesAll = __webpack_require__(197);
-	var lookup = __webpack_require__(198);
+	var _ = __webpack_require__(193);
+	var continents = __webpack_require__(194);
+	var regions = __webpack_require__(195);
+	var countriesAll = __webpack_require__(196);
+	var currenciesAll = __webpack_require__(197);
+	var languagesAll = __webpack_require__(198);
+	var lookup = __webpack_require__(199);
 
-	var getSymbol = __webpack_require__(199)
+	var getSymbol = __webpack_require__(200)
 
 	exports.continents = continents;
 	exports.regions = regions;
@@ -35807,7 +36290,7 @@
 
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3
@@ -37361,13 +37844,13 @@
 
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _ = __webpack_require__(192);
-	var regions = __webpack_require__(194);
+	var _ = __webpack_require__(193);
+	var regions = __webpack_require__(195);
 	var continents = {};
 
 	continents.asia = {
@@ -37453,7 +37936,7 @@
 
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -37874,7 +38357,7 @@
 
 
 /***/ },
-/* 195 */
+/* 196 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -42102,7 +42585,7 @@
 	]
 
 /***/ },
-/* 196 */
+/* 197 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -43177,7 +43660,7 @@
 	]
 
 /***/ },
-/* 197 */
+/* 198 */
 /***/ function(module, exports) {
 
 	module.exports = [
@@ -46568,10 +47051,10 @@
 	]
 
 /***/ },
-/* 198 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var _ = __webpack_require__(192);
+	var _ = __webpack_require__(193);
 
 	module.exports = init;
 
@@ -46598,12 +47081,12 @@
 	}
 
 /***/ },
-/* 199 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = mapSymbol
 
-	var map = __webpack_require__(200)
+	var map = __webpack_require__(201)
 
 	function mapSymbol(currencyCode) {
 	  if (map.hasOwnProperty(currencyCode)) {
@@ -46614,7 +47097,7 @@
 	}
 
 /***/ },
-/* 200 */
+/* 201 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -46737,13 +47220,13 @@
 	}
 
 /***/ },
-/* 201 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	/** @jsx React.DOM */const React = __webpack_require__(5)
-	const log = __webpack_require__(185)
+	const log = __webpack_require__(186)
 
 	module.exports = React.createClass({displayName: "module.exports",
 	  render: function() {
@@ -46771,17 +47254,17 @@
 
 
 /***/ },
-/* 202 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	/** @jsx React.DOM */const Reflux = __webpack_require__(163);
-	const $ = __webpack_require__(203);
-	const NProgress = __webpack_require__(204);
+	/** @jsx React.DOM */const Reflux = __webpack_require__(164);
+	const $ = __webpack_require__(204);
+	const NProgress = __webpack_require__(162);
 	const AppActions = __webpack_require__(205);
 	const defaultFeeds = __webpack_require__(206);
-	const log = __webpack_require__(185)
+	const log = __webpack_require__(186)
 
 	let AppStore = Reflux.createStore({
 	  listenables: [AppActions],
@@ -46912,7 +47395,7 @@
 
 
 /***/ },
-/* 203 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -56128,494 +56611,12 @@
 
 
 /***/ },
-/* 204 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/* NProgress, (c) 2013, 2014 Rico Sta. Cruz - http://ricostacruz.com/nprogress
-	 * @license MIT */
-
-	;(function(root, factory) {
-
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === 'object') {
-	    module.exports = factory();
-	  } else {
-	    root.NProgress = factory();
-	  }
-
-	})(this, function() {
-	  var NProgress = {};
-
-	  NProgress.version = '0.2.0';
-
-	  var Settings = NProgress.settings = {
-	    minimum: 0.08,
-	    easing: 'ease',
-	    positionUsing: '',
-	    speed: 200,
-	    trickle: true,
-	    trickleRate: 0.02,
-	    trickleSpeed: 800,
-	    showSpinner: true,
-	    barSelector: '[role="bar"]',
-	    spinnerSelector: '[role="spinner"]',
-	    parent: 'body',
-	    template: '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
-	  };
-
-	  /**
-	   * Updates configuration.
-	   *
-	   *     NProgress.configure({
-	   *       minimum: 0.1
-	   *     });
-	   */
-	  NProgress.configure = function(options) {
-	    var key, value;
-	    for (key in options) {
-	      value = options[key];
-	      if (value !== undefined && options.hasOwnProperty(key)) Settings[key] = value;
-	    }
-
-	    return this;
-	  };
-
-	  /**
-	   * Last number.
-	   */
-
-	  NProgress.status = null;
-
-	  /**
-	   * Sets the progress bar status, where `n` is a number from `0.0` to `1.0`.
-	   *
-	   *     NProgress.set(0.4);
-	   *     NProgress.set(1.0);
-	   */
-
-	  NProgress.set = function(n) {
-	    var started = NProgress.isStarted();
-
-	    n = clamp(n, Settings.minimum, 1);
-	    NProgress.status = (n === 1 ? null : n);
-
-	    var progress = NProgress.render(!started),
-	        bar      = progress.querySelector(Settings.barSelector),
-	        speed    = Settings.speed,
-	        ease     = Settings.easing;
-
-	    progress.offsetWidth; /* Repaint */
-
-	    queue(function(next) {
-	      // Set positionUsing if it hasn't already been set
-	      if (Settings.positionUsing === '') Settings.positionUsing = NProgress.getPositioningCSS();
-
-	      // Add transition
-	      css(bar, barPositionCSS(n, speed, ease));
-
-	      if (n === 1) {
-	        // Fade out
-	        css(progress, { 
-	          transition: 'none', 
-	          opacity: 1 
-	        });
-	        progress.offsetWidth; /* Repaint */
-
-	        setTimeout(function() {
-	          css(progress, { 
-	            transition: 'all ' + speed + 'ms linear', 
-	            opacity: 0 
-	          });
-	          setTimeout(function() {
-	            NProgress.remove();
-	            next();
-	          }, speed);
-	        }, speed);
-	      } else {
-	        setTimeout(next, speed);
-	      }
-	    });
-
-	    return this;
-	  };
-
-	  NProgress.isStarted = function() {
-	    return typeof NProgress.status === 'number';
-	  };
-
-	  /**
-	   * Shows the progress bar.
-	   * This is the same as setting the status to 0%, except that it doesn't go backwards.
-	   *
-	   *     NProgress.start();
-	   *
-	   */
-	  NProgress.start = function() {
-	    if (!NProgress.status) NProgress.set(0);
-
-	    var work = function() {
-	      setTimeout(function() {
-	        if (!NProgress.status) return;
-	        NProgress.trickle();
-	        work();
-	      }, Settings.trickleSpeed);
-	    };
-
-	    if (Settings.trickle) work();
-
-	    return this;
-	  };
-
-	  /**
-	   * Hides the progress bar.
-	   * This is the *sort of* the same as setting the status to 100%, with the
-	   * difference being `done()` makes some placebo effect of some realistic motion.
-	   *
-	   *     NProgress.done();
-	   *
-	   * If `true` is passed, it will show the progress bar even if its hidden.
-	   *
-	   *     NProgress.done(true);
-	   */
-
-	  NProgress.done = function(force) {
-	    if (!force && !NProgress.status) return this;
-
-	    return NProgress.inc(0.3 + 0.5 * Math.random()).set(1);
-	  };
-
-	  /**
-	   * Increments by a random amount.
-	   */
-
-	  NProgress.inc = function(amount) {
-	    var n = NProgress.status;
-
-	    if (!n) {
-	      return NProgress.start();
-	    } else {
-	      if (typeof amount !== 'number') {
-	        amount = (1 - n) * clamp(Math.random() * n, 0.1, 0.95);
-	      }
-
-	      n = clamp(n + amount, 0, 0.994);
-	      return NProgress.set(n);
-	    }
-	  };
-
-	  NProgress.trickle = function() {
-	    return NProgress.inc(Math.random() * Settings.trickleRate);
-	  };
-
-	  /**
-	   * Waits for all supplied jQuery promises and
-	   * increases the progress as the promises resolve.
-	   *
-	   * @param $promise jQUery Promise
-	   */
-	  (function() {
-	    var initial = 0, current = 0;
-
-	    NProgress.promise = function($promise) {
-	      if (!$promise || $promise.state() === "resolved") {
-	        return this;
-	      }
-
-	      if (current === 0) {
-	        NProgress.start();
-	      }
-
-	      initial++;
-	      current++;
-
-	      $promise.always(function() {
-	        current--;
-	        if (current === 0) {
-	            initial = 0;
-	            NProgress.done();
-	        } else {
-	            NProgress.set((initial - current) / initial);
-	        }
-	      });
-
-	      return this;
-	    };
-
-	  })();
-
-	  /**
-	   * (Internal) renders the progress bar markup based on the `template`
-	   * setting.
-	   */
-
-	  NProgress.render = function(fromStart) {
-	    if (NProgress.isRendered()) return document.getElementById('nprogress');
-
-	    addClass(document.documentElement, 'nprogress-busy');
-	    
-	    var progress = document.createElement('div');
-	    progress.id = 'nprogress';
-	    progress.innerHTML = Settings.template;
-
-	    var bar      = progress.querySelector(Settings.barSelector),
-	        perc     = fromStart ? '-100' : toBarPerc(NProgress.status || 0),
-	        parent   = document.querySelector(Settings.parent),
-	        spinner;
-	    
-	    css(bar, {
-	      transition: 'all 0 linear',
-	      transform: 'translate3d(' + perc + '%,0,0)'
-	    });
-
-	    if (!Settings.showSpinner) {
-	      spinner = progress.querySelector(Settings.spinnerSelector);
-	      spinner && removeElement(spinner);
-	    }
-
-	    if (parent != document.body) {
-	      addClass(parent, 'nprogress-custom-parent');
-	    }
-
-	    parent.appendChild(progress);
-	    return progress;
-	  };
-
-	  /**
-	   * Removes the element. Opposite of render().
-	   */
-
-	  NProgress.remove = function() {
-	    removeClass(document.documentElement, 'nprogress-busy');
-	    removeClass(document.querySelector(Settings.parent), 'nprogress-custom-parent');
-	    var progress = document.getElementById('nprogress');
-	    progress && removeElement(progress);
-	  };
-
-	  /**
-	   * Checks if the progress bar is rendered.
-	   */
-
-	  NProgress.isRendered = function() {
-	    return !!document.getElementById('nprogress');
-	  };
-
-	  /**
-	   * Determine which positioning CSS rule to use.
-	   */
-
-	  NProgress.getPositioningCSS = function() {
-	    // Sniff on document.body.style
-	    var bodyStyle = document.body.style;
-
-	    // Sniff prefixes
-	    var vendorPrefix = ('WebkitTransform' in bodyStyle) ? 'Webkit' :
-	                       ('MozTransform' in bodyStyle) ? 'Moz' :
-	                       ('msTransform' in bodyStyle) ? 'ms' :
-	                       ('OTransform' in bodyStyle) ? 'O' : '';
-
-	    if (vendorPrefix + 'Perspective' in bodyStyle) {
-	      // Modern browsers with 3D support, e.g. Webkit, IE10
-	      return 'translate3d';
-	    } else if (vendorPrefix + 'Transform' in bodyStyle) {
-	      // Browsers without 3D support, e.g. IE9
-	      return 'translate';
-	    } else {
-	      // Browsers without translate() support, e.g. IE7-8
-	      return 'margin';
-	    }
-	  };
-
-	  /**
-	   * Helpers
-	   */
-
-	  function clamp(n, min, max) {
-	    if (n < min) return min;
-	    if (n > max) return max;
-	    return n;
-	  }
-
-	  /**
-	   * (Internal) converts a percentage (`0..1`) to a bar translateX
-	   * percentage (`-100%..0%`).
-	   */
-
-	  function toBarPerc(n) {
-	    return (-1 + n) * 100;
-	  }
-
-
-	  /**
-	   * (Internal) returns the correct CSS for changing the bar's
-	   * position given an n percentage, and speed and ease from Settings
-	   */
-
-	  function barPositionCSS(n, speed, ease) {
-	    var barCSS;
-
-	    if (Settings.positionUsing === 'translate3d') {
-	      barCSS = { transform: 'translate3d('+toBarPerc(n)+'%,0,0)' };
-	    } else if (Settings.positionUsing === 'translate') {
-	      barCSS = { transform: 'translate('+toBarPerc(n)+'%,0)' };
-	    } else {
-	      barCSS = { 'margin-left': toBarPerc(n)+'%' };
-	    }
-
-	    barCSS.transition = 'all '+speed+'ms '+ease;
-
-	    return barCSS;
-	  }
-
-	  /**
-	   * (Internal) Queues a function to be executed.
-	   */
-
-	  var queue = (function() {
-	    var pending = [];
-	    
-	    function next() {
-	      var fn = pending.shift();
-	      if (fn) {
-	        fn(next);
-	      }
-	    }
-
-	    return function(fn) {
-	      pending.push(fn);
-	      if (pending.length == 1) next();
-	    };
-	  })();
-
-	  /**
-	   * (Internal) Applies css properties to an element, similar to the jQuery 
-	   * css method.
-	   *
-	   * While this helper does assist with vendor prefixed property names, it 
-	   * does not perform any manipulation of values prior to setting styles.
-	   */
-
-	  var css = (function() {
-	    var cssPrefixes = [ 'Webkit', 'O', 'Moz', 'ms' ],
-	        cssProps    = {};
-
-	    function camelCase(string) {
-	      return string.replace(/^-ms-/, 'ms-').replace(/-([\da-z])/gi, function(match, letter) {
-	        return letter.toUpperCase();
-	      });
-	    }
-
-	    function getVendorProp(name) {
-	      var style = document.body.style;
-	      if (name in style) return name;
-
-	      var i = cssPrefixes.length,
-	          capName = name.charAt(0).toUpperCase() + name.slice(1),
-	          vendorName;
-	      while (i--) {
-	        vendorName = cssPrefixes[i] + capName;
-	        if (vendorName in style) return vendorName;
-	      }
-
-	      return name;
-	    }
-
-	    function getStyleProp(name) {
-	      name = camelCase(name);
-	      return cssProps[name] || (cssProps[name] = getVendorProp(name));
-	    }
-
-	    function applyCss(element, prop, value) {
-	      prop = getStyleProp(prop);
-	      element.style[prop] = value;
-	    }
-
-	    return function(element, properties) {
-	      var args = arguments,
-	          prop, 
-	          value;
-
-	      if (args.length == 2) {
-	        for (prop in properties) {
-	          value = properties[prop];
-	          if (value !== undefined && properties.hasOwnProperty(prop)) applyCss(element, prop, value);
-	        }
-	      } else {
-	        applyCss(element, args[1], args[2]);
-	      }
-	    }
-	  })();
-
-	  /**
-	   * (Internal) Determines if an element or space separated list of class names contains a class name.
-	   */
-
-	  function hasClass(element, name) {
-	    var list = typeof element == 'string' ? element : classList(element);
-	    return list.indexOf(' ' + name + ' ') >= 0;
-	  }
-
-	  /**
-	   * (Internal) Adds a class to an element.
-	   */
-
-	  function addClass(element, name) {
-	    var oldList = classList(element),
-	        newList = oldList + name;
-
-	    if (hasClass(oldList, name)) return; 
-
-	    // Trim the opening space.
-	    element.className = newList.substring(1);
-	  }
-
-	  /**
-	   * (Internal) Removes a class from an element.
-	   */
-
-	  function removeClass(element, name) {
-	    var oldList = classList(element),
-	        newList;
-
-	    if (!hasClass(element, name)) return;
-
-	    // Replace the class name.
-	    newList = oldList.replace(' ' + name + ' ', ' ');
-
-	    // Trim the opening and closing spaces.
-	    element.className = newList.substring(1, newList.length - 1);
-	  }
-
-	  /**
-	   * (Internal) Gets a space separated list of the class names on the element. 
-	   * The list is wrapped with a single space on each end to facilitate finding 
-	   * matches within the list.
-	   */
-
-	  function classList(element) {
-	    return (' ' + (element.className || '') + ' ').replace(/\s+/gi, ' ');
-	  }
-
-	  /**
-	   * (Internal) Removes an element from the DOM.
-	   */
-
-	  function removeElement(element) {
-	    element && element.parentNode && element.parentNode.removeChild(element);
-	  }
-
-	  return NProgress;
-	});
-
-
-
-/***/ },
 /* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	/** @jsx React.DOM */const Reflux = __webpack_require__(163);
+	/** @jsx React.DOM */const Reflux = __webpack_require__(164);
 
 	let appActions = Reflux.createActions([
 	  'fetchFeed',
