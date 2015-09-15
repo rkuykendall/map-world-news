@@ -78,24 +78,17 @@ def feeds():
     from api.kv_store import KvStore, session
 
     if 'url' in request.form:
-        print "URL proxy requested: {}".format(
-            json.dumps(request.form)[:70])
-
         url = request.form.get('url')
 
         try:
             cached = session.query(KvStore).order_by(KvStore.id.desc()).first()
             log.info("Returning from cache: {}".format(cached.key))
-            return cached.value[url], 200
+            data = cached.value[url]
         except NoResultFound:
             log.info("Proxying {}".format(url[:100]))
             r = requests.get(url)
-            return r.text, r.status_code
+            data = r.text
 
-    if 'data' in request.form:
-        print "Data process requested: {}".format(
-            json.dumps(request.form)[:70])
-        data = request.form.get('data')
         feed = Feed(feed=data)
         log.info("Extracting from data: {}".format(
             data[:100].replace('\n', ' ')))

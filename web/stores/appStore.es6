@@ -114,19 +114,11 @@ let AppStore = Reflux.createStore({
     newFeed.show = true;
 
     $.post(api, { url: newFeed.url }, function(data) {
-      $.post(api, { data: data }, function(data) {
-        newFeed.data = data;
-        newFeed.fetched = true;
-        newFeed.subtitle = '(' + newFeed.data.length + ')';
-        completedGet()
-      }, 'json').fail(function() {
-        completedGet()
-        newFeed.failed = true;
-        newFeed.subtitle = 'Failed to load.';
-        log.error('Failed to load feed ' + id);
-        $('#errors').slideDown().delay(30000).slideUp();
-      });
-    }).fail(function() {
+      newFeed.data = data;
+      newFeed.fetched = true;
+      newFeed.subtitle = '(' + newFeed.data.length + ')';
+      completedGet();
+    }, 'json').fail(function() {
       completedGet()
       newFeed.failed = true;
       newFeed.subtitle = 'Failed to load.';
