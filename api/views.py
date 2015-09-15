@@ -36,7 +36,6 @@ default_feeds = [
     'http://rss.nytimes.com/services/xml/rss/nyt/Americas.xml',
     'http://rssfeeds.usatoday.com/usatodaycomworld-topstories&x=1',
     'http://feeds.abcnews.com/abcnews/internationalheadlines',
-    'http://feeds.abcnews.com/abcnews/worldnewsheadlines',
     'http://feeds.skynews.com/feeds/rss/world.xml',
     'http://globalnews.ca/world/feed/',
     'http://www.cbc.ca/cmlink/rss-world',
