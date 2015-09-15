@@ -46799,7 +46799,7 @@
 
 	    let keys = Object.keys(this.feeds);
 	    var key;for($__0=keys,$__1=Array.isArray($__0),$__2=0,$__0=$__1?$__0:$__0[/*global Symbol*/typeof Symbol=="function"?Symbol.iterator:"@@iterator"]();;) {if($__1){if($__2>=$__0.length) break;key=$__0[$__2++];}else{$__2=$__0.next();if($__2.done) break;key=$__2.value;}
-	        // this.onFeedClicked(key, true);
+	        this.onFeedClicked(key, true);
 	    }
 	  },
 
