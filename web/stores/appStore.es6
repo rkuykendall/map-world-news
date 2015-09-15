@@ -21,7 +21,7 @@ let AppStore = Reflux.createStore({
 
     let keys = Object.keys(this.feeds);
     for (let key of keys) {
-        // this.onFeedClicked(key, true);
+        this.onFeedClicked(key, true);
     }
   },
 
