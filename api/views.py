@@ -19,7 +19,7 @@ def feeds():
     key = "feeds_{}_{}".format(now.strftime('%Y-%m-%d'), now.month / 6)
 
     if 'url' in request.form:
-        print "=== URL proxy requested: {}".format(
+        print "URL proxy requested: {}".format(
             json.dumps(request.form)[:70])
 
         url = request.form.get('url')
@@ -34,11 +34,12 @@ def feeds():
             return r.text, r.status_code
 
     if 'data' in request.form:
-        print "=== Data process requested: {}".format(
+        print "Data process requested: {}".format(
             json.dumps(request.form)[:70])
         data = request.form.get('data')
         feed = Feed(feed=data)
-        log.info("Extracting from data: {}".format(data[:100].replace('\n', ' ')))
+        log.info("Extracting from data: {}".format(
+            data[:100].replace('\n', ' ')))
         feed.extract()
 
         feed_json = json.dumps(feed.serializable())
