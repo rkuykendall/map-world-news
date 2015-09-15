@@ -24,23 +24,21 @@ class Feed:
         and adds the articles this Feed object's list.
         """
         f = feedparser.parse(feed)
-        ago24h = pytz.utc.localize(
+        ago24h = (
             datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
             - datetime.timedelta(hours=24))
 
         ignore_total = 0
         for item in f['entries']:
             a = Article(item)
-            published = pytz.utc.localize(a.published)
-
             try:
-                if self.disableFilter or published > ago24h:
+                if self.disableFilter or a.published > ago24h:
                     self.articles.append(Article(item))
                 else:
                     ignore_total += 1
             except TypeError:
-                log.info(published)
-                log.info(ago24h)
+                log.error("TypeError in adding article {}.".format(
+                    a.link))
 
         if ignore_total > 0:
             print "Ignored {} from more than 24h ago".format(ignore_total)

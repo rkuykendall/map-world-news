@@ -27,7 +27,7 @@ class Article():
                 self.published = parser.parse(item.get('published'))
 
                 if self.published.tzinfo is None:
-                    self.published.replace(tzinfo=pytz.utc)
+                    self.published = pytz.utc.localize(self.published)
 
                 # Set summary, get rid of all the junk at the end
                 summary = item.get('summary')
