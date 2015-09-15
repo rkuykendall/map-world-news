@@ -53,49 +53,53 @@ def store():
     key = "feeds_{}_{}".format(now.strftime('%Y-%m-%d'), now.month / 6)
 
     existing = session.query(KvStore.id).filter(KvStore.key == key).count()
-    if existing > 0:
-        return json.dumps({'error': 'existing key'}), 409
+    if existing == 0:
+        log.info("Staring cache of {}...".format(key))
+        feeds = {}
 
-    log.info("Staring cache of {}...".format(key))
-    feeds = {}
+        for url in default_feeds:
+            r = requests.get(url)
+            feeds[url] = r.text
+            if r.status_code != 200:
+                log.error("HTTP error code {} for {}".format(
+                    r.status_code, url))
 
-    for url in default_feeds:
-        r = requests.get(url)
-        feeds[url] = r.text
-        if r.status_code != 200:
-            log.error("HTTP error code {} for {}".format(r.status_code, url))
+        new_store = KvStore(key, feeds)
+        session.add(new_store)
+        session.commit()
+        log.info("Feed Data saved to db with key {}".format(key))
+    else:
+        feeds = session.query(KvStore).filter(KvStore.key == key).one().value
 
-    new_store = KvStore(key, feeds)
-    session.add(new_store)
-    session.commit()
+    key_x = key + '_x'
+    existing = session.query(KvStore.id).filter(KvStore.key == key_x).count()
 
-    log.info("Cache saved to db with key {}".format(key))
-    return json.dumps({key: key}), 200
+    if existing == 0:
+        log.info("Extracting feed data...")
+        feeds_x = {}
+        for url in default_feeds:
+            data = feeds[url]
+            feed = Feed(feed=data)
+            feed.extract()
+
+            feeds_x[url] = json.dumps(feed.serializable())
+
+        new_store_x = KvStore(key_x, feeds_x)
+        session.add(new_store_x)
+        session.commit()
+        log.info("Processed data saved to db with key {}".format(key))
+
+    return json.dumps({'data': key, 'processed': key_x}), 200
 
 
 @api_blueprint.route('/feeds', methods=['POST'])
 def feeds():
     from api.kv_store import KvStore, session
 
-    if 'url' in request.form:
-        url = request.form.get('url')
+    url = request.form.get('url')
 
-        try:
-            cached = session.query(KvStore).order_by(KvStore.id.desc()).first()
-            log.info("Returning from cache: {}".format(cached.key))
-            data = cached.value[url]
-        except NoResultFound:
-            log.info("Proxying {}".format(url[:100]))
-            r = requests.get(url)
-            data = r.text
+    cached = session.query(KvStore).filter(
+        KvStore.key.like("%_x")).order_by(KvStore.id.desc()).first()
 
-        feed = Feed(feed=data)
-        log.info("Extracting from data: {}".format(
-            data[:100].replace('\n', ' ')))
-        feed.extract()
-
-        feed_json = json.dumps(feed.serializable())
-        log.info("Returning processed JSON: {}".format(feed_json[:100]))
-        return feed_json, 200
-
+    return cached.value[url], 200
     abort(400)
