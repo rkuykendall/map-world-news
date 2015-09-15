@@ -1,3 +1,4 @@
+import pytz
 import json
 from dateutil import parser
 
@@ -24,6 +25,9 @@ class Article():
                 self.link = item['links'][0]['href']
                 self.title = item.get('title')
                 self.published = parser.parse(item.get('published'))
+
+                if self.published.tzinfo is None:
+                    self.published.replace(tzinfo=pytz.utc)
 
                 # Set summary, get rid of all the junk at the end
                 summary = item.get('summary')
