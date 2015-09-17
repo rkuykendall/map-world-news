@@ -44,13 +44,22 @@ module.exports = React.createClass({
 
         <div className="row">
           <div className="col-sm-12 col-md-4">
-            <Feeds feeds={feeds} feedClicked={AppActions.feedClicked} />
+            <Feeds
+              feeds={feeds}
+              feedClicked={AppActions.feedClicked} />
           </div>
 
           <div className="col-sm-12 col-md-8">
             {selected ?
-              <StoryList stories={countries[selected]} id={selected} title={countryNames[selected].name} deselectCountry={AppActions.deselectCountry} />
-              : <CountryList countries={countries} countryClicked={AppActions.countryClicked} />
+              <StoryList
+                stories={countries[selected]}
+                id={selected}
+                title={countryNames[selected].name}
+                deselectCountry={AppActions.deselectCountry}
+                feedClicked={AppActions.feedClicked} />
+              : <CountryList
+                countries={countries}
+                countryClicked={AppActions.countryClicked} />
             }
           </div>
         </div>

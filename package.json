@@ -8,6 +8,7 @@
     "gulp-gzip": "1.2.0",
     "gulp-uglify": "1.4.0",
     "js-logger": "^1.1.1",
+    "moment": "^2.10.6",
     "nprogress": "0.2.0",
     "rainbowvis.js": "1.0.0",
     "webpack": "1.12.0"

@@ -15,8 +15,8 @@ let AppStore = Reflux.createStore({
   total: 0,
 
   init() {
-    this.listenTo(AppActions.countryClicked, 'onCountryClicked');
     this.listenTo(AppActions.feedClicked, 'onFeedClicked');
+    this.listenTo(AppActions.countryClicked, 'onCountryClicked');
     this.listenTo(AppActions.deselectCountry, 'onDeselectCountry');
 
     let keys = Object.keys(this.feeds);
@@ -36,6 +36,8 @@ let AppStore = Reflux.createStore({
   },
 
   onFeedClicked(id, state) {
+    console.log(id);
+    console.log(state);
     // Ignore double-emit
     if (this.feeds[id].show == state) {
       return;
@@ -79,6 +81,7 @@ let AppStore = Reflux.createStore({
             if (!(country in countriesNew)) {
               countriesNew[country] = [];
             }
+            story.feed = key;
             countriesNew[country].push(story);
           }
         }
