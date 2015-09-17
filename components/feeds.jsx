@@ -17,7 +17,11 @@ module.exports = React.createClass({
               onMouseDown={this.props.feedClicked.bind(this, key, !feeds[key].show)}
               key={key}
               className={'clickable ' + feeds[key].class}>
-            <span>{key} <span className='light'>{feeds[key].subtitle}</span></span>
+            <span>
+              {key}
+              <span className='light'> {feeds[key].subtitle}</span>
+              {feeds[key].show ? <span className='light'> Click to hide</span> : ' Click to show'}
+            </span>
           </li>
         }, this)}
       </ul>
