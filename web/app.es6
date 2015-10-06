@@ -1,3 +1,4 @@
+require("babel/polyfill");
 require('./style.less');
 const React = require('react');
 const Rainbow = require('rainbowvis.js');

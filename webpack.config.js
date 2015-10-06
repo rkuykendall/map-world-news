@@ -9,8 +9,16 @@ module.exports = {
             { test: /\.json$/, loader: 'json-loader' },
             { test: /\.css$/, loader: 'style-loader!css-loader' },
             { test: /\.less$/, loader: 'style-loader!css-loader!less-loader' },
-            { test: /\.jsx$/, loader: 'strict!jsx-loader?insertPragma=React.DOM&harmony' },
-            { test: /\.es6$/, loader: 'strict!jsx-loader?insertPragma=React.DOM&harmony' }
+            {
+                test: /\.jsx?$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: 'babel'
+            },
+            {
+                test: /\.es6?$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: 'babel'
+            }
         ]
     }
 };
