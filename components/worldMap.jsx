@@ -1,7 +1,8 @@
 const React = require('react')
 const Rainbow = require('rainbowvis.js');
 const _ = require('lodash');
-const log = require('../log.es6')
+const $ = require('jquery');
+const log = require('../log.es6');
 
 module.exports = React.createClass({
   getSentiments(countries) {

@@ -36,8 +36,6 @@ let AppStore = Reflux.createStore({
   },
 
   onFeedClicked(id, state) {
-    console.log(id);
-    console.log(state);
     // Ignore double-emit
     if (this.feeds[id].show == state) {
       return;
