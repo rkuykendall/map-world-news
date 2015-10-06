@@ -10,16 +10,6 @@ countries red or green based on their relationship to the selected country.
 
 See it online at [mapworldnews.com](http://mapworldnews.com/).
 
-**Contributors:**
-The project was originally created by a group in a Digital Mediated
-Storytelling class at Columbia University.
-
-*   Sahil Ansari (sahil-ansari)
-*   Shensi Ding (shensi9)
-*   Robert Kuykendall (rkuykendall)
-*   Bo Xu (captainbox22)
-
-
 ### Installation
 
 1. ``git clone git@github.com:rkuykendall/map-world-news.git``
@@ -27,12 +17,14 @@ Storytelling class at Columbia University.
 3. ``cd map-world-news``
 4. ``easy_install pip``
 5. ``pip install -r requirements.txt``
+6. ``npm install``
+7. ``gem install foreman``
 
 
 ### Starting the Server
 
-1. ``gem install foreman``
-2. ``foreman start``
+1. In one window: ``foreman start``
+2. In another window: ``gulp dev``
 
 
 ### Testing
