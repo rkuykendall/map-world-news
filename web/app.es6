@@ -4,6 +4,7 @@ const Rainbow = require('rainbowvis.js');
 const NProgress = require('nprogress');
 const App = require('./components/app.jsx')
 const log = require('./log.es6')
+const $ = require('jquery');
 
 let topo = [];
 NProgress.configure({ easing: 'ease', speed: 1500 });
