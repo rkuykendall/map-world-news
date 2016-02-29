@@ -3,7 +3,6 @@ import requests
 from datetime import datetime
 
 from flask import request, abort, Blueprint
-from sqlalchemy.orm.exc import NoResultFound
 
 from api.feed import Feed
 from logger import log
@@ -50,6 +49,12 @@ def clear():
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
     return json.dumps({}), 200
+
+
+@api_blueprint.route('/prune', methods=['GET'])
+def get_prune():
+    from api.kv_store import prune
+    return str(prune())
 
 
 @api_blueprint.route('/store', methods=['GET'])

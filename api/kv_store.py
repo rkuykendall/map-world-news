@@ -23,5 +23,24 @@ class KvStore(Base):
         print self.value.keys()
         session.add(self)
         session.commit()
+        prune()
+
+
+def prune():
+    """
+    Prune the cached extractions database to keep below 10,000 records,
+    the free limit on Heroku.
+    """
+
+    num = session.query(KvStore.id).count()
+    if(num > 9990):
+        for resolution in session.query(
+                KvStore).order_by(
+                KvStore.id.asc()).limit(40):
+            session.delete(resolution)
+
+    session.commit()
+    return num
+
 
 Base.metadata.create_all(engine)
