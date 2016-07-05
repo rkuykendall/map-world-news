@@ -62,10 +62,10 @@ def store():
     from api.kv_store import KvStore, session
 
     now = datetime.now()
-    key = "feeds_{}_{}".format(now.strftime('%Y-%m-%d'), now.month / 6)
+    key = "feeds_{}".format(now.strftime('%Y-%m-%d'))
 
-    existing = session.query(KvStore.id).filter(KvStore.key == key).count()
-    if existing == 0:
+    existing = session.query(KvStore.id).filter(KvStore.key == key).first()
+    if existing is None:
         log.info("Staring cache of {}...".format(key))
         feeds = {}
 
@@ -77,16 +77,14 @@ def store():
                     r.status_code, url))
 
         new_store = KvStore(key, feeds)
-        session.add(new_store)
-        session.commit()
-        log.info("Feed Data saved to db with key {}".format(key))
+        new_store.save()
     else:
-        feeds = session.query(KvStore).filter(KvStore.key == key).one().value
+        feeds = existing.value
 
     key_x = key + '_x'
-    existing = session.query(KvStore.id).filter(KvStore.key == key_x).count()
+    existing = session.query(KvStore.id).filter(KvStore.key == key_x).first()
 
-    if existing == 0:
+    if existing is None:
         log.info("Extracting feed data...")
         feeds_x = {}
         for url in default_feeds:
@@ -98,7 +96,6 @@ def store():
 
         new_store_x = KvStore(key_x, feeds_x)
         new_store_x.save()
-        log.info("Processed data saved to db with key {}".format(key))
 
     return json.dumps({'data': key, 'processed': key_x}), 200
 
