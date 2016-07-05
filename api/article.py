@@ -36,7 +36,7 @@ class Article():
                 self.summary = summary
             except:
                 log.error("Problem processing article: {}".format(
-                    json.dumps(item)))
+                    str(item)))
 
     def extract(self):
         """
