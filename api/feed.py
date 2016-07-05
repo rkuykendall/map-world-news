@@ -25,8 +25,8 @@ class Feed:
         """
         f = feedparser.parse(feed)
         ago24h = (
-            datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
-            - datetime.timedelta(hours=24))
+            datetime.datetime.utcnow().replace(
+                tzinfo=pytz.utc) - datetime.timedelta(hours=24))
 
         ignore_total = 0
         for item in f['entries']:
@@ -41,7 +41,8 @@ class Feed:
                     a.link))
 
         if ignore_total > 0:
-            print "Ignored {} from more than 24h ago".format(ignore_total)
+            log.info(
+                "Ignored {} from more than 24h ago".format(ignore_total))
 
     def extract(self):
         log.info("Extracing location and sentiment from articles in feed.")

@@ -1,8 +1,9 @@
-from __future__ import print_function
 import json
 
 from sqlalchemy import PickleType, Column, Integer, String, Text
+
 from api import Base, session, engine
+from logger import log
 
 
 class TextPickleType(PickleType):
@@ -21,8 +22,8 @@ class KvStore(Base):
 
     def save(self):
         prune()
-        print("saving...")
-        print(str(self.value.keys())[:300])
+        log.info("saving...")
+        log.info(str(self.value.keys())[:300])
         session.add(self)
         session.commit()
         prune()
@@ -37,7 +38,7 @@ def prune():
     num = session.query(KvStore.id).count()
     if(num > 9990):
         limit = num - 9900
-        print("Pruning {} records".format(limit))
+        log.info("Pruning {} records".format(limit))
         for resolution in session.query(
                 KvStore).order_by(
                 KvStore.id.asc()).limit(limit):

@@ -1,3 +1,4 @@
+from __future__ import print_function
 import sys
 
 import unittest
@@ -32,7 +33,7 @@ class TestBrowser(unittest.TestCase):
         except TimeoutException:
             assert False
         except:
-            print "Unexpected error:", sys.exc_info()[0]
+            print("Unexpected error:", sys.exc_info()[0])
             assert False
 
         assert True
