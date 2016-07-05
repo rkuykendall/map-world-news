@@ -97,8 +97,7 @@ def store():
             feeds_x[url] = json.dumps(feed.serializable())
 
         new_store_x = KvStore(key_x, feeds_x)
-        session.add(new_store_x)
-        session.commit()
+        new_store_x.save()
         log.info("Processed data saved to db with key {}".format(key))
 
     return json.dumps({'data': key, 'processed': key_x}), 200

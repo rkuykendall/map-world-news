@@ -1,3 +1,4 @@
+from __future__ import print_function
 import json
 
 from sqlalchemy import PickleType, Column, Integer, String, Text
@@ -19,8 +20,9 @@ class KvStore(Base):
         self.value = value
 
     def save(self):
-        print "saving..."
-        print self.value.keys()
+        print("saving...")
+        print(str(self.value.keys())[:300])
+        prune()
         session.add(self)
         session.commit()
         prune()
