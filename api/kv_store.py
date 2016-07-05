@@ -20,9 +20,9 @@ class KvStore(Base):
         self.value = value
 
     def save(self):
+        prune()
         print("saving...")
         print(str(self.value.keys())[:300])
-        prune()
         session.add(self)
         session.commit()
         prune()
@@ -36,9 +36,11 @@ def prune():
 
     num = session.query(KvStore.id).count()
     if(num > 9990):
+        limit = num - 9900
+        print("Pruning {} records".format(limit))
         for resolution in session.query(
                 KvStore).order_by(
-                KvStore.id.asc()).limit(40):
+                KvStore.id.asc()).limit(limit):
             session.delete(resolution)
 
     session.commit()
