@@ -64,7 +64,7 @@ def store():
     now = datetime.now()
     key = "feeds_{}".format(now.strftime('%Y-%m-%d'))
 
-    existing = session.query(KvStore.id).filter(KvStore.key == key).first()
+    existing = session.query(KvStore).filter(KvStore.key == key).first()
     if existing is None:
         log.info("Staring cache of {}...".format(key))
         feeds = {}
