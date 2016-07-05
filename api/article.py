@@ -34,8 +34,8 @@ class Article():
                 summary = summary[:summary.find("\n\n")]
                 summary = summary[:summary.find("<")]
                 self.summary = summary
-            except (TypeError, KeyError):
-                log.error("Could not find first link: {}".format(
+            except:
+                log.error("Problem processing article: {}".format(
                     json.dumps(item)))
 
     def extract(self):
