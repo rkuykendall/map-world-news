@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 
 from flask import Flask
 from flask_cors import CORS
-from views import api_blueprint
+from .views import api_blueprint
 
 
 app = Flask(__name__)
