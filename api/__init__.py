@@ -20,7 +20,10 @@ cors = CORS(app)
 
 
 # SQLAlchemy
-engine = create_engine(app.config["DATABASE_URI"])
+db_uri = app.config["DATABASE_URI"]
+if db_uri and db_uri.startswith("postgres://"):
+	db_uri = db_uri.replace("postgres://", "postgresql://", 1)
+engine = create_engine(db_uri)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 session = Session()
