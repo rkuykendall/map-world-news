@@ -1,6 +1,6 @@
 import string
 
-from country_constants import COUNTRY_NAMES
+from .country_constants import COUNTRY_NAMES
 
 
 def extract_countries(text):
@@ -13,7 +13,8 @@ def extract_countries(text):
 
     text = text.lower()
     text = text.replace('\'s ', ' ')
-    text = ''.join([c for c in text if c in string.letters + ' '])
+    import string
+    text = ''.join([c for c in text if c in string.ascii_letters + ' '])
     text = ' {} '.format(text)
     text = text.replace('  ', ' ')
 

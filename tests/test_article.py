@@ -1,10 +1,10 @@
+# Renamed from article_test.py
 import unittest
 import os
 
 # Set enviornment before importing any database classes
 os.environ["CONFIG_PATH"] = "api.config.TestingConfig"
 from api.feed import Feed
-
 
 class TestArticle(unittest.TestCase):
     def setUp(self):
@@ -43,7 +43,7 @@ class TestArticle(unittest.TestCase):
         self.article.extract()
 
     def test_location(self):
-        assert 'MYS' in self.article.countries
+        self.assertIn('MYS', self.article.countries)
 
     def test_sentiment(self):
         self.assertEqual(self.article.sentiment, -2.0)

@@ -2,8 +2,8 @@ import feedparser
 import datetime
 import pytz
 
-from article import Article
-from logger import log
+from .article import Article
+from .logger import log
 
 
 class Feed:
@@ -25,8 +25,7 @@ class Feed:
         """
         f = feedparser.parse(feed)
         ago24h = (
-            datetime.datetime.utcnow().replace(
-                tzinfo=pytz.utc) - datetime.timedelta(hours=24))
+            datetime.datetime.now(datetime.UTC) - datetime.timedelta(hours=24))
 
         ignore_total = 0
         for item in f['entries']:

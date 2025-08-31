@@ -1,10 +1,10 @@
+# Renamed from feed_test.py
 import unittest
 import os
 
 # Set enviornment before importing any database classes
 os.environ["CONFIG_PATH"] = "api.config.TestingConfig"
 from api.feed import Feed
-
 
 class TestFeed(unittest.TestCase):
     def test_feedzilla(self):

@@ -2,8 +2,8 @@ import json
 
 from sqlalchemy import PickleType, Column, Integer, String, Text
 
-from api import Base, session, engine
-from logger import log
+from . import Base, session, engine
+from .logger import log
 
 
 class TextPickleType(PickleType):

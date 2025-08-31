@@ -4,8 +4,8 @@ from dateutil import parser
 
 from afinn import Afinn
 
-from country import extract_countries
-from logger import log
+from .country import extract_countries
+from .logger import log
 
 
 class Article():
@@ -45,7 +45,11 @@ class Article():
 
         afinn = Afinn()
         target = self.title + ' ' + self.summary
-        target = target.encode('ascii', 'ignore')
+        # Remove non-ASCII, but keep as str for Python 3
+        if isinstance(target, bytes):
+            target = target.decode('utf-8', 'ignore')
+        else:
+            target = target.encode('ascii', 'ignore').decode('ascii')
 
         self.sentiment = afinn.score(target)
         self.countries = extract_countries(target)

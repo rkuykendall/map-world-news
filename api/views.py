@@ -4,8 +4,8 @@ from datetime import datetime
 
 from flask import request, abort, Blueprint
 
-from api.feed import Feed
-from logger import log
+from .feed import Feed
+from .logger import log
 
 api_blueprint = Blueprint('api_blueprint', __name__, template_folder='')
 
@@ -45,7 +45,7 @@ default_feeds = [
 
 @api_blueprint.route('/clear', methods=['GET'])
 def clear():
-    from api.kv_store import Base, engine
+    from .kv_store import Base, engine
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
     return json.dumps({}), 200
@@ -53,13 +53,13 @@ def clear():
 
 @api_blueprint.route('/prune', methods=['GET'])
 def get_prune():
-    from api.kv_store import prune
+    from .kv_store import prune
     return str(prune())
 
 
 @api_blueprint.route('/store', methods=['GET'])
 def store():
-    from api.kv_store import KvStore, session
+    from .kv_store import KvStore, session
 
     now = datetime.now()
     key = "feeds_{}".format(now.strftime('%Y-%m-%d'))
