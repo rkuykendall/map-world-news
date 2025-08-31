@@ -1,6 +1,7 @@
 node_modules
 .publish
 bundle.js
+.vscode
 
 .awspublish*
 aws.json
