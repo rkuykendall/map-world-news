@@ -41,3 +41,11 @@ can write more tests or write code to fix the tests that fail.
 *   [Finn Arup](https://github.com/fnielsen/afinn) for his work on simple sentiment analysis.
 *   Tom Noda for his [D3 map tutorial](http://www.tnoda.com/blog/2013-12-07) used as the basis for the map.
 *   Pete Warden for the [Data Science Toolkit](http://www.datasciencetoolkit.org/), the original sentiment and location extraction code used here.
+
+## Screenshots
+
+The app was hosted on Heroku until November 2026. This screenshot shows it before it was taken offline.
+
+### Map and news feeds
+
+![Map and news feeds](screenshots/screenshot.png)
